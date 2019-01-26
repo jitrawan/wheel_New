@@ -10,7 +10,7 @@
 <?php
 $getparamKey = "";
 if(isset($_GET['paramKey'])){
-$getparamKey = '&reserveKey='.$_GET['reserveKey'].'&paramKey='.$_GET['paramKey'];
+$getparamKey = '&reserve_key='.$_GET['reserveKey'].'&paramKey='.$_GET['paramKey'];
 }
 if(isset($_POST['save_card'])){
 
@@ -53,7 +53,7 @@ if(isset($_POST['save_card'])){
                                           <div class="form-group row">
                                           <div class="col-md-6">
                                             <label for="card_customer_phone">หมายเลขโทรศัพท์</label>
-                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control"  autocomplete="off">
+                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control number"  autocomplete="off">
                                             </div>
                                             <div class="col-md-6"> <label for="card_customer_email">อีเมล</label>
                                             <input type="text" name="card_customer_email" id="card_customer_email" class="form-control"  autocomplete="off"></div>
@@ -146,6 +146,13 @@ if(isset($_POST['save_card'])){
 ?>
 <script language="javascript">
 $( window ).load(function() {
+  $(".number").bind('keyup mouseup', function () {
+    if (/\D/g.test(this.value)){
+           this.value = this.value.replace(/\D/g, '');
+        }
+					
+		});
+
   if('<?= $_GET['paramKey']?>' != ""){
     $( "#openmodal" ).click();
   }

@@ -155,18 +155,18 @@ if(isset($_POST['save_edit_item'])){
                                         <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="PriceSale">ราคาขาย</label>
-                                              <input type="number" name="PriceSale" id="PriceSale" class="form-control" value="0" style="text-align: right;">
+                                              <input type="number" name="PriceSale" id="PriceSale" class="form-control number" value="0" style="text-align: right;">
                                             </div>
                                              <div class="col-md-6">
                                              <label for="PriceBuy">ราคาซื้อ</label>
-                                            <input type="number" name="PriceBuy" id="PriceBuy" class="form-control" value="0" style="text-align: right;">
+                                            <input type="number" name="PriceBuy" id="PriceBuy" class="form-control number" value="0" style="text-align: right;">
                                              </div>
                                           </div>
 
                                           <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="Quantity">คงเหลือ</label>
-                                              <input type="number" name="Quantity" id="Quantity" class="form-control" value="0" style="text-align: right;">
+                                              <input type="number" name="Quantity" id="Quantity" class="form-control number" value="0" style="text-align: right;">
                                             </div>
                                             <div class="col-md-6">
                                             <label for="pro_status"><?php echo @LA_LB_STATUS;?></label>
@@ -324,6 +324,13 @@ if(isset($_POST['save_edit_item'])){
 </div>
 <script language="javascript">
 $( document ).ready(function() {
+
+$(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									$(this).val(0);
+								}       
+						});
 
    $('select').selectize();
   

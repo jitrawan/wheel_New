@@ -116,18 +116,18 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
                                         <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="Pedit_riceSale">ราคาขาย</label>
-                                              <input type="number" name="edit_PriceSale" id="edit_PriceSale" class="form-control" value="<?php echo @$getitem->PriceSale;?>" style="text-align: right;">
+                                              <input type="number" name="edit_PriceSale" id="edit_PriceSale" class="form-control number" value="<?php echo @$getitem->PriceSale;?>" style="text-align: right;">
                                             </div>
                                              <div class="col-md-6">
                                              <label for="edit_PriceBuy">ราคาซื้อ</label>
-                                            <input type="number" name="edit_PriceBuy" id="edit_PriceBuy" class="form-control" value="<?php echo @$getitem->PriceBuy;?>" style="text-align: right;">
+                                            <input type="number" name="edit_PriceBuy" id="edit_PriceBuy" class="form-control number" value="<?php echo @$getitem->PriceBuy;?>" style="text-align: right;">
                                              </div>
                                           </div>
 
                                           <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="edit_Quantity">คงเหลือ</label>
-                                              <input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
+                                              <input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control number" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
                                             </div>
                                            </div>
                                            
@@ -154,7 +154,13 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
 
           <script language="javascript">
           $( document ).ready(function() {
-            
+            $(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									$(this).val(0);
+								}       
+						});
+
            $('#edit_dealer_code').val('<?php echo @$getitem->dealer_code;?>');
            $('#edit_TypeID').val('<?php echo @$getitem->TypeID;?>');
             opctionBrand($('#edit_TypeID').val(),"edit_BrandID");

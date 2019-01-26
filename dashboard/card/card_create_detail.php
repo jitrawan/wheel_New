@@ -231,15 +231,17 @@ if(isset($_GET['paramKey'])){
 		?>
 		<td ><label for="product_Id">รหัสสินค้า</label>
 			<input width="44%" type="text" name="product_Id" id="product_Id" value="<? echo $product_detail->ProductID ?>" class="form-control"></td>
-			<input type="hidden" name="reserveKey" id="reserveKey" value="<? echo $_GET['reserveKey']?>" >
+			<input type="hidden" name="reserveKey" id="reserveKey" value="<? echo $_GET['reserve_key']?>" >
 		<td ><label for="item_name">ชื่อรายการ</label>
 			<input width="15%" type="text" name="item_name" id="item_name" value="<? echo $gettype ?>" class="form-control"></td>
     <td width="30%"><label for="item_note">สาเหตุที่ส่งซ่อม/เคลม</label>
       <input type="text" name="item_note" id="item_note" class="form-control" autofocus></td>
       <td width="10%"><label for="item_amt">จำนวนเคลม</label>
-        <input type="number" name="item_amt" id="item_amt" class="form-control" value="<? echo $product_detail->item_amt ?>"></td>
+        <input type="number" name="item_amt" id="item_amt" class="form-control number" value="<? echo $product_detail->item_amt ?>">
+				<input type="hidden" name="get_item_am" id="get_item_am" class="form-control number" value="<? echo $product_detail->item_amt ?>">
+				</td>
     <td width="10%"><label for="item_price_aprox">ราคาโดยประมาณ</label>
-      <input type="number" name="item_price_aprox" id="item_price_aprox" class="form-control"></td>
+      <input type="number" name="item_price_aprox" id="item_price_aprox" class="form-control number"></td>
     <td width="8%"><button type="submit" name="save_item" id="save_item" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> เพิ่มรายการ</button></td>
     </tr>
   <tr style="font-weight:bold; color:#FFF; text-align:center;">
@@ -274,6 +276,27 @@ if(isset($_GET['paramKey'])){
                 </div>
 <script language="javascript">
 $( document ).ready(function() {
+$(".number").bind('keyup mouseup', function () {
+
+			var amt = $("#get_item_am").val();
+			if($(this).attr('name') == 'item_amt'){
+				if($(this).val() < 0){
+					alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+					$(this).val(0);
+				}else if($(this).val() > 2){
+					alert("จำนวนสินค้าที่กรอกเกินจำนวนสินค้าที่ซื้อ ! "); 
+					$(this).val(amt);
+				}
+		}else{
+			if($(this).val() < 0) {
+				alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+				$(this).val(0);
+			}
+		}
+	
+
+						});
+
 		$("tbody tr").click(function() {
 			console.log('clicked');
 			$(this).addClass('selected').siblings().removeClass("selected");

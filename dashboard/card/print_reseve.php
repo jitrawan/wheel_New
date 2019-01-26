@@ -13,7 +13,17 @@ $getdata = new clear_db();
 $connect = $getdata->my_sql_connect(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_NAME);
 $getdata->my_sql_set_utf8();
 date_default_timezone_set('Asia/Bangkok');
+$getmember_info = $getdata->my_sql_query(NULL,"user","user_key='".$_SESSION['ukey']."'");
 $card_detail = $getdata->my_sql_query(NULL,"reserve_info","reserve_key='".addslashes($_GET['key'])."'");
+			if(isset($_GET['type'])){
+					$str = 'Reprint';
+					$reprintReserveKey=md5($card_detail->reserve_key.time("now"));
+					$getdata->my_sql_insert("reprint_reserve"," reprintReserveKey='".$reprintReserveKey."'
+					,reserve_key='".$card_detail->reserve_key."'
+					,createDate=NOW()
+					,createBy='".$_SESSION['ukey']."' ");
+			}
+
   //set it to writable location, a place for temp generated PNG files
     $PNG_TEMP_DIR = '../../plugins/phpqrcode/temp/';
     $PNG_WEB_DIR = '../../plugins/phpqrcode/temp/';
@@ -21,7 +31,7 @@ $card_detail = $getdata->my_sql_query(NULL,"reserve_info","reserve_key='".addsla
 
 
 ?>
-<title><?php echo @$card_detail->reserve_code;?></title>
+<title><? echo $str ?>  <?php echo @$card_detail->reserve_code;?></title>
 <link href="../../css/bootstrap.min.css" rel="stylesheet">
  <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="../../css/iconset/ios7-set-filled-1/flaticon.css" rel="stylesheet" type="text/css">
@@ -124,7 +134,7 @@ body{
 			<td align="right"></td>
 		</tr>
     <tr>
-			<td>พนักงาน : <?php echo $_SESSION['uname']?></td>
+			<td>พนักงาน : <?php echo @$getmember_info->name;?> <?php echo @$getmember_info->lastname;?></td>
 			<td align="right"></td>
 		</tr>
     <tr>
@@ -145,16 +155,28 @@ body{
     <td colspan="5">==================================================================================================================================</td></tr>
   </tr>
   <?
-  $productInfo = $getdata->my_sql_select("i.* , p.* ","reserve_item i left join product_n p on i.ProductID = p.ProductID "," i.reserve_key='".addslashes($_GET['key'])."' ");
+	$productInfo = $getdata->my_sql_select("i.*,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+	,case
+		when p.TypeID = '2'
+		then (select b.BrandName from brand b where r.brand = b.BrandID)
+		end BrandName "
+	," reserve_item i 
+		 left join product_N p on p.ProductID = i.ProductID
+		 left join productDetailWheel w on p.ProductID = w.ProductID
+		 left join productDetailRubber r on p.ProductID = r.ProductID "
+	," i.reserve_key='".addslashes($_GET['key'])."' ");
+  //$productInfo = $getdata->my_sql_select("i.* , p.* ","reserve_item i left join product_n p on i.ProductID = p.ProductID "," i.reserve_key='".addslashes($_GET['key'])."' ");
   while($objpro = mysql_fetch_object($productInfo)){
-
+		if($objpro->TypeID == '1'){
+			$gettype = "ล้อแม๊ก"." ขนาด:".$objpro->diameterWheel." ขอบ:".$objpro->whediameter." รู:".$objpro->holeSize." ประเภท:".$objpro->typeFormat;
+		}else if($objpro->TypeID == '2'){
+			$gettype = "ยาง ".$objpro->BrandName." ขนาด:".$objpro->diameterRubber." ขอบ:".$objpro->rubdiameter." ซี่รี่:".$objpro->series." ความกว้าง:".$objpro->width;
+		}else{
+			$gettype = "";
+		}
 ?>
 		<tr>
-			<td><?php echo $objpro->ProductID?> <?  if($productInfo->TypeID == '1'){
-          echo  "ล้อแม๊ก";
-        }else{
-          echo  "ยาง";
-        }?></td>
+			<td><?php echo $objpro->ProductID?> <?   echo $gettype ?></td>
       <td align="center"><?php echo $objpro->item_amt?></td>
       <td align="right"><?php echo convertPoint2($objpro->item_price,2)?> </td>
       <td align="right"><?php echo convertPoint2($objpro->item_discount,2)?></td>

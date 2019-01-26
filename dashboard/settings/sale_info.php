@@ -96,7 +96,7 @@ if(isset($_POST['tSave'])){
 
   }
   echo "<script>window.open(\"../dashboard/card/print_reseve.php?key=\"+'".$_POST['savereserve_key']."', '_blank');</script>";
-  	echo "<script>window.location=\"../dashboard/?p=saleProduct\"</script>";
+  echo "<script>window.location=\"../dashboard/?p=saleProduct\"</script>";
 
 }else if(isset($_POST['save_item'])){
 
@@ -112,25 +112,25 @@ if(isset($_POST['tSave'])){
   $getdicountTotal = ($getproduct_info->PriceSale * $getproduct_info->discount) / 100;
   $getprice = $getproduct_info->PriceSale - $getdicountTotal;
   $gettotal = $getprice * $_POST['product_quantity'];
-  ?>
-<script>
-/*console.log('$reserve_key :: '+'<?= $reserve_key?>');
-console.log('$getdicountTotal :: '+'<?= $getdicountTotal?>');
-console.log('$getprice :: '+'<?= $getprice?>');
-console.log('$gettotal :: '+'<?= $gettotal?>');*/
-</script>
-  <?
-  $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
-  ,reserve_key='".$_POST['reserve_key']."'
-  ,ProductID='".addslashes($_POST['setProductID'])."'
-  ,item_amt='".$_POST['product_quantity']."'
-  ,item_discount='".$getdicountTotal."'
-  ,item_price='".$getproduct_info->PriceSale."'
-  ,item_total='".$gettotal."'
-  ,create_Date=NOW() ");
+ 
+  if($_POST['product_quantity'] <= $getproduct_info->Quantity){
 
-  $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['reserve_key']."' ");
-  $getreserveCode = $getreserve_info->reserve_code;
+    $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
+    ,reserve_key='".$_POST['reserve_key']."'
+    ,ProductID='".addslashes($_POST['setProductID'])."'
+    ,item_amt='".$_POST['product_quantity']."'
+    ,item_discount='".$getdicountTotal."'
+    ,item_price='".$getproduct_info->PriceSale."'
+    ,item_total='".$gettotal."'
+    ,create_Date=NOW() ");
+  
+    $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['reserve_key']."' ");
+    $getreserveCode = $getreserve_info->reserve_code;
+ 
+  }else{
+    $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
+  }
+  
 }else{
 
   $getdata->my_sql_delete("reserve_info","reserve_status = 'N'");
@@ -221,7 +221,7 @@ while($objShow = mysql_fetch_object($getproduct_info)){
     <label>จำนวน : </label>
     <div class="input-group">
       <span class="input-group-addon">123</span>
-     <input class="form-control right" type="number"  name="product_quantity" id="product_quantity" value="1">
+     <input class="form-control right number" type="number"  name="product_quantity" id="product_quantity" value="1">
     </div>
     </div>
   <div class="col-xs-9">
@@ -237,7 +237,7 @@ while($objShow = mysql_fetch_object($getproduct_info)){
   </div>
 </div>
 </form>
-
+<?php echo @$alert;?>
 <form id="form1" name="form1" method="post">
 <div class="table-responsive">
 <!--itable_product-->
@@ -341,6 +341,17 @@ while($objShow = mysql_fetch_object($getproduct_info)){
 <script language="javascript">
 
 $(document).ready(function(){
+  $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
+    $("#alert-danger").slideUp(500);
+});
+
+  $(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									$(this).val(0);
+								}       
+						});
+
   var getjson = <?= $getjoson?>;
   $("#ProductID").autocomplete({
              source: getjson,

@@ -71,7 +71,7 @@ if(isset($_POST['save_new_status'])){
                                           <div class="form-group row">
                                           <div class="col-md-6">
                                             <label for="card_customer_phone">หมายเลขโทรศัพท์</label>
-                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control">
+                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control number">
                                             </div>
                                             <div class="col-md-6"> <label for="card_customer_email">อีเมล</label>
                                             <input type="text" name="card_customer_email" id="card_customer_email" class="form-control"></div>
@@ -192,6 +192,14 @@ if(isset($_POST['save_new_status'])){
    }
 ?>
 <script language="javascript">
+
+$( document ).ready(function() {
+	$(".number").bind('keyup mouseup', function () {
+    if (/\D/g.test(this.value)){
+           this.value = this.value.replace(/\D/g, '');
+        }      
+						});
+          });
 $('#edit_status').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal
           var recipient = button.data('whatever') // Extract info from data-* attributes

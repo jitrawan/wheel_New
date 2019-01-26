@@ -188,7 +188,7 @@ while($objShow = mysql_fetch_object($getproduct_info)){
     <label>จำนวน : </label>
     <div class="input-group">
       <span class="input-group-addon">123</span>
-     <input class="form-control right" type="number"  name="product_quantity" id="product_quantity" value="1">
+     <input class="form-control right number" type="number"  name="product_quantity" id="product_quantity" value="1">
     </div>
     </div>
   <div class="col-xs-9">

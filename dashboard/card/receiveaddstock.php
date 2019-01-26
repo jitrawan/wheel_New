@@ -142,7 +142,7 @@ $getpo = $getdata->my_sql_query(NULL,"stock_tb_receive_master","po='".$_GET['d']
                           <div class="form-group row">
                               <div class="col-xs-3">
                                 <label for="mname">จำนวน :</label>
-                               <input type="number" name="total" id="total" class="form-control" size="4">
+                               <input type="number" name="total" id="total" class="form-control number" size="4">
                               </div>
                               <div class="col-xs-3">
                                 <br>
@@ -195,6 +195,15 @@ $getpo = $getdata->my_sql_query(NULL,"stock_tb_receive_master","po='".$_GET['d']
 
                             </div>
 <script type="text/javascript">
+$( document ).ready(function() {
+
+$(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									$(this).val(0);
+								}       
+						});
+          });
     $(".form_datetime").datepicker({
       format: 'yyyy-mm-dd',
       todayHighlight: true

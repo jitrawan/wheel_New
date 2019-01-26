@@ -63,7 +63,7 @@ $getitem_detail = $getdata->my_sql_query(" ri.*,p.*, d.*, w.*, s.*,ri.ProductID 
     <label for="edit_change_Amt">จำนวน</label>
 		<div class="input-group col-xs-5">
 		<span class="input-group-addon">123</span>
-		 <input class="form-control right" type="number"  name="edit_change_Amt" id="edit_change_Amt" style="text-align: right;" value="<?php echo @$getitem_detail->item_amt;?>">
+		 <input class="form-control right number" type="number"  name="edit_change_Amt" id="edit_change_Amt" style="text-align: right;" value="<?php echo @$getitem_detail->item_amt;?>">
 		</div>
  </div>
 
@@ -76,3 +76,13 @@ $getitem_detail = $getdata->my_sql_query(" ri.*,p.*, d.*, w.*, s.*,ri.ProductID 
                                             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i><?php echo @LA_BTN_CLOSE;?></button>
                                           <button type="submit" name="save_edit_item" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
                                         </div>
+<script language="javascript">
+$( document ).ready(function() {
+
+$(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									$(this).val(0);
+								}       
+						});
+</script>						

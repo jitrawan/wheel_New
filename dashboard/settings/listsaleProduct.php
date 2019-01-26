@@ -1,3 +1,11 @@
+<style>
+@media (min-width: 1200px) {
+   .Modalview {
+      width: 1000px; 
+      margin: auto;
+   }
+}
+</style>
 <div class="row">
      <div class="col-lg-12">
              <h1 class="page-header"><i class="fa fa-shopping-cart fa-fw"></i> รายการขาย</h1>
@@ -37,13 +45,18 @@ if(isset($_POST['save_cancelesd'])){
         if($getinfo->password != $getpassword){
   				echo "<script>window.location=\"../dashboard/?p=listsaleProduct&result=passfalse\"</script>";
   			}else{
+          //update status
+          $getdata->my_sql_update(" reserve_info "," reserve_status = 'C' "," reserve_key = '".addslashes($_POST['cancelesd_reserve_key'])."' ");
+          //get item
           $getnow_reserve = $getdata->my_sql_select(NULL,"reserve_item","reserve_key = '".addslashes($_POST['cancelesd_reserve_key'])."' ");
+          //loop update retrue amt
           while($getreserInfo=mysql_fetch_object($getnow_reserve)){
-              
+            $getdata->my_sql_update(" product_n ", " Quantity = Quantity + '".$getreserInfo->item_amt."' " ," ProductID = '".$getreserInfo->ProductID."' ");
           }
           $cstatus_key=md5(addslashes($_POST['cancelesd_reserve_code']).time("now"));
           $getdata->my_sql_insert("cancelesd_reserve","canceles_key='".$cstatus_key."',reserve_code='".addslashes($_POST['cancelesd_reserve_code'])."',user_create='".$getinfo->user_key."',date_create=NOW() ");
           echo "<script>window.location=\"../dashboard/?p=listsaleProduct&result=usertrue\"</script>";
+        
         }
       }
 
@@ -87,6 +100,25 @@ if(isset($_POST['save_cancelesd'])){
         </div>
   </form>
 </div>
+
+<!-- Modal view -->
+<div class="modal fade" id="edit_item" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <form method="post" enctype="multipart/form-data" name="form2" id="form2">
+
+     <div class="modal-dialog" style="margin-right: 200px; margin-left: 200px;">
+            <div class="modal-content Modalview">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                    <h4 class="modal-title" id="memberModalLabel">รายละเอียดใบเสร็จ</h4>
+                </div>
+                <div class="ct">
+
+                </div>
+            </div>
+        </div>
+  </form>
+</div>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><form method="post" enctype="multipart/form-data" name="form1" id="form1">
                                 <div class="modal-dialog">
@@ -117,7 +149,7 @@ if(isset($_POST['save_cancelesd'])){
                                           <div class="form-group row">
                                           <div class="col-md-6">
                                             <label for="card_customer_phone">หมายเลขโทรศัพท์</label>
-                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control">
+                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control number">
                                             </div>
                                             <div class="col-md-6"> <label for="card_customer_email">อีเมล</label>
                                             <input type="text" name="card_customer_email" id="card_customer_email" class="form-control"></div>
@@ -229,7 +261,9 @@ if(isset($_POST['save_cancelesd'])){
       <td  align="right"><?php echo @$getsale_count;?></td>
       <td align="right"><?php echo @convertPoint2($showsaleinfo->reserve_total,2);?></td>
       <td align="right">
-      <a data-toggle="modal" data-target="#cancelesd" data-whatever="<?php echo @$showsaleinfo->reserve_key;?>" class="btn btn-xs btn-default" title="ยกเลิกใบเสร็จ"><i class="fa fa-ban"></i></a><a data-toggle="modal" data-target="#edit_status" data-whatever="<?php echo @$showcard->card_key;?>" class="btn btn-xs btn-info" title="เปลี่ยนสถานะ"><i class="fa fa-tag"></i></a><a href="?p=card_all_status&key=<?php echo @$showcard->card_key;?>" class="btn btn-xs btn-success" title="รายละเอียด"><i class="fa fa-edit"></i></a><a href="card/print_card.php?key=<?php echo @$showcard->card_key;?>" target="_blank" class="btn btn-xs btn-warning" title="พิมพ์"><i class="fa fa-print"></i></a>
+      <a data-toggle="modal" data-target="#cancelesd" data-whatever="<?php echo @$showsaleinfo->reserve_key;?>" class="btn btn-xs btn-default" title="ยกเลิกใบเสร็จ"><i class="fa fa-ban"></i></a>
+      <a data-toggle="modal" data-target="#edit_item" data-whatever="<?php echo @$showsaleinfo->reserve_key;?>"  title="รายละเอียด" class="btn btn-info btn-xs"><i class="fa fa-edit"></i></a>
+      <a href="card/print_reseve.php?type=re&key=<?php echo @$showsaleinfo->reserve_key;?>" target="_blank" class="btn btn-xs btn-warning" title="พิมพ์"><i class="fa fa-print"></i></a>
       </td>
     </tr>
     <?php
@@ -249,6 +283,12 @@ if(isset($_POST['save_cancelesd'])){
 
 <script language="javascript">
 $(document).ready(function(){
+   $(".number").bind('keyup mouseup', function () {
+    if (/\D/g.test(this.value)){
+           this.value = this.value.replace(/\D/g, '');
+        }      
+						});
+
     $("#addsearch").click(function(){
         $("#searchOther").toggle();
     });
@@ -266,6 +306,27 @@ $(document).ready(function(){
         }
     });
 });
+
+$('#edit_item').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'key=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "card/viewsaleProduct.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                    console.log(data);
+                    modal.find('.ct').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    });
 
 $('#edit_status').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal

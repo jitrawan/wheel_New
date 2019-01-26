@@ -98,7 +98,7 @@ echo @$alert;
                                              <div class="form-group">
                                              <div class="row">
                                           <div class="col-md-6"><label for="mobile"><?php echo @LA_LB_PHONE;?></label>
-                                               <input type="text" name="mobile" id="mobile" class="form-control" value=""></div>
+                                               <input type="text" name="mobile" id="mobile" class="form-control number" value=""></div>
                                             <div class="col-md-6"><label for="email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="email" id="email" class="form-control" value=""></div>
                                             </div>
@@ -186,6 +186,14 @@ echo @$alert;
 </nav>
 </div>-->
 <script language="javascript">
+ $( window ).load(function() {
+        $(".number").bind('keyup mouseup', function () {
+          if (/\D/g.test(this.value)){
+                this.value = this.value.replace(/\D/g, '');
+              }      
+                  });
+          });
+
 function changeMemberStatus(memberkey){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 	 	xmlhttp=new XMLHttpRequest();

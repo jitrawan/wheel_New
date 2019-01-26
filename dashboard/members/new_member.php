@@ -140,7 +140,7 @@ echo @$alert;
                                              <div class="form-group">
                                              <div class="row">
                                           <div class="col-md-6"><label for="member_phone"><?php echo @LA_LB_MEMBER_PHONE_NUMBER;?></label>
-                                               <input type="text" name="member_phone" id="member_phone" class="form-control"></div>
+                                               <input type="text" name="member_phone" id="member_phone" class="form-control number"></div>
                                             <div class="col-md-6"><label for="member_email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="member_email" id="member_email" class="form-control"></div>
                                             </div>
@@ -224,6 +224,14 @@ echo @$alert;
                     </div>
 </form>
 <script language="javascript">
+ $( window ).load(function() {
+        $(".number").bind('keyup mouseup', function () {
+          if (/\D/g.test(this.value)){
+                this.value = this.value.replace(/\D/g, '');
+              }      
+                  });
+          });
+
 function copyAddress(){
 		var addr = document.getElementById('member_address').value;
 		document.getElementById('member_address_now').value = addr;

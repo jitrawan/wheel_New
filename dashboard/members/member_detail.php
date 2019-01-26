@@ -230,7 +230,7 @@ switch(addslashes($_GET['tab'])){
                                           
                                              <div class="row form-group">
                                           <div class="col-md-6"><label for="member_phone"><?php echo @LA_LB_MEMBER_PHONE_NUMBER;?></label>
-                                               <input type="text" name="member_phone" id="member_phone" class="form-control" value="<?php echo @$member_detail->member_tel;?>"></div>
+                                               <input type="text" name="member_phone" id="member_phone" class="form-control number" value="<?php echo @$member_detail->member_tel;?>"></div>
                                             <div class="col-md-6"><label for="member_email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="member_email" id="member_email" class="form-control" value="<?php echo @$member_detail->member_email;?>"></div>
                                             </div>
@@ -423,6 +423,13 @@ switch(addslashes($_GET['tab'])){
                                   </form>
                             </div>
    <script language="javascript">
+   $( window ).load(function() {
+        $(".number").bind('keyup mouseup', function () {
+          if (/\D/g.test(this.value)){
+                this.value = this.value.replace(/\D/g, '');
+              }      
+                  });
+          });
    function copyAddress(){
 		var addr = document.getElementById('member_address').value;
 		document.getElementById('member_address_now').value = addr;
