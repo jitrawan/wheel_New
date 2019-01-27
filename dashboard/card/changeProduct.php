@@ -64,6 +64,7 @@ $getitem_detail = $getdata->my_sql_query(" ri.*,p.*, d.*, w.*, s.*,ri.ProductID 
 		<div class="input-group col-xs-5">
 		<span class="input-group-addon">123</span>
 		 <input class="form-control right number" type="number"  name="edit_change_Amt" id="edit_change_Amt" style="text-align: right;" value="<?php echo @$getitem_detail->item_amt;?>">
+<input type="hidden" name="get_item_am" id="get_item_am" class="form-control number" value="<? echo @$getitem_detail->item_amt ?>">
 		</div>
  </div>
 
@@ -79,10 +80,24 @@ $getitem_detail = $getdata->my_sql_query(" ri.*,p.*, d.*, w.*, s.*,ri.ProductID 
 <script language="javascript">
 $( document ).ready(function() {
 
+
 $(".number").bind('keyup mouseup', function () {
-								if($(this).val() < 0) {
-									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
-									$(this).val(0);
-								}       
+	var amt = $("#get_item_am").val();
+	if($(this).attr('name') == 'edit_change_Amt'){
+		if($(this).val() < 0){
+			alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
+			$(this).val(0);
+		}else if($(this).val() > amt){
+			alert("จำนวนสินค้าที่กรอกเกินจำนวนสินค้าที่ซื้อ ! ");
+			$(this).val(amt);
+		}
+}else{
+	if($(this).val() < 0) {
+		alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
+		$(this).val(0);
+	}
+}
+
 						});
-</script>						
+							});
+</script>

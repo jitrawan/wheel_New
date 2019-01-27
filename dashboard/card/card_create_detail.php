@@ -281,19 +281,19 @@ $(".number").bind('keyup mouseup', function () {
 			var amt = $("#get_item_am").val();
 			if($(this).attr('name') == 'item_amt'){
 				if($(this).val() < 0){
-					alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+					alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 					$(this).val(0);
-				}else if($(this).val() > 2){
-					alert("จำนวนสินค้าที่กรอกเกินจำนวนสินค้าที่ซื้อ ! "); 
+				}else if($(this).val() > amt){
+					alert("จำนวนสินค้าที่กรอกเกินจำนวนสินค้าที่ซื้อ ! ");
 					$(this).val(amt);
 				}
 		}else{
 			if($(this).val() < 0) {
-				alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+				alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 				$(this).val(0);
 			}
 		}
-	
+
 
 						});
 

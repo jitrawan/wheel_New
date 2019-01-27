@@ -41,22 +41,34 @@ th {
    color: black;
    text-align: right;
 }
-</style>
+</style>';
 
-<h2 style="text-align:center">รายงานสินค้า</h2>
-<p style="text-align:center"><b>รายงาน ณ วันที่ '.date("d/m/Y").' </b></p>
-<p style="text-align:center"><b>จัดกลุ่มตาม ประเภท , มือ </b></p>';
 $str_sql = "";
-if(isset($_GET['key'])){
+$getGroup = "";
+$getdateclaim = "";
+if(isset($_GET['Group'])){
+	if(addslashes($_GET['Group']) == '1'){
+		$getGroup = 'ประเภท';
+	}else if(addslashes($_GET['Group']) == '2'){
+			$getGroup = 'สถานะ';
+	}else{
+			$getGroup = 'รหัสสินค้า';
+	}
+
   if(addslashes($_GET['key']) != 0){
     $str_sql  .= " And TypeID = '".$_GET['key']."' ";
-    if($_GET['key'] == '1'){$gettype = 'ล้อแม๊ก';}else{$_GET['key'] = 'ยาง';}
-    $head .= '<p style="text-align:center"><b>ประเภทสินค้า : '.@$gettype.' </b></p>';
-  }else{
-    $head .= '<p style="text-align:center"><b>ประเภทสินค้า : ทั้งหมด </b></p>';
   }
 
 }
+
+$head .= '<h2 style="text-align:center">รายงานการเคลม</h2>
+<p style="text-align:center"><b>รายงาน ณ วันที่ '.date("d/m/Y").' </b></p>
+<p style="text-align:center"><b>จัดกลุ่มตาม '.$getGroup.' </b></p>';
+
+if(isset($_GET['datefrom'])){
+	$head .= '<p style="text-align:center"><b>วันที่เคลม ระหว่าง '.$_GET['datefrom'].'  ถึง '.$_GET['dateto'].' </b></p>';
+}
+
 $head .= '<table>
     <tr>
         <th width="12%">รหัสสินค้า</th>
@@ -66,15 +78,26 @@ $head .= '<table>
         <th width="10%">คงเหลือ</th>
     </tr>
 </thead>';
-
-$GroupType = $getdata->my_sql_select(" TypeID,hand "," product_N "," ProductStatus = '1' $str_sql Group by TypeID,hand Order by TypeID,hand ");
+$head .= '<tr style="font-weight:bold; color:#FFF; background:#777777;">
+							<td colspan="5">&nbsp;&nbsp;<b>เคลมสินค้า</b></td>
+					</tr>';
+if(addslashes($_GET['Group']) == '2'){
+$getGroup = $getdata->my_sql_select(" ctype_key,ctype_name ","card_type","ctype_status='1' Group by ctype_key,ctype_name ORDER BY ctype_name ");
+}else{
+$getGroup = $getdata->my_sql_select(" ProductID "," product_n "," ProductStatus = '1' Group by ProductID ");
+}
 $content = "";
-if (mysql_num_rows($GroupType) > 0) {
-        while($row = mysql_fetch_object($GroupType)) {
+if (mysql_num_rows($getGroup) > 0) {
+			$getStrGroup = '';
+        while($row = mysql_fetch_object($getGroup)) {
           $gettype = "";
-          if(@$row->TypeID == '1'){$gettype = 'ล้อแม๊ก';}else{$gettype = 'ยาง';}
+					if(addslashes($_GET['Group']) == '2'){
+						$getStrGroup = $row->ctype_name;
+					}else{
+						$getStrGroup = $row->ProductID;
+					}
             $content .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-                          <td colspan="5">&nbsp;&nbsp;ประเภท : '.@$gettype.' &nbsp;&nbsp;,มือ : '.@$row->hand.'</td>
+                          <td colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;'.@$getStrGroup.'</td>
                       </tr>';
             $DetailProduct = $getdata->my_sql_select(" p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
             ,(select b.BrandName from brand b where r.brand = b.BrandID) as BrandName "
@@ -103,14 +126,40 @@ if (mysql_num_rows($GroupType) > 0) {
         }
     }
     $content .='<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-    <td colspan="5" style=" height: 15px;"></td>
-    </tr>';
+    <th colspan="5" style=" height: 15px;"></th>
+    </tr>
+		</table>
+		<br>';
 
+		$head2 = '<table>
+			    <tr>
+			        <th width="12%">รหัสสินค้า</th>
+			        <th width="40%">รายละเอียด</th>
+			        <th width="10%" >ราคาซื้อ</th>
+			        <th width="10%">ราคาขาย</th>
+			        <th width="10%">คงเหลือ</th>
+			    </tr>
+			</thead>';
+			$head2 .= '<tr style="font-weight:bold; color:#FFF; background:#777777;">
+										<td colspan="5">&nbsp;&nbsp;<b>เปลี่ยนสินค้า</b></td>
+								</tr>';
+		 if(addslashes($_GET['Group']) == '3'){
+			 if (mysql_num_rows($getGroup) > 0) {
+						 $getStrGroup = '';
+							 while($row = mysql_fetch_object($getGroup)) {
+								 $content2 = '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
+															 <td colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;'.@$row->ProductID.'</td>
+													 </tr>';
+							 }
+		 			 }
+		 }
 
-$content .= '<tbody>';
+			$content2 .='<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
+	    <th colspan="5" style=" height: 15px;"></th>
+	    </tr>
+			</table>';
 
-$end = '</tbody>
-</table>
+$end = '
 <div class="footer">
  <p style="margin-right: 10px; color: #bbb7b7;">@รายงานร้านยางไว้ใจผม</p>
 </div>';
@@ -119,6 +168,9 @@ $end = '</tbody>
 
 $mpdf->WriteHTML($head);
 $mpdf->WriteHTML($content);
+$mpdf->WriteHTML($head2);
+$mpdf->WriteHTML($content2);
+
 $mpdf->WriteHTML($end);
 
 $mpdf->Output();
