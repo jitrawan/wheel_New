@@ -18,10 +18,9 @@
   <li class="active">รายงาน</li>
 </ol>
 <a href="?p=reportProduct" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานสินค้าทั้งหมด</a></br></br>
-<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#model_product"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานรับสินค้าเข้า</button></br></br>
-<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#model_product"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการขาย</button></br></br>
-<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#model_product"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานสินค้าคงเหลือ</button></br></br>
-<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#model_product"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการเคลม</button>
+<a href="?p=reportPR" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานรับสินค้าเข้า</a></br></br>
+<a href="?p=reportSale" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการขาย</a></br></br>
+<a href="?p=reportClaim" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการเคลม</a>
 
 <script language="javascript">
 $( document ).ready(function() {

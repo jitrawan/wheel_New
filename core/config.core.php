@@ -1,4 +1,4 @@
-<?php 
+<?php
 // MySQL hostname
 define('DB_HOST', 'localhost');
 
@@ -9,5 +9,5 @@ define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '12345678');
 
 // MySQL database name
-define('DB_NAME', 'wheel'); 
+define('DB_NAME', 'wheel');
 ?>

@@ -8,23 +8,13 @@
 <li><a href="?p=report">รายงาน</a></li>
  <li class="active">รายงานสินค้า</li>
 </ol>
-<?php
-
-if(isset($_POST['save_new_status'])){
-	$getdata->my_sql_update("card_info","card_status='".htmlentities($_POST['card_status'])."'","card_key='".htmlentities($_POST['card_key'])."'");
-	$cstatus_key=md5(htmlentities($_POST['card_status']).time("now"));
-	$getdata->my_sql_insert("card_status","cstatus_key='".$cstatus_key."',card_key='".htmlentities($_POST['card_key'])."',card_status='".htmlentities($_POST['card_status'])."',card_status_note='".htmlentities($_POST['card_status_note'])."',user_key='".$userdata->user_key."'");
-	$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>บันทึกข้อมูลสถานะ สำเร็จ</div>';
-}
-?>
-
 
    <?php
    echo @$alert;?>
 
 
 <nav class="navbar navbar-default" role="navigation">
- 
+
   <div id="searchOther" name="searchOther">
  <form method="post" enctype="multipart/form-data" name="frmSearch" id="frmSearch">
    <div style="margin: 10px;">
@@ -32,7 +22,7 @@ if(isset($_POST['save_new_status'])){
               <div class="col-md-3">
                 <label ><b>Group By :    </b></label>
                 <input type="radio" id="" name="" value="" checked>
-                <label for="wheel">ประเภทประสินค้า</label>
+                <label for="wheel">ประเภทสินค้า</label>
               </div>
           </div>
 
@@ -53,7 +43,7 @@ if(isset($_POST['save_new_status'])){
         </div>
     </div>
      <div style="text-align: center;margin-bottom: 10px;">
-          <button type="submit" name="search_product" id="search_product" class="btn btn-default"><i class="fa fa-search"></i> ค้นหา</button>
+          <button type="submit" name="search_product" id="search_product" class="btn btn-default"><i class="fa fa-print"></i> Print Previwe</button>
      </div>
 
    </div>
@@ -63,83 +53,12 @@ if(isset($_POST['save_new_status'])){
 </nav>
  <div class="table-responsive">
 
-  <?php
-
-$str_sql = "";
-if(isset($_POST['search_product'])){
- if(addslashes($_POST['search_type']) != 0){
-    $str_sql  .= " And TypeID = '".$_POST['search_type']."' ";
-  }
-?>
-<table width="100%" border="0" class="table table-bordered">
-  <thead>
-      <tr style="font-weight:bold; color:#FFF; text-align:center; background:#ff7709;">
-                      <td width="12%">รหัสสินค้า</td>
-                      <td width="40%">รายละเอียด</td>
-                      <td width="10%">ราคาซื้อ</td>
-                      <td width="10%">ราคาขาย</td>
-                      <td width="10%">คงเหลือ</td>
-                </tr>
-  </thead>
-      <?
-        $GroupType = $getdata->my_sql_select(" TypeID,hand "," product_N "," ProductStatus = '1' $str_sql Group by TypeID,hand Order by TypeID,hand ");
-        while($showGroupType = mysql_fetch_object($GroupType)){
-       ?>
-        
-          <tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-                <td colspan="5">&nbsp;&nbsp;Group By : <? if(@$showGroupType->TypeID == '1'){echo 'ล้อแม๊ก';}else{echo 'ยาง';} ?>&nbsp;&nbsp;, มือ <? echo @$showGroupType->hand ?></td>
-          </tr>
-                
-        
-         <tbody>
-                <?
-                
-                $DetailProduct = $getdata->my_sql_select(" p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter 
-                ,(select b.BrandName from brand b where r.brand = b.BrandID) as BrandName "
-                ," product_N p
-                left join productDetailWheel w on p.ProductID = w.ProductID
-                left join productdetailrubber r on p.ProductID = r.ProductID "
-                ," p.ProductStatus = '1' and p.TypeID = '".$showGroupType->TypeID."' and p.hand = '".$showGroupType->hand."' ");
-               
-                if(mysql_num_rows($DetailProduct) > 0){
-                      while($showDetailProduct = mysql_fetch_object($DetailProduct)){
-                        if($showDetailProduct->TypeID == '1'){
-                          $gettype = " ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
-                        }else if($showDetailProduct->TypeID == '2'){
-                          $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterRubber." ขอบ:".$showDetailProduct->rubdiameter." ซี่รี่:".$showDetailProduct->series." ความกว้าง:".$showDetailProduct->width;
-                        }else{
-                          $gettype = "";
-                        }
-                        ?>
-                        <tr>
-                          <td align="center"><strong><?php echo @$showDetailProduct->ProductID;?></strong></td>
-                          <td ><strong><?php echo @$gettype ;?></strong></td>
-                          <td valign="middle" style=" text-align: right;"><strong><?php echo @convertPoint2($showDetailProduct->PriceBuy,'2')?>&nbsp;-.</strong></td>
-                          <td valign="middle" style=" text-align: right;"><strong><?php echo @convertPoint2($showDetailProduct->PriceSale,'2');?>&nbsp;-.</strong></td>
-                          <td align="center" valign="middle"><strong><?php echo @convertPoint2($showDetailProduct->Quantity,'0');?>&nbsp; ชิ้น</strong></td>
-                        </tr>
-
-                    <?
-                  }
-                  ?>
-                <tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-                <td colspan="5"></td>
-                </tr>
-                  <?
-                }else{?>
-                    <tr style="font-weight:bold; color:#FFF; text-align:center; background:#919191;">
-                        <td colspan="5">ไม่พบข้อมูล !</td>
-                    </tr>
-              <? } ?>
-     </tbody>
-    
-     <? } ?>
-     </table>
-     <? 
-    } ?>
 </div>
 <script language="javascript">
 
+$("#search_product").click(function(){
+    window.open("../dashboard/report/printReportProduct.php?key=<?echo $_POST['search_type'] ?>", '_blank');
+});
 $(document).ready(function(){
   var getradio = '<?echo $_POST['search_type'] ?>'
    var $radios = $('input:radio[name=search_type]');

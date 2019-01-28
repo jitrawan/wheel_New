@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 26, 2019 at 05:57 AM
--- Server version: 5.7.17-log
--- PHP Version: 5.6.30
+-- Generation Time: Jan 27, 2019 at 06:24 PM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 5.6.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -41,7 +43,7 @@ CREATE TABLE `autonumber` (
 --
 
 INSERT INTO `autonumber` (`item_number`, `finance_number`, `quotation_number`, `invoice_number`, `year`, `month`, `day`) VALUES
-(0005, 0001, 0001, 0001, 2019, 01, 22);
+(0005, 0001, 0001, 0001, 2019, 01, 27);
 
 -- --------------------------------------------------------
 
@@ -172,7 +174,10 @@ INSERT INTO `card_info` (`card_key`, `card_code`, `card_customer_name`, `card_cu
 ('4c95fc26ea495e95c30b6cd26b611c5a', 'CQ7E11O7', 'fddd', 'hhhh', '', '0915556685', '', '', '0000-00-00', '', '', '2019-01-22 06:36:17'),
 ('f3904411c127a366c04c1b1b6dc2b818', 'CGRCRB0S', 'กกก', 'สสสสสส', '', '855855224', '', '', '0000-00-00', '', '', '2019-01-22 06:50:58'),
 ('e5b284a99fd206f05edff77d1fcf620c', 'C8PL35A4', 'ดกดกหดกหด', 'ยยยย', '', '52505554426', '', '', '0000-00-00', '', '', '2019-01-22 06:53:55'),
-('81635c4752139e96ae81489411691587', 'CNENRU2S', 'กดหดหกด', 'ดเดกเกดเ', '', '02250252552', '', '', '0000-00-00', '', '', '2019-01-22 06:56:06');
+('81635c4752139e96ae81489411691587', 'CNENRU2S', 'กดหดหกด', 'ดเดกเกดเ', '', '02250252552', '', '', '0000-00-00', '', '', '2019-01-22 06:56:06'),
+('f3877dde3d9b0ea28310f8b867c615e0', 'CVIZYYLQ', 'ddd', 'eee', '', '0917099645', '', '', '0000-00-00', '', '', '2019-01-27 06:53:36'),
+('e196e2f0abb1edc7c0a9cded4b306604', 'COCXQUWM', 'ggg', 'iiii', '', '09090909009', '', '', '0000-00-00', '', '', '2019-01-27 06:56:24'),
+('8d858f553a01c0766a1a41c1d73a6857', 'CA7ZIFI4', 'ddd', 'ggg', '', '09188945', '', '', '0000-00-00', '', '', '2019-01-27 07:02:40');
 
 -- --------------------------------------------------------
 
@@ -435,7 +440,10 @@ INSERT INTO `list` (`cases`, `menu`, `pages`, `case_status`) VALUES
 ('list_receivestock', 'card', 'settings/list_receivestock.php', 1),
 ('view_receiveaddstock', 'card', 'settings/view_receiveaddstock.php', 1),
 ('listsaleProduct', 'settings', 'settings/listsaleProduct.php', 1),
-('reportProduct', '', 'report/reportProduct.php', 1);
+('reportProduct', '', 'report/reportProduct.php', 1),
+('reportPR', '', 'report/reportPR.php', 1),
+('reportSale', '', 'report/reportSale.php', 1),
+('reportClaim', '', 'report/reportClaim.php', 1);
 
 -- --------------------------------------------------------
 
@@ -632,7 +640,10 @@ INSERT INTO `logs` (`log_key`, `log_date`, `log_ipaddress`, `log_text`, `log_use
 ('4fd2cb5da48ee676', '2019-01-22 10:18:48', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
 ('d40efb72b8d373d9', '2019-01-24 03:44:54', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
 ('24e312c26e47463d', '2019-01-25 05:03:11', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
-('b826d7350653ae8d', '2019-01-25 10:06:59', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15');
+('b826d7350653ae8d', '2019-01-25 10:06:59', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
+('f91dfbc4093c3596', '2019-01-26 06:23:06', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
+('a83fbf3daa983c25', '2019-01-26 07:14:38', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
+('8e23af9ea69917ac', '2019-01-26 11:32:49', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15');
 
 -- --------------------------------------------------------
 
@@ -807,13 +818,13 @@ CREATE TABLE `product_n` (
 --
 
 INSERT INTO `product_n` (`ProductID`, `shelf_id`, `dealer_code`, `Quantity`, `PriceSale`, `PriceBuy`, `ProductStatus`, `Warranty`, `hand`, `TypeID`, `discount`) VALUES
-('P0001', 1, 'D0007', 27, 35000, 20000, '1', '30', 2, 1, 5),
-('P0002', 1, 'D0001', 13, 12000, 10000, '1', '30', 2, 2, 10),
-('P0003', 2, 'D0001', 147, 10000, 10000, '1', '30', 2, 2, 5),
-('P0004', 2, 'D0002', 18, 20000, 15000, '1', '30', 1, 2, 2),
-('P0005', 1, 'D0003', 50, 5000, 5600, '1', '', 1, 1, 0),
-('P0006', 1, 'D0005', 15, 2500, 2000, '1', '', 1, 2, 2),
-('P0007', 1, 'D0006', 55, 6500, 5000, '1', '', 1, 1, 5);
+('P0001', 1, 'D0007', 26, 35000, 20000, '1', '30', 2, 1, 5),
+('P0002', 1, 'D0001', 19, 12000, 10000, '1', '30', 2, 2, 10),
+('P0003', 2, 'D0001', 152, 10000, 10000, '1', '30', 2, 2, 5),
+('P0004', 2, 'D0002', 19, 20000, 15000, '1', '30', 1, 2, 2),
+('P0005', 1, 'D0003', 57, 5000, 5600, '1', '', 1, 1, 0),
+('P0006', 1, 'D0005', 31, 2500, 2000, '1', '', 1, 2, 2),
+('P0007', 1, 'D0006', 62, 6500, 5000, '1', '', 1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -904,9 +915,10 @@ INSERT INTO `reserve_info` (`reserve_key`, `reserve_code`, `empolyee`, `reserve_
 ('4d53266c9ced72da0739503f8bda47c0', 'C9UIHSGS', 'd97530f6437e7ffa3a74afe46a953a15', 0, 0, 'P', '2019-01-22 14:34:59', ''),
 ('615f80e5cd95876e5863c6febb244277', 'C3G9MBB', 'd97530f6437e7ffa3a74afe46a953a15', 756, 10800, 'S', '2019-01-22 09:57:50', ''),
 ('79344d4499dafc3296379802db3b0a9e', 'C884PC2', 'd97530f6437e7ffa3a74afe46a953a15', 3780, 54000, 'S', '2019-01-22 09:58:42', ''),
+('aa8458ed630f7ca2ab5e8f0b5938a05d', 'CB64RMRQ', 'd97530f6437e7ffa3a74afe46a953a15', 13276, 189650, 'S', '2019-01-26 22:12:56', ''),
 ('c05dcc3b2fffb4f1ff32d777cf0f69f4', 'CQ55HBMW', 'd97530f6437e7ffa3a74afe46a953a15', 2744, 39200, 'S', '2019-01-22 10:06:28', ''),
 ('de060f4a839857f0a8d8191b20ba5fef', 'C8F1XII3', 'd97530f6437e7ffa3a74afe46a953a15', 2328, 33250, 'S', '2019-01-22 11:56:51', ''),
-('fce61b90669432be4ad22aeced88b37e', 'CKONK0X4', 'd97530f6437e7ffa3a74afe46a953a15', 0, 0, 'N', '2019-01-22 17:01:07', '');
+('fa04eaf5f49be6bdbb43088ac2e50d02', 'C31YQZTT', 'd97530f6437e7ffa3a74afe46a953a15', 0, 0, 'N', '2019-01-27 14:08:00', '');
 
 -- --------------------------------------------------------
 
@@ -930,9 +942,13 @@ CREATE TABLE `reserve_item` (
 --
 
 INSERT INTO `reserve_item` (`item_key`, `reserve_key`, `ProductID`, `item_discount`, `item_price`, `item_total`, `item_amt`, `create_Date`) VALUES
+('18fe815d13f1eafb2d0bca727944cc55', 'aa8458ed630f7ca2ab5e8f0b5938a05d', 'P0004', 400, 20000, 58800, 3, '2019-01-26'),
+('2ffc4abab438914f5d9871afd704a2c6', 'aa8458ed630f7ca2ab5e8f0b5938a05d', 'P0003', 500, 10000, 9500, 1, '2019-01-26'),
 ('39f521c11aac1e75b1b46d91faab54c9', '16c53ed54b87ae4709488fa65e9699d2', 'P0002', 1200, 12000, 21600, 2, '2019-01-18'),
 ('3fc270ba4c1aca10fd13a083a70dddc6', '615f80e5cd95876e5863c6febb244277', 'P0002', 1200, 12000, 10800, 1, '2019-01-22'),
 ('40fe0ff65d5a6f85c5a8aa5e591a6f22', '2ff6276734edaa8a9cc03ae5fa36189d', 'P0001', 1750, 35000, 66500, 2, '2019-01-22'),
+('6adb2570d79a1d85a2e79c986cbda436', 'aa8458ed630f7ca2ab5e8f0b5938a05d', 'P0001', 1750, 35000, 99750, 3, '2019-01-26'),
+('75caacf9dc49ed2a25c57ce03c508435', 'aa8458ed630f7ca2ab5e8f0b5938a05d', 'P0002', 1200, 12000, 21600, 2, '2019-01-26'),
 ('95128d6eb11e53ac684f1e19ea186fa1', '79344d4499dafc3296379802db3b0a9e', 'P0002', 1200, 12000, 54000, 5, '2019-01-22'),
 ('a1ff1faf3792862216c0b32c96b55aed', '356106a76ab2d5dd0fcf7c46c330517d', 'P0001', 1750, 35000, 33250, 1, '2019-01-22'),
 ('a7c1a90044e0f525186f1c8a53f687c4', 'de060f4a839857f0a8d8191b20ba5fef', 'P0001', 1750, 35000, 33250, 1, '2019-01-22'),
@@ -1025,7 +1041,19 @@ INSERT INTO `stock_tb_receive_master_sub` (`no`, `po`, `ProductID`, `total`) VAL
 (34, 'C7RTZ3XQ', 'P0001', 5),
 (33, 'CE6ROJC', 'P0002', 4),
 (39, 'C8B3EO46', 'P0002', 10),
-(40, 'C8B3EO46', 'P0001', 20);
+(40, 'C8B3EO46', 'P0001', 20),
+(41, 'P007', 'P0005', 2),
+(42, 'P007', 'P0006', 10),
+(43, 'P004', 'P0001', 2),
+(44, 'P004', 'P0002', 2),
+(45, 'P004', 'P0003', 2),
+(46, 'CRF3AFN', 'P0002', 2),
+(47, 'CRF3AFN', 'P0003', 4),
+(48, 'CRF3AFN', 'P0004', 4),
+(49, 'CLRB9T1', 'P0005', 5),
+(50, 'CLRB9T1', 'P0006', 6),
+(51, 'CLRB9T1', 'P0007', 7),
+(52, 'CLRB9T1', 'P0002', 4);
 
 -- --------------------------------------------------------
 
@@ -1338,46 +1366,56 @@ ALTER TABLE `viewtables`
 --
 ALTER TABLE `brand`
   MODIFY `BrandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
 --
 -- AUTO_INCREMENT for table `dealer`
 --
 ALTER TABLE `dealer`
   MODIFY `dealer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
 --
 -- AUTO_INCREMENT for table `productdetailrubber`
 --
 ALTER TABLE `productdetailrubber`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
 --
 -- AUTO_INCREMENT for table `productdetailwheel`
 --
 ALTER TABLE `productdetailwheel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `reserve_detail`
 --
 ALTER TABLE `reserve_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `shelf`
 --
 ALTER TABLE `shelf`
   MODIFY `shelf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `stock_tb_receive_master`
 --
 ALTER TABLE `stock_tb_receive_master`
   MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- AUTO_INCREMENT for table `stock_tb_receive_master_sub`
 --
 ALTER TABLE `stock_tb_receive_master_sub`
-  MODIFY `no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
 --
 -- AUTO_INCREMENT for table `viewtables`
 --
 ALTER TABLE `viewtables`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
