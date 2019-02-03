@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2019 at 06:24 PM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 5.6.38
+-- Generation Time: Feb 03, 2019 at 07:46 AM
+-- Server version: 5.7.17-log
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -308,13 +306,7 @@ CREATE TABLE `changeproduct` (
 --
 
 INSERT INTO `changeproduct` (`change_key`, `ProductID`, `reserve_key`, `change_Amt`, `remark`, `createDate`, `createBy`) VALUES
-('ff17bfc4aab2ccb1749ccc66c9485753', 'P0002', '5eef8cccd98683ba0fcbed56882bc750', 1, 'test change product.', '2019-01-02', 'pat'),
-('5e1f6deb0756562e90b20ca8f34e9b27', 'P0002', '5eef8cccd98683ba0fcbed56882bc750', 1, 'test change product.', '2019-01-02', 'pat'),
-('82ef1b0e8689053802aa0c71e67e0397', 'P0004', '5eef8cccd98683ba0fcbed56882bc750', 2, 'test change product.', '2019-01-02', 'pat'),
-('6ccfe365280832e34dc4d2bbad17bdef', 'P0004', '5eef8cccd98683ba0fcbed56882bc750', 2, 'test change product.', '2019-01-02', 'pat'),
-('1856d3f3396a0647f08a1e266df1bbf6', 'P0004', '5eef8cccd98683ba0fcbed56882bc750', 2, 'test change product.', '2019-01-02', 'pat'),
-('74246317a09e0b0bbc4ab13f930f9830', 'P0004', '5eef8cccd98683ba0fcbed56882bc750', 1, 'test change product.', '2019-01-02', 'pat'),
-('4da03a01a647e33f71f2540fcdb4d2cf', 'P0001', 'cff400f26e166cea0a1220fbdd26e9cb', 1, 'แตก', '2019-01-18', 'pat');
+('d9e1889bbc6bba0f18f32b9a9e714f7f', 'P0004', 'aa8458ed630f7ca2ab5e8f0b5938a05d', 1, 'test change', '2019-01-30', 'pat');
 
 -- --------------------------------------------------------
 
@@ -643,7 +635,9 @@ INSERT INTO `logs` (`log_key`, `log_date`, `log_ipaddress`, `log_text`, `log_use
 ('b826d7350653ae8d', '2019-01-25 10:06:59', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
 ('f91dfbc4093c3596', '2019-01-26 06:23:06', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
 ('a83fbf3daa983c25', '2019-01-26 07:14:38', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
-('8e23af9ea69917ac', '2019-01-26 11:32:49', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15');
+('8e23af9ea69917ac', '2019-01-26 11:32:49', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
+('de88fbfc8b483fff', '2019-01-30 08:14:00', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15'),
+('da3c56214d53cde2', '2019-01-31 03:49:36', '::1', 'pat เข้าสู่ระบบ.', 'd97530f6437e7ffa3a74afe46a953a15');
 
 -- --------------------------------------------------------
 
@@ -821,7 +815,7 @@ INSERT INTO `product_n` (`ProductID`, `shelf_id`, `dealer_code`, `Quantity`, `Pr
 ('P0001', 1, 'D0007', 26, 35000, 20000, '1', '30', 2, 1, 5),
 ('P0002', 1, 'D0001', 19, 12000, 10000, '1', '30', 2, 2, 10),
 ('P0003', 2, 'D0001', 152, 10000, 10000, '1', '30', 2, 2, 5),
-('P0004', 2, 'D0002', 19, 20000, 15000, '1', '30', 1, 2, 2),
+('P0004', 2, 'D0002', 18, 20000, 15000, '1', '30', 1, 2, 2),
 ('P0005', 1, 'D0003', 57, 5000, 5600, '1', '', 1, 1, 0),
 ('P0006', 1, 'D0005', 31, 2500, 2000, '1', '', 1, 2, 2),
 ('P0007', 1, 'D0006', 62, 6500, 5000, '1', '', 1, 1, 5);
@@ -1366,56 +1360,46 @@ ALTER TABLE `viewtables`
 --
 ALTER TABLE `brand`
   MODIFY `BrandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `dealer`
 --
 ALTER TABLE `dealer`
   MODIFY `dealer_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
 --
 -- AUTO_INCREMENT for table `productdetailrubber`
 --
 ALTER TABLE `productdetailrubber`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
 --
 -- AUTO_INCREMENT for table `productdetailwheel`
 --
 ALTER TABLE `productdetailwheel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
 --
 -- AUTO_INCREMENT for table `reserve_detail`
 --
 ALTER TABLE `reserve_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `shelf`
 --
 ALTER TABLE `shelf`
   MODIFY `shelf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `stock_tb_receive_master`
 --
 ALTER TABLE `stock_tb_receive_master`
   MODIFY `rid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
 --
 -- AUTO_INCREMENT for table `stock_tb_receive_master_sub`
 --
 ALTER TABLE `stock_tb_receive_master_sub`
   MODIFY `no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
 --
 -- AUTO_INCREMENT for table `viewtables`
 --
 ALTER TABLE `viewtables`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

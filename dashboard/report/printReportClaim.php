@@ -69,91 +69,61 @@ if(isset($_GET['datefrom'])){
 	$head .= '<p style="text-align:center"><b>วันที่เคลม ระหว่าง '.$_GET['datefrom'].'  ถึง '.$_GET['dateto'].' </b></p>';
 }
 
-$head .= '<table>
-    <tr>
-        <th width="12%">รหัสสินค้า</th>
-        <th width="40%">รายละเอียด</th>
-        <th width="10%" >ราคาซื้อ</th>
-        <th width="10%">ราคาขาย</th>
-        <th width="10%">คงเหลือ</th>
-    </tr>
-</thead>';
+$head .= '<table>';
+
 $head .= '<tr style="font-weight:bold; color:#FFF; background:#777777;">
-							<td colspan="5">&nbsp;&nbsp;<b>เคลมสินค้า</b></td>
-					</tr>';
-if(addslashes($_GET['Group']) == '2'){
-$getGroup = $getdata->my_sql_select(" ctype_key,ctype_name ","card_type","ctype_status='1' Group by ctype_key,ctype_name ORDER BY ctype_name ");
-}else{
-$getGroup = $getdata->my_sql_select(" ProductID "," product_n "," ProductStatus = '1' Group by ProductID ");
-}
+										<td colspan="5">&nbsp;&nbsp;<b>เคลมสินค้า</b></td>
+								</tr>
+
+           <tr>
+                <th width="12%">รหัสสินค้า</th>
+                <th width="40%">รายละเอียด</th>
+                <th width="10%" >สาเหตุ</th>
+                <th width="10%">จำนวน</th>
+                <th width="10%">ExperDate</th>
+                <th width="10%">วันที่เคลม</th>
+            </tr>
+</thead>';
+
+$
 $content = "";
-if (mysql_num_rows($getGroup) > 0) {
-			$getStrGroup = '';
-        while($row = mysql_fetch_object($getGroup)) {
-          $gettype = "";
-					if(addslashes($_GET['Group']) == '2'){
-						$getStrGroup = $row->ctype_name;
-					}else{
-						$getStrGroup = $row->ProductID;
-					}
-            $content .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-                          <td colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;'.@$getStrGroup.'</td>
-                      </tr>';
-            $DetailProduct = $getdata->my_sql_select(" p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
-            ,(select b.BrandName from brand b where r.brand = b.BrandID) as BrandName "
-            ," product_N p
-            left join productDetailWheel w on p.ProductID = w.ProductID
-            left join productdetailrubber r on p.ProductID = r.ProductID "
-            ," p.ProductStatus = '1' and p.TypeID = '".$row->TypeID."' and p.hand = '".$row->hand."' ");
-            if(mysql_num_rows($DetailProduct) > 0){
-                while($showDetailProduct = mysql_fetch_object($DetailProduct)){
-                    if($showDetailProduct->TypeID == '1'){
-                      $gettype = " ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
-                    }else if($showDetailProduct->TypeID == '2'){
-                      $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterRubber." ขอบ:".$showDetailProduct->rubdiameter." ซี่รี่:".$showDetailProduct->series." ความกว้าง:".$showDetailProduct->width;
-                    }else{
-                      $gettype = "";
-                    }
-                $content .='<tr>
-                  <td align="center"><strong>'.@$showDetailProduct->ProductID.'</strong></td>
-                  <td><strong>'.@$gettype.'</strong></td>
-                  <td valign="middle" style=" text-align: right;"><strong>'.@convertPoint2($showDetailProduct->PriceBuy,'2').'&nbsp;-.</strong></td>
-                  <td valign="middle" style=" text-align: right;"><strong>'.@convertPoint2($showDetailProduct->PriceSale,'2').'&nbsp;-.</strong></td>
-                  <td align="center" valign="middle"><strong>'.@convertPoint2($showDetailProduct->Quantity,'0').'&nbsp; ชิ้น</strong></td>
-                </tr>';
-              }
-            }
-        }
-    }
+$getGroup = $getdata->my_sql_select("card_code","card_info"," card_status != '' Group by card_code");
+while($row = mysql_fetch_object($getGroup)){
+$content .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
+<td colspan="5">&nbsp;&nbsp;<b>เลขที่ใบเคลม : '.$row->card_code.' </b></td>
+</tr>';
+}
+
     $content .='<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
     <th colspan="5" style=" height: 15px;"></th>
     </tr>
 		</table>
-		<br>';
+    <br>';
+    
 
-		$head2 = '<table>
-			    <tr>
+    $head2 = '<table>';
+   
+    $head2 .= '<tr style="font-weight:bold; color:#FFF; background:#777777;">
+                <td colspan="5">&nbsp;&nbsp;<b>เปลี่ยนสินค้า</b></td>
+            </tr>
+            <tr>
 			        <th width="12%">รหัสสินค้า</th>
 			        <th width="40%">รายละเอียด</th>
-			        <th width="10%" >ราคาซื้อ</th>
-			        <th width="10%">ราคาขาย</th>
-			        <th width="10%">คงเหลือ</th>
+			        <th width="10%" >สาเหตุ</th>
+			        <th width="10%">จำนวน</th>
+              <th width="10%">ExperDate</th>
+              <th width="10%">วันที่เปลี่ยน</th>
 			    </tr>
-			</thead>';
-			$head2 .= '<tr style="font-weight:bold; color:#FFF; background:#777777;">
-										<td colspan="5">&nbsp;&nbsp;<b>เปลี่ยนสินค้า</b></td>
-								</tr>';
-		 if(addslashes($_GET['Group']) == '3'){
-			 if (mysql_num_rows($getGroup) > 0) {
-						 $getStrGroup = '';
-							 while($row = mysql_fetch_object($getGroup)) {
-								 $content2 = '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
-															 <td colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;'.@$row->ProductID.'</td>
-													 </tr>';
-							 }
-		 			 }
-		 }
-
+      </thead>';
+      $getchangeData  = $getdata->my_sql_select("reserve_key","changeproduct"," reserve_key != '' ");
+      while($rowchange = mysql_fetch_object($getchangeData)){
+      $getreserve_key = $getdata->my_sql_query("reserve_code","reserve_info"," reserve_key = '".$rowchange->reserve_key."' ");
+      
+$content2 .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
+<td colspan="5">&nbsp;&nbsp;<b>เลขที่ใบเสร็จ : '.$getreserve_key->reserve_code.'</b></td>
+</tr>';
+      }
+		
 			$content2 .='<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
 	    <th colspan="5" style=" height: 15px;"></th>
 	    </tr>
@@ -176,9 +146,3 @@ $mpdf->WriteHTML($end);
 $mpdf->Output();
 ?>
 
-/*
-$pdf->SetAutoFont();
-$pdf->SetDisplayMode('fullpage');
-$pdf->WriteHTML($html, 2);
-$pdf->Output("PDF_File/Std-Study$datechk.pdf");
-*/
