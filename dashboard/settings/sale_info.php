@@ -112,7 +112,7 @@ if(isset($_POST['tSave'])){
   $getdicountTotal = ($getproduct_info->PriceSale * $getproduct_info->discount) / 100;
   $getprice = $getproduct_info->PriceSale - $getdicountTotal;
   $gettotal = $getprice * $_POST['product_quantity'];
- 
+
   if($_POST['product_quantity'] <= $getproduct_info->Quantity){
 
     $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
@@ -123,14 +123,14 @@ if(isset($_POST['tSave'])){
     ,item_price='".$getproduct_info->PriceSale."'
     ,item_total='".$gettotal."'
     ,create_Date=NOW() ");
-  
+
     $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['reserve_key']."' ");
     $getreserveCode = $getreserve_info->reserve_code;
- 
+
   }else{
     $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
   }
-  
+
 }else{
 
   $getdata->my_sql_delete("reserve_info","reserve_status = 'N'");
@@ -302,15 +302,16 @@ while($objShow = mysql_fetch_object($getproduct_info)){
          </td>
          <td class="right">บาท</td>
       </tr>
-     <tr>
+     <!--tr>
          <td class="right"><label for="tax_status">ภาษีหัก ณ. ที่จ่าย</label></td>
-         <td><label class="g-input"><span class="g-input"><div class="input-group"><input type="text" class="form-control right number" value="7" name="tax" id="tax" size="5" class="price" readonly><span class="input-group-addon">%</span></div></span></label></td>
-         <td>
-           <label class="g-input"><input class="form-control right number" size="5"  value="<?= convertPoint2($gettotaltax,2)?>" readonly=""></label>
+         <td><label class="g-input"><span class="g-input"><div class="input-group"--><input type="hidden" class="form-control right number" value="7" name="tax" id="tax" size="5" class="price" readonly><!--span class="input-group-addon">%</span></div></span></label></td-->
+         <!--td>
+           <label class="g-input"--><input class="form-control right number" type="hidden" size="5"  value="<?= convertPoint2($gettotaltax,2)?>" readonly="">
+         <!--/label-->
            <input class="form-control" type="hidden" id="reserve_tax" name="reserve_tax" value="<?= $gettotaltax?>">
-         </td>
+         <!--/td>
          <td class="right">บาท</td>
-      </tr>
+      </tr-->
       <tr class="due">
          <td class="right">รวมทั้งสิ้น</td>
          <td colspan="2" >
@@ -347,9 +348,9 @@ $(document).ready(function(){
 
   $(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
-									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 									$(this).val(0);
-								}       
+								}
 						});
 
   var getjson = <?= $getjoson?>;

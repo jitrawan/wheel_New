@@ -17,16 +17,16 @@
   <div id="searchOther" name="searchOther">
  <form method="post" enctype="multipart/form-data" name="frmSearch" id="frmSearch">
    <div style="margin: 10px;">
-
-
-        <div class="form-group row">
-            <div class="col-md-3">
-              <label ><b>ระบุวันที่ :    </b></label>
-              <input type="text" id="datePrfrom" name="datePrfrom" class="form-control dpk" autocomplete="off">
-            </div>
-
-
-        </div>
+      <div class="form-group row">
+          <div class="col-md-3">
+            <label ><b>ระบุวันที่ จาก :    </b></label>
+            <input type="text" id="datePrfrom" name="datePrfrom" class="form-control dpk" autocomplete="off">
+          </div>
+          <div class="col-md-3">
+            <label ><b>ถึง :    </b></label>
+            <input type="text" id="datePrto" name="datePrto" class="form-control dpk" autocomplete="off">
+          </div>
+      </div>
     </div>
      <div style="text-align: center;margin-bottom: 10px;">
           <button type="submit" name="search_product" id="search_product" class="btn btn-default"><i class="fa fa-print"></i> Print Previwe</button>
@@ -58,7 +58,7 @@ $(document).ready(function(){
           alert("กรุณาระบุวันที่ใบเสร็จ ถึง ให้ถูกต้อง!");
           return false;
       }else{
-          window.open("../dashboard/report/printReportSale.php?from=<?echo $_POST['datePrfrom'] ?>", '_blank');
+          window.open("../dashboard/report/printReportSale.php?from=<?echo $_POST['datePrfrom'] ?>&dateto=<?echo $_POST['datePrto'] ?>", '_blank');
       }
 
     });

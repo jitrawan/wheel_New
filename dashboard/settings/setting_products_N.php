@@ -223,18 +223,18 @@ if(isset($_POST['save_edit_item'])){
 
                                         <div class="form-group row">
                                             <div class="col-md-6">
-                                              <label for="PriceSale">ราคาขาย</label>
+                                              <label for="PriceSale">ราคาขาย (บาท)</label>
                                               <input type="number"  name="PriceSale" id="PriceSale" class="form-control number" value="0" style="text-align: right;">
                                             </div>
                                              <div class="col-md-6">
-                                             <label for="PriceBuy">ราคาซื้อ</label>
+                                             <label for="PriceBuy">ราคาซื้อ (บาท)</label>
                                             <input type="number" name="PriceBuy" id="PriceBuy" class="form-control number" value="0" style="text-align: right;">
                                              </div>
                                           </div>
 
                                           <div class="form-group row">
                                             <div class="col-md-6">
-                                              <label for="Quantity">คงเหลือ</label>
+                                              <label for="Quantity">คงเหลือ (ชิ้น)</label>
                                               <input type="number" name="Quantity" id="Quantity" class="form-control number" value="0" style="text-align: right;">
                                             </div>
                                             <div class="col-md-6">
@@ -488,9 +488,9 @@ if(isset($_POST['save_edit_item'])){
 $( document ).ready(function() {
 	$(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
-									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 									$(this).val(0);
-								}       
+								}
 						});
 
   $("#detailrubber").hide();

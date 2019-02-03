@@ -24,10 +24,6 @@
                 <input type="radio" id="G_status" name="G_type" value="2" checked>
                 <label for="wheel">สถานะ</label>
               </div>
-              <div class="col-md-2">
-                <input type="radio" id="G_productId" name="G_type" value="3">
-                <label for="rubber">รหัสสินค้า</label>
-              </div>
 
           </div>
 

@@ -140,18 +140,18 @@ $getitem = mysql_fetch_object($getedit);
 
 	                                         <div class="form-group row">
 	                                             <div class="col-md-6">
-	                                               <label for="edit_PriceSale">ราคาขาย</label>
+	                                               <label for="edit_PriceSale">ราคาขาย (บาท)</label>
 	                                               <input type="number" name="edit_PriceSale" id="edit_PriceSale" class="form-control number" value="<?php echo @$getitem->PriceSale;?>" style="text-align: right;">
 	                                             </div>
 	                                              <div class="col-md-6">
-	                                              <label for="edit_PriceBuy">ราคาซื้อ</label>
+	                                              <label for="edit_PriceBuy">ราคาซื้อ (บาท)</label>
 	                                             <input type="number" name="edit_PriceBuy" id="edit_PriceBuy" class="form-control number" value="<?php echo @$getitem->PriceBuy;?>" style="text-align: right;">
 	                                              </div>
 	                                           </div>
 
 	                                           <div class="form-group row">
 	                                             <div class="col-md-6">
-	                                               <label for="edit_Quantity">คงเหลือ</label>
+	                                               <label for="edit_Quantity">คงเหลือ (ชิ้น)</label>
 	                                               <input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control number" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
 	                                             </div>
 	                                             <div class="col-md-6">
@@ -184,9 +184,9 @@ $getitem = mysql_fetch_object($getedit);
           $( document ).ready(function() {
 						$(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
-									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 									$(this).val(0);
-								}       
+								}
 						});
 
 						if('<?echo @$getitem->TypeID;?>' == '1'){

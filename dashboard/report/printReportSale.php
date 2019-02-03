@@ -52,8 +52,8 @@ th {
 <p style="text-align:center"><b>รายงาน ณ วันที่ '.date("d-m-Y").' </b></p>';
 $str_sql = "";
 if(htmlentities($_GET['from'])){
-		$str_sql  .= "and create_date BETWEEN '".htmlentities($_GET['from'])." 00:00:00' and  '".htmlentities($_GET['from'])." 23:59:59' ";
-    $head .= '<p style="text-align:center"><b>วันที่ขาย : '.$_GET['from'].'</b></p>';
+		$str_sql  .= "and create_date BETWEEN '".htmlentities($_GET['from'])." 00:00:00' and  '".htmlentities($_GET['dateto'])." 23:59:59' ";
+    $head .= '<p style="text-align:center"><b>วันที่ขาย ระหว่าง : '.$_GET['from'].'  ถึง '.$_GET['dateto'].' </b></p>';
 
 }
 $head .= '<table>

@@ -141,7 +141,9 @@ $GroupType = $getdata->my_sql_select(" TypeID,hand "," product_N "," ProductStat
 $content = "";
 
 if (mysql_num_rows($GroupType) > 0) {
-
+	$sumPriceBuy = 0;
+	$sumPriceSale = 0;
+	$sumtotal = 0;
         while($row = mysql_fetch_object($GroupType)) {
 
           $gettype = "";
@@ -166,10 +168,13 @@ if (mysql_num_rows($GroupType) > 0) {
 
             ," p.ProductStatus = '1' and p.TypeID = '".$row->TypeID."' and p.hand = '".$row->hand."' ");
 
+
             if(mysql_num_rows($DetailProduct) > 0){
 
                 while($showDetailProduct = mysql_fetch_object($DetailProduct)){
 
+									$sumPriceBuy = $sumPriceBuy + $showDetailProduct->PriceBuy;
+									$sumPriceSale = $sumPriceSale + $showDetailProduct->PriceSale;
                     if($showDetailProduct->TypeID == '1'){
 
                       $gettype = " ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
@@ -203,14 +208,16 @@ if (mysql_num_rows($GroupType) > 0) {
             }
 
         }
-
+$sumtotal = $sumPriceBuy + $sumPriceSale;
     }
 
-    $content .='<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
 
-    <td colspan="5" style=" height: 15px;"></td>
-
-    </tr>';
+		$content .='<tr style="text-align: right; background:#525050;">
+		<td style="color: white; text-align: right;" colspan="2">รวมจำนวน</td>
+		<td valign="middle" style=" text-align: right; color: white;"><strong>'.@convertPoint2($sumPriceBuy,'2').'</strong></td>
+		<td valign="middle" style=" text-align: right; color: white;"><strong>'.@convertPoint2($sumPriceSale,'2').'</strong></td>
+		<td valign="middle" style=" text-align: right; color: white;"><strong>'.@convertPoint2($sumtotal,'2').'</strong></td>
+		</tr>';
 
 
 
