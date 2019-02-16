@@ -9,9 +9,11 @@
  <li class="active">รายงานเคลมสินค้า</li>
 </ol>
 
-   <?php
-   echo @$alert;?>
-
+<?php
+  if(isset($_POST['search_product'])){
+      echo "<script>window.open(\"../dashboard/report/printReportClaim.php?Group=".addslashes($_POST['G_type'])."&datefrom=".addslashes($_POST['datePrfrom'])."&dateto=".addslashes($_POST['datePrto'])."\",'_blank')</script>";
+  }
+?>
 
 <nav class="navbar navbar-default" role="navigation">
 
@@ -69,10 +71,8 @@ $(document).ready(function(){
               alert("กรุณาระบุวันที่รับสินค้า ถึง ให้ถูกต้อง!");
               return false;
             }else{
-              window.open("../dashboard/report/printReportClaim.php?Group=<?echo $_POST['G_type'] ?>&datefrom=<?echo $_POST['datePrfrom'] ?>&dateto=<?echo $_POST['datePrto'] ?>", '_blank');
+              return true;
             }
-      }else{
-          window.open("../dashboard/report/printReportClaim.php?Group=<?echo $_POST['G_type'] ?>", '_blank');
       }
 
 

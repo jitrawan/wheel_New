@@ -8,8 +8,12 @@
 <li><a href="?p=report">รายงาน</a></li>
  <li class="active">รายงานรับสินค้าเข้า</li>
 </ol>
-<?php
-   echo @$alert;?>
+
+   <?php
+     if(isset($_POST['search_product'])){
+        echo "<script>window.open(\"../dashboard/report/printReportPR.php?from=".addslashes($_POST['datePrfrom'])."&to=".addslashes($_POST['datePrto'])."\",'_blank')</script>";
+     }
+   ?>
 
 
 <nav class="navbar navbar-default" role="navigation">
@@ -64,7 +68,7 @@ $(document).ready(function(){
           alert("กรุณาระบุวันที่รับสินค้า ถึง ให้ถูกต้อง!");
           return false;
       }else{
-          window.open("../dashboard/report/printReportPR.php?from=<?echo $_POST['datePrfrom'] ?>&to=<?echo $_POST['datePrto'] ?>", '_blank');
+        return true;
       }
 
     });

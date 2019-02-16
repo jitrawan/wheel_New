@@ -208,7 +208,7 @@ if (mysql_num_rows($GroupType) > 0) {
             }
 
         }
-$sumtotal = $sumPriceBuy + $sumPriceSale;
+$sumtotal = $sumPriceSale - $sumPriceBuy;
     }
 
 

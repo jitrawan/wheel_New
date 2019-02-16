@@ -8,10 +8,12 @@
 <li><a href="?p=report">รายงาน</a></li>
  <li class="active">รายงานการขาย</li>
 </ol>
-<?php
-   echo @$alert;?>
 
-
+   <?php
+     if(isset($_POST['search_product'])){
+         echo "<script>window.open(\"../dashboard/report/printReportSale.php?from=".addslashes($_POST['datePrfrom'])."&dateto=".addslashes($_POST['datePrto'])."\",'_blank')</script>";
+     }
+   ?>
 <nav class="navbar navbar-default" role="navigation">
 
   <div id="searchOther" name="searchOther">
@@ -58,7 +60,7 @@ $(document).ready(function(){
           alert("กรุณาระบุวันที่ใบเสร็จ ถึง ให้ถูกต้อง!");
           return false;
       }else{
-          window.open("../dashboard/report/printReportSale.php?from=<?echo $_POST['datePrfrom'] ?>&dateto=<?echo $_POST['datePrto'] ?>", '_blank');
+          return true;
       }
 
     });
