@@ -126,7 +126,7 @@ body{
 			<td colspan="2" align="center">โทร 080-986-8795</td>
 		</tr>
     <tr>
-			<td>วันที่ใบเสร็จ <?php echo @dateTimeConvertor($card_detail->card_insert);?></td>
+			<td>วันที่ใบเสร็จ <?php echo @dateTimeConvertor($card_detail->create_date);?></td>
 			<td align="right"></td>
 		</tr>
     <tr>
@@ -160,7 +160,7 @@ body{
 		when p.TypeID = '2'
 		then (select b.BrandName from brand b where r.brand = b.BrandID)
 		end BrandName "
-	," reserve_item i 
+	," reserve_item i
 		 left join product_N p on p.ProductID = i.ProductID
 		 left join productDetailWheel w on p.ProductID = w.ProductID
 		 left join productDetailRubber r on p.ProductID = r.ProductID "

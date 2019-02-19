@@ -159,7 +159,7 @@ if(isset($_POST['save_card'])){
   <tr style="font-weight:bold;" id="<?php echo @$showcard->card_key;?>">
     <td align="center"><a href="?q=<?php echo @$showcard->card_code;?>&p=search"><?php echo @$showcard->card_code;?></a></td>
 
-    <td align="center"><?php echo @dateTimeConvertor($showcard->card_insert);?></td>
+    <td align="center"><?php echo $showcard->card_insert;?></td>
      <td>&nbsp;<?php echo @$showcard->card_customer_name.'&nbsp;&nbsp;&nbsp;'.$showcard->card_customer_lastname;?></td>
     <td align="center"><?php echo @cardStatus($showcard->card_status);?></td>
     </tr>
@@ -181,7 +181,7 @@ $( window ).load(function() {
   $(".number").bind('keyup mouseup', function () {
     if (/\D/g.test(this.value)){
            this.value = this.value.replace(/\D/g, '');
-        }      
+        }
 						});
                     });
  </script>

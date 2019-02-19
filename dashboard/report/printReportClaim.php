@@ -88,14 +88,12 @@ $
 $content = "";
 if(isset($_GET['datefrom'])){
 $getGroup = $getdata->my_sql_select("card_code, card_key ","card_info"," card_status != '' and card_insert BETWEEN '".htmlentities($_GET['datefrom'])."' and '".htmlentities($_GET['dateto'])."'  Group by card_code ,card_key");
-}else{
-$getGroup = $getdata->my_sql_select("card_code, card_key ","card_info"," card_status != ''  Group by card_code ,card_key");
 }
 while($row = mysql_fetch_object($getGroup)){
 $content .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
 <td colspan="5">&nbsp;&nbsp;<b>เลขที่ใบเคลม : '.$row->card_code.' </b></td>
 </tr>';
-				$getDetail = $getdata->my_sql_select(Null,"card_item"," card_key = '".$row->card_key."' Order by item_insert ");
+				$getDetail = $getdata->my_sql_select(Null,"card_item"," card_key = '".$row->card_key."'  Order by item_insert ");
 				if(mysql_num_rows($getDetail) > 0){
 						while($rowD = mysql_fetch_object($getDetail)){
 							$content .='<tr>

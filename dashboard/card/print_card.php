@@ -57,7 +57,7 @@ body{
                         <table width="100%" border="0" class="table">
   <tr>
     <td width="23%"><strong>วันที่</strong></td>
-    <td width="27%"><?php echo @dateTimeConvertor($card_detail->card_insert);?></td>
+    <td width="27%"><?php echo $card_detail->card_insert;?></td>
     <td colspan="2" rowspan="4" style="text-align:center"> สแกนเพื่อตรวจสอบสถานะ<br/><?php echo '<img src="'.$PNG_WEB_DIR.basename($filename).'" /><br/>'; echo @url().$card_detail->card_code;  ?><div class="box_barcode"><img src="../../plugins/barcode/barcode.php?text=<?php echo @$card_detail->card_code;?>&orientation=orientation" alt="<?php echo @$card_detail->card_code;?>" width="20" height="120" class="img_barcode" /></div></td>
     </tr>
   <tr>

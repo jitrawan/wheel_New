@@ -1,7 +1,7 @@
 <style>
 @media (min-width: 1200px) {
    .Modalview {
-      width: 1000px; 
+      width: 1000px;
       margin: auto;
    }
 }
@@ -56,7 +56,7 @@ if(isset($_POST['save_cancelesd'])){
           $cstatus_key=md5(addslashes($_POST['cancelesd_reserve_code']).time("now"));
           $getdata->my_sql_insert("cancelesd_reserve","canceles_key='".$cstatus_key."',reserve_code='".addslashes($_POST['cancelesd_reserve_code'])."',user_create='".$getinfo->user_key."',date_create=NOW() ");
           echo "<script>window.location=\"../dashboard/?p=listsaleProduct&result=usertrue\"</script>";
-        
+
         }
       }
 
@@ -223,7 +223,7 @@ if(isset($_POST['save_cancelesd'])){
   $getstr = "";
   if(isset($_POST['search_product'])){
       if($_POST['datedo_from'] != "" && $_POST['datedo_to'] != ""){
-        $getstr .=" and create_date BETWEEN '".htmlentities($_POST['datedo_from'])."' and '".htmlentities($_POST['datedo_to'])."' ";
+        $getstr .=" and create_date BETWEEN  '".htmlentities($_POST['datedo_from'])." 00:00:00' and  '".htmlentities($_POST['datedo_to'])." 23:59:59' ";
       }
       if($_POST['reserve_key'] != ""){
         $getstr .=" and reserve_code = '".htmlentities($_POST['reserve_key'])."' ";
@@ -286,7 +286,7 @@ $(document).ready(function(){
    $(".number").bind('keyup mouseup', function () {
     if (/\D/g.test(this.value)){
            this.value = this.value.replace(/\D/g, '');
-        }      
+        }
 						});
 
     $("#addsearch").click(function(){

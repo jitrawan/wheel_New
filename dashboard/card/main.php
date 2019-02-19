@@ -16,7 +16,7 @@ if(isset($_POST['save_card'])){
 
 	if(addslashes($_POST['card_customer_name'])!= NULL && addslashes($_POST['card_customer_phone']) != NULL ){
 		$card_key=md5(addslashes($_POST['card_customer_name']).addslashes($_POST['card_code']).time("now"));
-		$getdata->my_sql_insert("card_info","card_key='".$card_key."',card_code='".addslashes($_POST['card_code'])."',card_customer_name='".addslashes($_POST['card_customer_name'])."',card_customer_lastname='".addslashes($_POST['card_customer_lastname'])."',card_customer_address='".addslashes($_POST['card_customer_address'])."',card_customer_phone='".addslashes($_POST['card_customer_phone'])."',card_customer_email='".addslashes($_POST['card_customer_email'])."',card_note='".addslashes($_POST['card_note'])."',card_done_aprox='0000-00-00',user_key='".$user_data->user_key."',card_status=''");
+		$getdata->my_sql_insert("card_info","card_key='".$card_key."',card_code='".addslashes($_POST['card_code'])."',card_customer_name='".addslashes($_POST['card_customer_name'])."',card_customer_lastname='".addslashes($_POST['card_customer_lastname'])."',card_customer_address='".addslashes($_POST['card_customer_address'])."',card_customer_phone='".addslashes($_POST['card_customer_phone'])."',card_customer_email='".addslashes($_POST['card_customer_email'])."',card_note='".addslashes($_POST['card_note'])."',card_done_aprox='0000-00-00',card_insert=NOW(),user_key='".$user_data->user_key."',card_status=''");
 		echo '<script>window.location="?p=card_create_detail&key='.$card_key.''.$getparamKey.' ";</script>';
 	}else{
 		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลไม่ถูกต้อง กรุณาระบุอีกครั้ง !</div>';
@@ -125,7 +125,7 @@ if(isset($_POST['save_card'])){
   ?>
   <tr style="font-weight:bold;" id="<?php echo @$showcard->card_key;?>">
     <td align="center"><?php echo @$showcard->card_code;?></td>
-    <td align="center"><?php echo @dateTimeConvertor($showcard->card_insert);?></td>
+    <td align="center"><?php echo $showcard->card_insert;?></td>
     <td>&nbsp;<?php echo @$showcard->card_customer_name.'&nbsp;&nbsp;&nbsp;'.$showcard->card_customer_lastname;?></td>
     <td align="center"><?php echo @$showcard->card_customer_phone;?></td>
     <td align="center"><?php echo @cardStatus($showcard->card_status);?></td>
@@ -150,7 +150,7 @@ $( window ).load(function() {
     if (/\D/g.test(this.value)){
            this.value = this.value.replace(/\D/g, '');
         }
-					
+
 		});
 
   if('<?= $_GET['paramKey']?>' != ""){

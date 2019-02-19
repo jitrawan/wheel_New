@@ -172,7 +172,7 @@ if(isset($_POST['save_new_status'])){
   ?>
   <tr style="font-weight:bold;" id="<?php echo @$showcard->card_key;?>">
     <td align="center"><?php echo @$showcard->card_code;?></td>
-    <td align="center"><?php echo @dateTimeConvertor($showcard->card_insert);?></td>
+    <td align="center"><?php echo $showcard->card_insert;?></td>
     <td>&nbsp;<?php echo @$showcard->card_customer_name.'&nbsp;&nbsp;&nbsp;'.$showcard->card_customer_lastname;?></td>
     <td align="center"><?php echo @$showcard->card_customer_phone;?></td>
     <td align="center"><?php echo @cardStatus($showcard->card_status);?></td>
@@ -197,7 +197,7 @@ $( document ).ready(function() {
 	$(".number").bind('keyup mouseup', function () {
     if (/\D/g.test(this.value)){
            this.value = this.value.replace(/\D/g, '');
-        }      
+        }
 						});
           });
 $('#edit_status').on('show.bs.modal', function (event) {

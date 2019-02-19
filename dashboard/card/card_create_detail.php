@@ -35,7 +35,7 @@ if(isset($_POST['save_item'])){
 		}else{
 			$price_aprox=0;
 		}
-		$getdata->my_sql_insert("card_item","reserve_key='".addslashes(addslashes($_POST['reserveKey']))."' , reseve_item_key='".addslashes(addslashes($_POST['product_Id']))."' ,item_key='".$item_key."',item_amt='".addslashes(addslashes($_POST['item_amt']))."',card_key='".$card_detail->card_key."',item_number='".INumber()."',item_name='".addslashes(addslashes($_POST['item_name']))."',item_note='".addslashes(addslashes($_POST['item_note']))."',item_price_aprox='".@$price_aprox."'");
+		$getdata->my_sql_insert("card_item","reserve_key='".addslashes(addslashes($_POST['reserveKey']))."' , reseve_item_key='".addslashes(addslashes($_POST['product_Id']))."' ,item_key='".$item_key."',item_amt='".addslashes(addslashes($_POST['item_amt']))."',card_key='".$card_detail->card_key."',item_number='".INumber()."',item_name='".addslashes(addslashes($_POST['item_name']))."',item_note='".addslashes(addslashes($_POST['item_note']))."',item_insert=NOW(),item_price_aprox='".@$price_aprox."'");
 		updateItem();
     echo "<script>window.location=\"../dashboard/?p=card_create_detail&key=\"+'".addslashes($_GET['key'])."'+\"&reserve_key=\"+'".addslashes($_GET['reserveKey'])."'</script>";
 		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>บันทึกข้อมูล สำเร็จ !</div>';
@@ -57,7 +57,7 @@ if(isset($_POST['save_confirm_card'])){
 	}else{
 		$card_done_aprox = '0000-00-00';
 	}
-	$getdata->my_sql_update("card_info","card_done_aprox='".@$card_done_aprox."',card_status='".addslashes($_REQUEST['card_status'])."',user_key='".$userdata->user_key."'","card_key='".$card_detail->card_key."'");
+	$getdata->my_sql_update("card_info","card_done_aprox='".@$card_done_aprox."',card_status='".addslashes($_REQUEST['card_status'])."',user_key='".$userdata->user_key."',card_insert=NOW()","card_key='".$card_detail->card_key."'");
 	$cstatus_key=md5(addslashes($_REQUEST['card_status']).rand().time("now"));
 	$getdata->my_sql_insert("card_status","cstatus_key='".$cstatus_key."',card_key='".$card_detail->card_key."',card_status='".addslashes($_REQUEST['card_status'])."',card_status_note='".addslashes($_POST['card_status_note'])."',user_key='".$userdata->user_key."'");
 	echo '<script>alert("บันทึกข้อมูล สำเร็จ !");window.open("card/print_card.php?key='.$card_detail->card_key.'", "_blank");window.location="?p=card";</script>';
@@ -133,7 +133,7 @@ if(isset($_POST['save_confirm_card'])){
                             <div class="col-md-3"><strong>รหัสการส่งซ่อม/เคลม</strong></div>
                             <div class="col-md-3"><?php echo @$card_detail->card_code;?></div>
                             <div class="col-md-3"><strong>วันที่</strong></div>
-                            <div class="col-md-3"><?php echo @dateTimeConvertor($card_detail->card_insert);?></div>
+                            <div class="col-md-3"><?php echo $card_detail->card_insert;?></div>
                             </div>
                             <div class="row form-group">
                             <div class="col-md-3"><strong>ชื่อผู้ส่งซ่อม</strong></div>
