@@ -200,11 +200,11 @@ console.log('<?= htmlentities($_GET['q'])?>');
        <thead>
      <tr style="font-weight:bold; color:#FFF; text-align:center; background:#ff7709;">
        <td width="12%">รหัสสินค้า</td>
-       <td width="15%">shelf</td>
-       <td width="36%">ผู้จำหน่าย</td>
-       <td width="10%">ประเภท</td>
-       <td width="13%">คงเหลือ</td>
-       <td width="15%">ราคา</td>
+       <td width="10%">shelf</td>
+       <td width="26%">ผู้จำหน่าย</td>
+       <td width="26%">รายละเอียด</td>
+       <td width="10%">คงเหลือ</td>
+       <td width="10%">ราคา</td>
      </tr>
      </thead>
        <tbody>
@@ -212,12 +212,20 @@ console.log('<?= htmlentities($_GET['q'])?>');
        while($showproduct = mysql_fetch_object($getproduct)){
          $x++;
 
+         if($showproduct->TypeID == '1'){
+           $gettype = "ล้อแม๊ก"." ขนาด:".$showproduct->diameterWheel." ขอบ:".$showproduct->whediameter." รู:".$showproduct->holeSize." ประเภท:".$showproduct->typeFormat;
+         }else if($showproduct->TypeID == '2'){
+           $gettype = "ยาง ".$showproduct->BrandName." ขนาด:".$showproduct->diameterRubber." ขอบ:".$showproduct->rubdiameter." ซี่รี่:".$showproduct->series." ความกว้าง:".$showproduct->width;
+         }else{
+           $gettype = "";
+         }
+
        ?>
        <tr>
          <td align="center"><?php echo @$showproduct->productMain;?></td>
          <td >&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showproduct->shelf_color;?>"></i>&nbsp;<?php echo @$showproduct->shelf_detail;?></td>
-         <td valign="middle"><strong><?php echo @$showproduct->dealer_code;?> | <?php echo @$showproduct->dealer_name;?> | <?php echo @$showproduct->mobile;?></strong>&nbsp;</td>
-         <td>&nbsp;<?if(@$showproduct->TypeID == '1'){ echo 'ล้อแม็ก';}else{echo 'ยาง';}?></td>
+         <td valign="middle"><strong><?php echo @$showproduct->dealer_code;?> | <?php echo @$showproduct->dealer_name;?> | <?php echo @$showproduct->mobile;?></strong></td>
+         <td valign="middle"><strong><? echo $gettype?></strong></td>
          <td align="right" valign="middle"><strong><?php echo @convertPoint2(@$showproduct->Quantity,'0');?></strong>&nbsp;</td>
          <td align="right" valign="middle"><strong><?php echo @convertPoint2(@$showproduct->PriceSale,'2');?></strong>&nbsp;</td>
       </tr>

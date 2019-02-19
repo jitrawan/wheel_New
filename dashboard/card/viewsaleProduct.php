@@ -28,9 +28,9 @@ $card_detail = $getdata->my_sql_query(NULL,"reserve_info","reserve_key='".addsla
 <div id="paper">
   <div>
 	<table width="100%">
-		
+
     <tr>
-			<td>วันที่ใบเสร็จ <?php echo @dateTimeConvertor($card_detail->card_insert);?></td>
+			<td>วันที่ใบเสร็จ <?php echo $card_detail->create_date;?></td>
 			<td align="right"></td>
 		</tr>
     <tr>
@@ -67,7 +67,7 @@ $productInfo = $getdata->my_sql_select("i.*,p.*, r.*, w.* ,w.diameter as diamete
 	when p.TypeID = '2'
 	then (select b.BrandName from brand b where r.brand = b.BrandID)
 	end BrandName "
-," reserve_item i 
+," reserve_item i
    left join product_N p on p.ProductID = i.ProductID
    left join productDetailWheel w on p.ProductID = w.ProductID
 	 left join productDetailRubber r on p.ProductID = r.ProductID "
@@ -103,7 +103,7 @@ $productInfo = $getdata->my_sql_select("i.*,p.*, r.*, w.* ,w.diameter as diamete
 			<td colspan="4" align="right">รวมราคาทั้งสิน</td>
 			<td align="right"><?php echo convertPoint2($card_detail->reserve_total,2)?></td>
 		</tr>
-  
+
     <tr>
 			<td colspan="4" align="right">VATAble</td>
       <td align="right"><?php echo convertPoint2($card_detail->reserve_total,2)?></td>

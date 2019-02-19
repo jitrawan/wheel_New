@@ -126,7 +126,7 @@ body{
 			<td colspan="2" align="center">โทร 080-986-8795</td>
 		</tr>
     <tr>
-			<td>วันที่ใบเสร็จ <?php echo @dateTimeConvertor($card_detail->create_date);?></td>
+			<td>วันที่ใบเสร็จ <?php echo $card_detail->create_date?></td>
 			<td align="right"></td>
 		</tr>
     <tr>
