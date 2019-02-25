@@ -52,15 +52,19 @@ if(isset($_POST['save_edit_item'])){
 	}
 }
 if(isset($_POST['save_confirm_card'])){
-	if(addslashes($_POST['card_done_aprox']) != NULL){
-		$card_done_aprox = addslashes($_POST['card_done_aprox']);
-	}else{
-		$card_done_aprox = '0000-00-00';
-	}
-	$getdata->my_sql_update("card_info","card_done_aprox='".@$card_done_aprox."',card_status='".addslashes($_REQUEST['card_status'])."',user_key='".$userdata->user_key."',card_insert=NOW()","card_key='".$card_detail->card_key."'");
-	$cstatus_key=md5(addslashes($_REQUEST['card_status']).rand().time("now"));
-	$getdata->my_sql_insert("card_status","cstatus_key='".$cstatus_key."',card_key='".$card_detail->card_key."',card_status='".addslashes($_REQUEST['card_status'])."',card_status_note='".addslashes($_POST['card_status_note'])."',user_key='".$userdata->user_key."'");
-	echo '<script>alert("บันทึกข้อมูล สำเร็จ !");window.open("card/print_card.php?key='.$card_detail->card_key.'", "_blank");window.location="?p=card";</script>';
+    if($_POST['card_done_aprox'] < date("Y-m-d")){
+      echo '<script>alert("กรุณาระบุวันที่คาดว่าจะแล้วเสร็จ ให้ถูกต้อง!");</script>';
+    }else{
+      if(addslashes($_POST['card_done_aprox']) != NULL){
+        $card_done_aprox = addslashes($_POST['card_done_aprox']);
+      }else{
+        $card_done_aprox = '0000-00-00';
+      }
+      $getdata->my_sql_update("card_info","card_done_aprox='".@$card_done_aprox."',card_status='".addslashes($_REQUEST['card_status'])."',user_key='".$userdata->user_key."',card_insert=NOW()","card_key='".$card_detail->card_key."'");
+      $cstatus_key=md5(addslashes($_REQUEST['card_status']).rand().time("now"));
+      $getdata->my_sql_insert("card_status","cstatus_key='".$cstatus_key."',card_key='".$card_detail->card_key."',card_status='".addslashes($_REQUEST['card_status'])."',card_status_note='".addslashes($_POST['card_status_note'])."',user_key='".$userdata->user_key."'");
+      echo '<script>alert("บันทึกข้อมูล สำเร็จ !");window.open("card/print_card.php?key='.$card_detail->card_key.'", "_blank");window.location="?p=card";</script>';
+    }
 }
 ?>
 <!-- Modal Edit -->
@@ -276,7 +280,7 @@ if(isset($_GET['paramKey'])){
                 </div>
 <script language="javascript">
 $( document ).ready(function() {
-$(".number").bind('keyup mouseup', function () {
+  $(".number").bind('keyup mouseup', function () {
 
 			var amt = $("#get_item_am").val();
 			if($(this).attr('name') == 'item_amt'){
@@ -339,6 +343,5 @@ $('#edit_item').on('show.bs.modal', function (event) {
                 }
             });
     })
-
 
 			   </script>

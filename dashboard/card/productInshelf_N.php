@@ -181,10 +181,10 @@ console.log('<?= htmlentities($_GET['q'])?>');
          if(addslashes($_POST['search_brand']) != ""){
            $str_sql  .= " And r.brand = '".addslashes($_POST['search_brand'])."' ";
          }
-       $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where p.TypeID = '2' ".$str_sql." ORDER BY p.ProductID ");
+       $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where p.TypeID = '2' ".$str_sql." ORDER BY p.ProductID ");
      }
    }else{
-    $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where ProductStatus in ('1',2)  ORDER BY p.ProductID ");
+    $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where ProductStatus in ('1',2)  ORDER BY p.ProductID ");
     ?>
     <script>
     console.log('<?= mysql_num_rows($getproduct)?>');
