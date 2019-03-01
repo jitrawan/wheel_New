@@ -1,7 +1,7 @@
 <div class="row">
      <div class="col-lg-12">
              <h1 class="page-header"><i class="fa fa-user fa-fw"></i> <?php echo @LA_LB_SYSTEM_USER;?></h1>
-     </div>        
+     </div>
 </div>
 <ol class="breadcrumb">
 <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
@@ -15,7 +15,7 @@ if(isset($_POST['save_user'])){
 		if($getuser == 0){
 			if(addslashes($_POST['password']) == addslashes($_POST['repassword'])){
 				$user_key=md5(addslashes($_POST['username']).time("now"));
-				$getdata->my_sql_insert("user","user_key='".$user_key."',name='".addslashes($_POST['name'])."',lastname='".addslashes($_POST['lastname'])."',username='".addslashes($_POST['username'])."',password='".md5(addslashes($_POST['password']))."',email='".addslashes($_POST['email'])."',user_class='2',user_status='".addslashes($_REQUEST['user_status'])."'");
+				$getdata->my_sql_insert("user","user_key='".$user_key."',name='".addslashes($_POST['name'])."',lastname='".addslashes($_POST['lastname'])."',username='".addslashes($_POST['username'])."',password='".md5(addslashes($_POST['password']))."',email='".addslashes($_POST['email'])."',user_class='".addslashes($_POST['role'])."',user_status='".addslashes($_REQUEST['user_status'])."'");
 				$alert = '  <div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_INSERT_USER_DONE.'</div>';
 			}else{
 				$alert = ' <div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_PASSWORD_MISMATCH.'</div>';
@@ -24,7 +24,7 @@ if(isset($_POST['save_user'])){
 			$alert = ' <div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_USERNAME_UNAVAILABLE.'</div>';
 		}
 	}else{
-		$alert = ' <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>'; 
+		$alert = ' <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 	}
 }
 ?>
@@ -61,6 +61,14 @@ if(isset($_POST['save_user'])){
                                             <label for="email"><?php echo @LA_LB_EMAIL;?></label>
                                              <input type="email" name="email" id="email" class="form-control">
                                           </div>
+                                          <div class="form-group">
+                                          <label for="role">Role</label>
+                                           <select name="role" id="role" class="form-control">
+                                             <option value="1" selected="selected">Staff</option>
+                                             <option value="2">admin</option>
+                                             <option value="3">supperAdmin</option>
+                                           </select>
+                                        </div>
                                            <div class="form-group">
                                              <label for="user_status"><?php echo @LA_LB_STATUS;?></label>
                                              <select name="user_status" id="user_status" class="form-control">
@@ -96,9 +104,9 @@ if(isset($_POST['save_user'])){
 			 }else{
 				  $alert2 = '  <div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_PASSWORD_MISMATCH.'</div>';
 			 }
-			
+
 		 }else{
-			 $getdata->my_sql_update("user","name='".addslashes($_POST['edit_name'])."',lastname='".addslashes($_POST['edit_lastname'])."',email='".addslashes($_POST['edit_email'])."'","user_key='".addslashes($_GET['key'])."'");
+			 $getdata->my_sql_update("user","name='".addslashes($_POST['edit_name'])."',lastname='".addslashes($_POST['edit_lastname'])."',email='".addslashes($_POST['edit_email'])."',user_class='".addslashes($_POST['edit_role'])."'","user_key='".addslashes($_GET['key'])."'");
 			  echo '<script>window.location="?p=setting_users"</script>';
 		 }
 	 }
@@ -132,6 +140,16 @@ if(isset($_POST['save_user'])){
       <input type="email" name="edit_email" id="edit_email" class="form-control" value="<?php echo @$getuser_detail->email;?>"></div></td>
   </tr>
   <tr>
+    <td>Role</td>
+    <td> <div class="form-group">
+      <select name="edit_role" id="edit_role" class="form-control">
+        <option value="1" selected="selected">Staff</option>
+        <option value="2">admin</option>
+        <option value="3">supperAdmin</option>
+      </select>
+  </tr>
+
+  <tr>
     <td colspan="2"><hr/></td>
     </tr>
   <tr>
@@ -149,7 +167,7 @@ if(isset($_POST['save_user'])){
     <td>&nbsp;</td>
   </tr>
         </table>
-        
+
         </div>
         <div class="panel-footer">
         <button type="submit" name="edit_user_info" class="btn btn-info btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
@@ -165,7 +183,7 @@ if(isset($_POST['save_user'])){
                                 </li>
                             <!--    <li><a href="#members" data-toggle="tab">สมาชิก</a>
                                 </li>-->
-                                
+
                             </ul>
 
                             <!-- Tab panes -->
@@ -185,7 +203,7 @@ if(isset($_POST['save_user'])){
   <tbody>
    <?php
    $l=0;
-	   $getalluser  = $getdata->my_sql_select(NULL,"user","user_class='2' AND user_status <> '2' ORDER BY username");
+	   $getalluser  = $getdata->my_sql_select(NULL,"user","user_status <> '2' ORDER BY username");
 	   while($showalluser = mysql_fetch_object($getalluser)){
 		   $l++;
 		   $getonline = $getdata->my_sql_show_rows("user_online","user_key='".$showalluser->user_key."'");
@@ -260,10 +278,17 @@ if(isset($_POST['save_user'])){
 </table>
 		</div>
                                 </div>
-                                
+
                             </div>
 
 <script language="javascript">
+
+$( document ).ready(function() {
+  var getUserClass = '<?php echo @$getuser_detail->user_class;?>';
+  if(getUserClass != ""){
+    $('#edit_role').val('<?php echo @$getuser_detail->user_class;?>');
+  }
+});
 
 function changeUserStatus(userkey){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -279,7 +304,7 @@ function changeUserStatus(userkey){
 	}
 	xmlhttp.onreadystatechange=function(){
   		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			
+
 			if(es.className == 'btn btn-success btn-xs'){
 				document.getElementById('btn-'+userkey).className = 'btn btn-danger btn-xs';
 				document.getElementById('icon-'+userkey).className = 'fa fa-lock';
@@ -291,7 +316,7 @@ function changeUserStatus(userkey){
 			}
   		}
 	}
-	
+
 	xmlhttp.open("GET","function.php?type=change_user_status&key="+userkey+"&sts="+sts,true);
 	xmlhttp.send();
 }
