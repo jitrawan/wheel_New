@@ -38,6 +38,15 @@ if($system_info->system_need_update == 1){
 </div>
 
 <div class="panel panel-primary">
+     <div class="panel-heading">การตั้งค่าล้อและยาง</div>
+        <div class="panel-body">
+          <a href="?p=MainSettingWheel" class="btn btn-primary btn_main_wd"><i class="fa fa fa-gears fa-fw fa-6x"></i><br/><br/>ตั้งค่าล้อแม็ก</a>
+          <a href="?p=MainSettingRubble" class="btn btn-primary btn_main_wd"><i class="fa	fa fa-gears fa-fw fa-6x"></i><br/><br/>ตั้งค่ายาง</a>
+        </div>
+
+</div>
+
+<div class="panel panel-primary">
      <div class="panel-heading"><?php echo @LA_LB_USER_DATA;?></div>
          <div class="panel-body">
                <a href="?p=setting_info" class="btn btn-primary btn_main_wd"><i class="fa flaticon-id fa-fw fa-6x"></i><br/><br/><?php echo @LA_LB_USER_DATA;?></a>

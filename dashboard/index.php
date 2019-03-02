@@ -5,7 +5,7 @@ error_reporting(0);
 <!DOCTYPE html>
 <html>
 <?php
-if($_SESSION['uname']==NULL || $_SESSION['uclass'] == 1){
+if($_SESSION['uname']==NULL){
 	echo '<script>window.location="../"</script>';
 }
 require("../core/config.core.php");
@@ -124,31 +124,59 @@ if(@addslashes($_GET['p']) == "cashier_nomember" || addslashes($_GET['p']) == "i
               <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                       <?php
-					  $getmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key=menu_upkey ORDER BY menu_sorting");
-					  while($showmenus = mysql_fetch_object($getmenus)){
-						  $cksub = $getdata->my_sql_show_rows("menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey");
+						if($_SESSION['uclass'] != 1){
+									  $getmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key=menu_upkey ORDER BY menu_sorting");
+									  while($showmenus = mysql_fetch_object($getmenus)){
+										  $cksub = $getdata->my_sql_show_rows("menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey");
 
-						  if($cksub != 0){
-							  $showm ='<li><a href="'.$showmenus->menu_link.'" ';
-							  if(@addslashes($_GET['p']) == $showmenus->menu_link){$showm .='class="active"';}
-							  $showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' <span class="fa arrow"></span></a><ul class="nav nav-second-level">';
-							  $getsubmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey ORDER BY menu_sorting");
-							  while($showsubmenus = mysql_fetch_object($getsubmenus)){
-								  $getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
-								  $showm .='<li><a href="'.$showsubmenus->menu_link.'" ';
-								  if(@addslashes($_GET['p']) == $showsubmenus->menu_case || $getactive->menu == $showsubmenus->menu_case){$showm .='class="active"';}
-								  $showm .='>'.$showsubmenus->menu_icon.' '.menuLanguage($showsubmenus->menu_name).' </a></li>';
-							  }
-							  $showm.='</ul></li>';
-							  echo @$showm;
-						  }else{
-							  $showm ='<li><a href="'.$showmenus->menu_link.'" ';
-							   $getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
-							  if(@addslashes($_GET['p']) == $showmenus->menu_case || $getactive->menu == $showmenus->menu_case){$showm .='class="active"';}
-							  $showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' </a></li>';
-							  echo @$showm;
-						  }
-					  }
+										  if($cksub != 0){
+											  $showm ='<li><a href="'.$showmenus->menu_link.'" ';
+											  if(@addslashes($_GET['p']) == $showmenus->menu_link){$showm .='class="active"';}
+											  $showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' <span class="fa arrow"></span></a><ul class="nav nav-second-level">';
+											  $getsubmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey ORDER BY menu_sorting");
+											  while($showsubmenus = mysql_fetch_object($getsubmenus)){
+												  $getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
+												  $showm .='<li><a href="'.$showsubmenus->menu_link.'" ';
+												  if(@addslashes($_GET['p']) == $showsubmenus->menu_case || $getactive->menu == $showsubmenus->menu_case){$showm .='class="active"';}
+												  $showm .='>'.$showsubmenus->menu_icon.' '.menuLanguage($showsubmenus->menu_name).' </a></li>';
+											  }
+											  $showm.='</ul></li>';
+											  echo @$showm;
+										  }else{
+											  $showm ='<li><a href="'.$showmenus->menu_link.'" ';
+											   $getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
+											  if(@addslashes($_GET['p']) == $showmenus->menu_case || $getactive->menu == $showmenus->menu_case){$showm .='class="active"';}
+											  $showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' </a></li>';
+											  echo @$showm;
+										  }
+									  }
+							}else{
+								$getmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key = menu_upkey AND menu_key <> '2309e0cdb2c541bf7cb8ef0dee7b7eba' ORDER BY menu_sorting");
+								while($showmenus = mysql_fetch_object($getmenus)){
+									$cksub = $getdata->my_sql_show_rows("menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey");
+
+									if($cksub != 0){
+										$showm ='<li><a href="'.$showmenus->menu_link.'" ';
+										if(@addslashes($_GET['p']) == $showmenus->menu_link){$showm .='class="active"';}
+										$showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' <span class="fa arrow"></span></a><ul class="nav nav-second-level">';
+										$getsubmenus = $getdata->my_sql_select(NULL,"menus","menu_status='1' AND menu_key <> menu_upkey AND '".$showmenus->menu_key."' = menu_upkey ORDER BY menu_sorting");
+										while($showsubmenus = mysql_fetch_object($getsubmenus)){
+											$getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
+											$showm .='<li><a href="'.$showsubmenus->menu_link.'" ';
+											if(@addslashes($_GET['p']) == $showsubmenus->menu_case || $getactive->menu == $showsubmenus->menu_case){$showm .='class="active"';}
+											$showm .='>'.$showsubmenus->menu_icon.' '.menuLanguage($showsubmenus->menu_name).' </a></li>';
+										}
+										$showm.='</ul></li>';
+										echo @$showm;
+									}else{
+										$showm ='<li><a href="'.$showmenus->menu_link.'" ';
+										 $getactive = $getdata->my_sql_query("menu","list","cases='".addslashes($_GET['p'])."'");
+										if(@addslashes($_GET['p']) == $showmenus->menu_case || $getactive->menu == $showmenus->menu_case){$showm .='class="active"';}
+										$showm .='>'.$showmenus->menu_icon.' '.menuLanguage($showmenus->menu_name).' </a></li>';
+										echo @$showm;
+									}
+								}
+							}
 					  ?>
 
                     </ul>

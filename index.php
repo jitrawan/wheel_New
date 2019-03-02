@@ -41,7 +41,7 @@ date_default_timezone_set('Asia/Bangkok');
 
     <!-- Custom Fonts -->
    <link href="css/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
- 
+
     <link href="css/iconset/ios7-set-filled-1/flaticon.css" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" href="media/favicon/<?php echo @$system_info->site_favicon;?>"/>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -82,11 +82,11 @@ if(@$_SESSION['lang']!=NULL){
                         echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_USERNAME_OR_PASSWORD_INCORRECT.'</div>';
                     }
                     ?>
-                    
+
                         <form role="form" action="core/takelogin.core.php" method="post">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="<?php echo @LA_LB_USERNAME;?>555" name="username" type="text" autofocus>
+                                    <input class="form-control" placeholder="<?php echo @LA_LB_USERNAME;?>" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="<?php echo @LA_LB_PASSWORD;?>" name="password" type="password">
@@ -95,16 +95,16 @@ if(@$_SESSION['lang']!=NULL){
                                 <button type="submit" name="login" class="btn btn-lg btn-default btn-block"><i class="fa fa-lock fa-fw"></i><?php echo @LA_BTN_LOGIN;?></button>
                             </fieldset>
                         </form>
-                       
+
                         <div style="color:#CCC; text-align:center; padding-top:10px;">&copy;&nbsp;<?php echo date("Y");?>&nbsp;Repair By Clear</div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
     </div>
 
-    
+
 
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
@@ -117,7 +117,7 @@ if(@$_SESSION['lang']!=NULL){
 
     <!-- Custom Theme JavaScript -->
     <script src="js/sb-admin-2.js"></script>
-    
+
 
 </body>
 
