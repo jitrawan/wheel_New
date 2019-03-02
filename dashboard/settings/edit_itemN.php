@@ -21,7 +21,9 @@ if(@$_SESSION['lang']!=NULL){
 	$_SESSION['lang'] = 'th';
 
 }
-$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID "," where p.ProductID = '".addslashes($_GET['key'])."' ");
+$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber
+, r.width as WidthRubble , r.brand as brandRubble
+","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID "," where p.ProductID = '".addslashes($_GET['key'])."' ");
 $getitem = mysql_fetch_object($getedit);
 
 
@@ -66,24 +68,52 @@ $getitem = mysql_fetch_object($getedit);
 	                                               <label for="edit_diameterWheel">ขนาด</label>
 	                                                 <select name="edit_diameterWheel" id="edit_diameterWheel" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getDiameterWhee = $getdata->my_sql_select(NULL,"DiameterWhee","status = '1' ORDER BY id ");
+	                                                     while($showDiameterWhee = mysql_fetch_object($getDiameterWhee)){?>
+	                                                   <option value="<?= $showDiameterWhee->Description?>" ><?= $showDiameterWhee->Description?></option>
+	                                                   <?}?>
 	                                                 </select>
 	                                               </div>
 	                                               <div class="col-md-3">
 	                                               <label for="edit_rim">ขอบ</label>
 	                                               <select name="edit_rim" id="edit_rim" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getRimWheel = $getdata->my_sql_select(NULL,"RimWheel","status = '1' ORDER BY id ");
+	                                                     while($showRimWheel = mysql_fetch_object($getRimWheel)){?>
+	                                                   <option value="<?= $showRimWheel->Description?>" ><?= $showRimWheel->Description?></option>
+	                                                   <?}?>
 	                                                 </select>
 	                                               </div>
 	                                               <div class="col-md-2">
 	                                               <label for="edit_holeSize">รู</label>
 	                                                <select name="edit_holeSize" id="edit_holeSize" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getHoleSizeWhee = $getdata->my_sql_select(NULL,"HoleSizeWhee","status = '1' ORDER BY id ");
+	                                                      while($showHoleSizeWhee = mysql_fetch_object($getHoleSizeWhee)){?>
+	                                                    <option value="<?= $showHoleSizeWhee->Description?>" ><?= $showHoleSizeWhee->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
 	                                               <div class="col-md-4">
 	                                               <label for="edit_typeFormat">ประเภท</label>
 	                                                <select name="edit_typeFormat" id="edit_typeFormat" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getTypeFormatWheel = $getdata->my_sql_select(NULL,"TypeFormatWheel","status = '1' ORDER BY id ");
+	                                                     while($showTypeFormatWheel = mysql_fetch_object($getTypeFormatWheel)){?>
+	                                                   <option value="<?= $showTypeFormatWheel->Description?>" ><?= $showTypeFormatWheel->Description?></option>
+	                                                   <?}?>
+	                                                 </select>
+	                                               </div>
+	                                             </div>
+																							 <div class="form-group row">
+	                                               <div class="col-md-4">
+	                                               <label for="edit_brandWheel">ยี่ห้อ</label>
+	                                                 <select name="edit_brandWheel" id="edit_brandWheel" class="form-control">
+	                                                   <option value="" selected="selected">--เลือก--</option>
+	                                                   <? $getbranWheel = $getdata->my_sql_select(NULL,"BrandWhee","status = '1' ORDER BY id ");
+	                                                      while($showbrandWheel = mysql_fetch_object($getbranWheel)){?>
+	                                                    <option value="<?= $showbrandWheel->id?>" ><?= $showbrandWheel->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
 	                                             </div>
@@ -95,24 +125,40 @@ $getitem = mysql_fetch_object($getedit);
 	                                               <label for="edit_diameterRubber">ขนาด</label>
 	                                                <select name="edit_diameterRubber" id="edit_diameterRubber" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY id ");
+	                                                      while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
+	                                                    <option value="<?= $showDiameterRubble->Description?>" ><?= $showDiameterRubble->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                                </div>
 	                                               <div class="col-md-3">
 	                                               <label for="edit_series">ซี่รี่</label>
 	                                               <select name="edit_series" id="edit_series" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getSeriesRubble = $getdata->my_sql_select(NULL,"SeriesRubble","status = '1' ORDER BY id ");
+	                                                      while($showSeriesRubble = mysql_fetch_object($getSeriesRubble)){?>
+	                                                    <option value="<?= $showSeriesRubble->Description?>" ><?= $showSeriesRubble->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
 	                                               <div class="col-md-2">
 	                                               <label for="edit_width">ความกว้าง</label>
 	                                                 <select name="edit_width" id="edit_width" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getWidthRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
+	                                                      while($showWidthRubble = mysql_fetch_object($getWidthRubble)){?>
+	                                                    <option value="<?= $showWidthRubble->Description?>" ><?= $showWidthRubble->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
 	                                               <div class="col-md-4">
 	                                               <label for="edit_brand">ยี่ห้อ</label>
 	                                                <select name="edit_brand" id="edit_brand" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
+																										 <? $getbrandRubble = $getdata->my_sql_select(NULL,"brandRubble","status = '1' ORDER BY id ");
+	                                                      while($showbrandRubble = mysql_fetch_object($getbrandRubble)){?>
+	                                                    <option value="<?= $showbrandRubble->id?>" ><?= $showbrandRubble->Description?></option>
+	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
 	                                             </div>
@@ -182,6 +228,7 @@ $getitem = mysql_fetch_object($getedit);
 
           <script language="javascript">
           $( document ).ready(function() {
+
 						$(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
 									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
@@ -196,9 +243,15 @@ $getitem = mysql_fetch_object($getedit);
 								$('#edit_rim').val('<?php echo @$getitem->rim;?>');
 								$('#edit_holeSize').val('<?php echo @$getitem->holeSize;?>');
 								$('#edit_typeFormat').val('<?php echo @$getitem->typeFormat;?>');
+								$('#edit_brandWheel').val('<?php echo @$getitem->brand;?>');
 							}else{
 								$("#edit_detailwheel").hide();
 								$("#edit_detailrubber").show();
+								console.log('<?echo @$getitem->series;?>');
+								$('#edit_diameterRubber').val('<?php echo @$getitem->diameterRubber;?>');
+								$('#edit_series').val('<?php echo @$getitem->series;?>');
+								$('#edit_width').val('<?php echo @$getitem->WidthRubble;?>');
+								$('#edit_brand').val('<?php echo @$getitem->brandRubble;?>');
 							}
 
 							$("#gettype").val('<?echo @$getitem->TypeID;?>');
@@ -211,7 +264,7 @@ $getitem = mysql_fetch_object($getedit);
 					 $('#edit_shelf_id').val('<?php echo @$getitem->shelf_id;?>');
 					 $('#edit_hand').val('<?php echo @$getitem->hand;?>');
 
-					 $.getJSON( "jsondata/brand.json", function( data ) {
+				/*	 $.getJSON( "jsondata/brand.json", function( data ) {
 					   var $brand = $("#edit_brand");
 					   $brand.empty();
 					   $brand.append("<option value='' selected='selected'>--เลือก--</option>");
@@ -310,7 +363,7 @@ $getitem = mysql_fetch_object($getedit);
 								  $width.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
 							 }
 					   }
-					  });
+					 });*/
 
 
           });
