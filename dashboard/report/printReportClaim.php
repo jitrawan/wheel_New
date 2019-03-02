@@ -140,8 +140,10 @@ $content2 .= '<tr style="font-weight:bold; color:#FFF; background:#A9A9A9;">
 $getDetailC = $getdata->my_sql_select("c.*,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
 ,case
 	when p.TypeID = '2'
-	then (select b.BrandName from brand b where r.brand = b.BrandID)
-	end BrandName"
+	then (select b.Description from brandRubble b where r.brand = b.id)
+	when p.TypeID = '1'
+	then (select b.Description from BrandWhee b where b.id = w.brand)
+	end BrandName "
 	,"changeproduct c
 	left join product_N p on p.ProductID = c.ProductID
 	left join productDetailWheel w on p.ProductID = w.ProductID
@@ -150,7 +152,7 @@ $getDetailC = $getdata->my_sql_select("c.*,p.*, r.*, w.* ,w.diameter as diameter
 if(mysql_num_rows($getDetailC) > 0){
 		while($rowC = mysql_fetch_object($getDetailC)){
 			if($rowC->TypeID == '1'){
-				$gettype = "ล้อแม๊ก"." ขนาด:".$rowC->diameterWheel." ขอบ:".$rowC->whediameter." รู:".$rowC->holeSize." ประเภท:".$rowC->typeFormat;
+				$gettype = "ล้อแม๊ก ".$rowC->BrandName." ขนาด:".$rowC->diameterWheel." ขอบ:".$rowC->whediameter." รู:".$rowC->holeSize." ประเภท:".$rowC->typeFormat;
 			}else if($rowC->TypeID == '2'){
 				$gettype = "ยาง ".$rowC->BrandName." ขนาด:".$rowC->diameterRubber." ขอบ:".$rowC->rubdiameter." ซี่รี่:".$rowC->series." ความกว้าง:".$rowC->width;
 			}else{

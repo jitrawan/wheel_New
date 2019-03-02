@@ -157,10 +157,13 @@ if (mysql_num_rows($GroupType) > 0) {
                       </tr>';
 
             $DetailProduct = $getdata->my_sql_select(" p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
-
-            ,(select b.BrandName from brand b where r.brand = b.BrandID) as BrandName "
-
-            ," product_N p
+						,case
+				      when p.TypeID = '2'
+				      then (select b.Description from brandRubble b where r.brand = b.id)
+				      when p.TypeID = '1'
+				      then (select b.Description from BrandWhee b where b.id = w.brand)
+				      end BrandName "
+						," product_N p
 
             left join productDetailWheel w on p.ProductID = w.ProductID
 
@@ -177,7 +180,7 @@ if (mysql_num_rows($GroupType) > 0) {
 									$sumPriceSale = $sumPriceSale + $showDetailProduct->PriceSale;
                     if($showDetailProduct->TypeID == '1'){
 
-                      $gettype = " ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
+                      $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
 
                     }else if($showDetailProduct->TypeID == '2'){
 

@@ -214,10 +214,12 @@ if($getreserve_key != ""){
 		<?
 if(isset($_GET['paramKey'])){
   	$product_detail = $getdata->my_sql_query("p.*, r.*, w.* ,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
-	,case
-		when p.TypeID = '2'
-		then (select b.BrandName from brand b where r.brand = b.BrandID)
-		end BrandName
+    ,case
+      when p.TypeID = '2'
+      then (select b.Description from brandRubble b where r.brand = b.id)
+      when p.TypeID = '1'
+      then (select b.Description from BrandWhee b where b.id = w.brand)
+      end BrandName
   ,(select t.item_amt from reserve_item t where t.ProductID = p.ProductID and t.reserve_key = '".addslashes($_GET['reserve_key'])."') as item_amt
 	 "
 	," product_n p
@@ -225,7 +227,7 @@ if(isset($_GET['paramKey'])){
 	 left join productdetailwheel w on p.ProductID = w.ProductID "
 	," p.ProductID='".addslashes($_GET['paramKey'])."'");
 	if($product_detail->TypeID == '1'){
-		$gettype = "ล้อแม๊ก"." มือ".$product_detail->hand." ขอบ".$product_detail->whediameter;
+		$gettype = "ล้อแม๊ก ".$product_detail->BrandName." มือ".$product_detail->hand." ขอบ".$product_detail->whediameter;
 	}else if($product_detail->TypeID == '2'){
 		$gettype = "ยาง ".$product_detail->BrandName." มือ".$product_detail->hand." ขอบ".$product_detail->rubdiameter;
 	}else{

@@ -81,7 +81,12 @@ $sumAll = 0;
 																			<td colspan="5">&nbsp;&nbsp;<b>เลขที่ใบเสร็จ : '.@$row->reserve_code.'</b></td>
 																	</tr>';
 											$DetailProduct = $getdata->my_sql_select(" s.*, p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
-										  ,(select b.BrandName from brand b where r.brand = b.BrandID) as BrandName "
+											,case
+												when p.TypeID = '2'
+												then (select b.Description from brandRubble b where r.brand = b.id)
+												when p.TypeID = '1'
+												then (select b.Description from BrandWhee b where b.id = w.brand)
+												end BrandName "
 										  ," reserve_item s
 										  left join product_N p on p.ProductID = s.ProductID
 										  left join productDetailWheel w on p.ProductID = w.ProductID
@@ -95,7 +100,7 @@ $sumAll = 0;
 												$i = 1;
 												while($showDetailProduct = mysql_fetch_object($DetailProduct)){
 													if($showDetailProduct->TypeID == '1'){
-												 	 $gettype = " ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
+												 	 $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
 												  }else if($showDetailProduct->TypeID == '2'){
 												 	 $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterRubber." ขอบ:".$showDetailProduct->rubdiameter." ซี่รี่:".$showDetailProduct->series." ความกว้าง:".$showDetailProduct->width;
 												  }else{

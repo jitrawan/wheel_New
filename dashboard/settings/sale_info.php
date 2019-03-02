@@ -253,13 +253,27 @@ while($objShow = mysql_fetch_object($getproduct_info)){
     <tbody>
       <?
       $gettotal = 0;
-      $getproduct_info = $getdata->my_sql_select("i.* , p.* ","reserve_item i left join product_n p on i.ProductID = p.ProductID "," reserve_key='".$getreserve_info->reserve_key."' ");
+      $getproduct_info = $getdata->my_sql_select("i.* ,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      ,case
+        when p.TypeID = '2'
+        then (select b.Description from brandRubble b where r.brand = b.id)
+        when p.TypeID = '1'
+        then (select b.Description from BrandWhee b where b.id = w.brand)
+        end BrandName
+      ","reserve_item i left join product_n p on i.ProductID = p.ProductID
+      left join productDetailWheel w on p.ProductID = w.ProductID
+      left join productDetailRubber r on p.ProductID = r.ProductID
+      "," reserve_key='".$getreserve_info->reserve_key."' ");
       while($objShow = mysql_fetch_object($getproduct_info)){
         if($objShow->TypeID == '1'){
-          $gettype = "ล้อแม๊ก";
+          $gettype = "ล้อแม๊ก ".$objShow->BrandName." ขนาด:".$objShow->diameterWheel." ขอบ:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat;
+        }else if($objShow->TypeID == '2'){
+          $gettype = "ยาง ".$objShow->BrandName." ขนาด:".$objShow->diameterRubber." ขอบ:".$objShow->rubdiameter." ซี่รี่:".$objShow->series." ความกว้าง:".$objShow->width;
         }else{
-          $gettype = "ยาง";
+          $gettype = "";
         }
+
+        
       ?>
       <tr id="<?php echo @$objShow->item_key;?>">
         <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= @$objShow->item_amt?>" class="price"></div></label></td>

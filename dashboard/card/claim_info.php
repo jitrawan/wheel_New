@@ -203,7 +203,9 @@ $getdataclaim = $getdata->my_sql_select("c.*,p.*, r.*, w.* ,w.diameter as diamet
 ,(select f.card_status from card_info f where f.card_key = c.card_key) as card_status
 ,case
   when p.TypeID = '2'
-  then (select b.BrandName from brand b where r.brand = b.BrandID)
+  then (select b.Description from brandRubble b where r.brand = b.id)
+  when p.TypeID = '1'
+  then (select b.Description from BrandWhee b where b.id = w.brand)
   end BrandName "
 ,"card_item c
 left join product_n p on c.reseve_item_key = p.ProductID
@@ -232,7 +234,7 @@ if(mysql_num_rows($getdataclaim) > 0){
           while($objclaimShow = mysql_fetch_object($getdataclaim)){
               $getcardStatus = $getdata->my_sql_query("ctype_name","card_type","ctype_key = '".@$objclaimShow->card_status."' and ctype_status='1' ORDER BY ctype_insert");
             if($objclaimShow->TypeID == '1'){
-              $gettypeclaim = "ล้อแม๊ก"." ขนาด:".$objclaimShow->diameterWheel." ขอบ:".$objclaimShow->whediameter." รู:".$objclaimShow->holeSize." ประเภท:".$objclaimShow->typeFormat;
+              $gettypeclaim = "ล้อแม๊ก ".$objclaimShow->BrandName." ขนาด:".$objclaimShow->diameterWheel." ขอบ:".$objclaimShow->whediameter." รู:".$objclaimShow->holeSize." ประเภท:".$objclaimShow->typeFormat;
             }else if($objclaimShow->TypeID == '2'){
               $gettypeclaim = "ยาง ".$objclaimShow->BrandName." ขนาด:".$objclaimShow->diameterRubber." ขอบ:".$objclaimShow->rubdiameter." ซี่รี่:".$objclaimShow->series." ความกว้าง:".$objclaimShow->width;
             }else{
@@ -258,7 +260,9 @@ if(mysql_num_rows($getdataclaim) > 0){
 $getdatachange = $getdata->my_sql_select("c.*,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
 ,case
   when p.TypeID = '2'
-  then (select b.BrandName from brand b where r.brand = b.BrandID)
+  then (select b.Description from brandRubble b where r.brand = b.id)
+  when p.TypeID = '1'
+  then (select b.Description from BrandWhee b where b.id = w.brand)
   end BrandName "
 ,"changeProduct c
 left join product_n p on c.ProductID = p.ProductID
@@ -287,7 +291,7 @@ if(mysql_num_rows($getdatachange) > 0){
 
           while($objShow = mysql_fetch_object($getdatachange)){
             if($objShow->TypeID == '1'){
-              $gettypechange = "ล้อแม๊ก"." ขนาด:".$objShow->diameterWheel." ขอบ:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat;
+              $gettypechange = "ล้อแม๊ก ".$objShow->BrandName." ขนาด:".$objShow->diameterWheel." ขอบ:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat;
             }else if($objShow->TypeID == '2'){
               $gettypechange = "ยาง ".$objShow->BrandName." ขนาด:".$objShow->diameterRubber." ขอบ:".$objShow->rubdiameter." ซี่รี่:".$objShow->series." ความกว้าง:".$objShow->width;
             }else{

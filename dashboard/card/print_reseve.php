@@ -158,7 +158,9 @@ body{
 	$productInfo = $getdata->my_sql_select("i.*,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
 	,case
 		when p.TypeID = '2'
-		then (select b.BrandName from brand b where r.brand = b.BrandID)
+		then (select b.Description from brandRubble b where r.brand = b.id)
+		when p.TypeID = '1'
+		then (select b.Description from BrandWhee b where b.id = w.brand)
 		end BrandName "
 	," reserve_item i
 		 left join product_N p on p.ProductID = i.ProductID
@@ -168,7 +170,7 @@ body{
   //$productInfo = $getdata->my_sql_select("i.* , p.* ","reserve_item i left join product_n p on i.ProductID = p.ProductID "," i.reserve_key='".addslashes($_GET['key'])."' ");
   while($objpro = mysql_fetch_object($productInfo)){
 		if($objpro->TypeID == '1'){
-			$gettype = "ล้อแม๊ก"." ขนาด:".$objpro->diameterWheel." ขอบ:".$objpro->whediameter." รู:".$objpro->holeSize." ประเภท:".$objpro->typeFormat;
+			$gettype = "ล้อแม๊ก ".$objpro->BrandName." ขนาด:".$objpro->diameterWheel." ขอบ:".$objpro->whediameter." รู:".$objpro->holeSize." ประเภท:".$objpro->typeFormat;
 		}else if($objpro->TypeID == '2'){
 			$gettype = "ยาง ".$objpro->BrandName." ขนาด:".$objpro->diameterRubber." ขอบ:".$objpro->rubdiameter." ซี่รี่:".$objpro->series." ความกว้าง:".$objpro->width;
 		}else{
