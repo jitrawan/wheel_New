@@ -188,6 +188,30 @@ break;
 										}
 
 		break;
+		case "change_status_DiameterRubble" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("DiameterRubble","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("DiameterRubble","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+    break;
+		case "change_status_SeriesRubble" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("SeriesRubble","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("SeriesRubble","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+    break;
+		case "change_status_WidthRubble" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("WidthRubble","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("WidthRubble","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+		break;
+		case "change_status_brandRubble" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("brandRubble","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("brandRubble","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+		break;
 
 		case "hide_card" : $getdata->my_sql_update("card_info","card_status='hidden'","card_key='".addslashes($_GET['key'])."'");
 		break;
@@ -258,6 +282,14 @@ break;
 		case "delete_BrandWhee" : $getdata->my_sql_delete("BrandWhee","id='".addslashes($_GET['key'])."'");
 		break;
 		case "delete_HoleSizeWhee" : $getdata->my_sql_delete("HoleSizeWhee","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_DiameterRubble" : $getdata->my_sql_delete("DiameterRubble","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_SeriesRubble" : $getdata->my_sql_delete("SeriesRubble","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_WidthRubble" : $getdata->my_sql_delete("WidthRubble","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_brandRubble" : $getdata->my_sql_delete("brandRubble","id='".addslashes($_GET['key'])."'");
 		break;
 
 		case "saveTable" :
