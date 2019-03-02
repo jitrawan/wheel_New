@@ -10,13 +10,13 @@
 </style>
 <div class="row">
      <div class="col-lg-12">
-             <h1 class="page-header"><i class="fa fa-gears fa-fw"></i> ตั้งค่าล้อแม็ค</h1>
+             <h1 class="page-header"><i class="fa fa-gears fa-fw"></i> ตั้งค่าล้อแม็ก</h1>
      </div>
 </div>
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
   <li><a href="?p=setting">ตั้งค่า</a></li>
-  <li class="active">ตั้งค่าล้อแม็ค</li>
+  <li class="active">ตั้งค่าล้อแม็ก</li>
 </ol>
 <a href="?p=settingDiameterWheelList" class="btn btn-primary btn-sm"><i class="fa fa fa-gear fa-fw"></i>&nbsp;&nbsp;ขนาด</a></br></br>
 <a href="?p=settingRimWheelList" class="btn btn-primary btn-sm"><i class="fa fa fa-gear fa-fw"></i>&nbsp;&nbsp;ขอบ</a></br></br>

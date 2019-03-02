@@ -7,23 +7,29 @@
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
-   <li><a href="?p=MainSettingWheel">ตั้งค่าล้อแม็ค</a></li>
+   <li><a href="?p=MainSettingWheel">ตั้งค่าล้อแม็ก</a></li>
   <li class="active">ขอบ</li>
 </ol>
 
 <?php
 if(isset($_POST['save_card'])){
 	if(addslashes($_POST['shelf_detail']) != NULL){
-    //$ctype_key = md5(addslashes($_POST['cat_title']).time("now"));
-    $getdata->my_sql_insert_New("shelf","shelf_detail, shelf_color, shelf_status","'".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_color'])."' ,'".addslashes($_POST['shelf_status'])."'");
-		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
-	}else{
+    $chk_DiameterWhee = $getdata->my_sql_select(NULL,"RimWheel"," Description = '".addslashes($_POST['shelf_detail'])."' ");
+    if(mysql_num_rows($chk_DiameterWhee) < 1){
+      $getdata->my_sql_insert_New(" RimWheel "," Description, status "," '".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_status'])."' ");
+  		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
+  }else{
 		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 	}
 }
 if(isset($_POST['save_edit_card'])){
 		 if(addslashes($_POST['edit_shelf_detail'])!= NULL){
-			 $getdata->my_sql_update("shelf","shelf_detail='".addslashes($_POST['edit_shelf_detail'])."',shelf_color='".addslashes($_POST['edit_shelf_color'])."'","shelf_id='".addslashes($_POST['edit_shelf_id'])."'");
+			 $getdata->my_sql_update("RimWheel","Description='".addslashes($_POST['edit_shelf_detail'])."'","id='".addslashes($_POST['edit_shelf_id'])."'");
+
+       //echo "<script>console.log('UPDATE DiameterWhee SET Desc = '".addslashes($_POST['edit_shelf_detail'])."' where id = '".addslashes($_POST['edit_shelf_id'])."'');</script>";
 			$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
 		 }else{
 			 $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
@@ -37,7 +43,7 @@ if(isset($_POST['save_edit_card'])){
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
-                    <h4 class="modal-title" id="memberModalLabel">แก้ไข Shelf สินค้า</h4>
+                    <h4 class="modal-title" id="memberModalLabel">แก้ไขข้อมูลขอบแม็ก</h4>
                 </div>
                 <div class="ct">
 
@@ -53,19 +59,16 @@ if(isset($_POST['save_edit_card'])){
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลshelf สินค้า</h4>
+                                            <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลขอบแม็ก</h4>
                                         </div>
                                         <div class="modal-body">
                                           <div class="form-group">
-                                            <label for="shelf_detail">รายละเอียดshelf สินค้า</label>
+                                            <label for="shelf_detail">รายละเอียด</label>
                                             <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
                                           </div>
 
                                           <div class="form-group row">
-                                            <div class="col-md-6">
-                                              <label for="shelf_color">แทบสี</label>
-                                              <input type="text" name="shelf_color" id="shelf_color" class="form-control cp1">
-                                            </div>
+
                                              <div class="col-md-6"><label for="shelf_status"><?php echo @LA_LB_STATUS;?></label>
                                               <select name="shelf_status" id="shelf_status" class="form-control">
                                                 <option value="1" selected="selected"><?php echo @LA_BTN_SHOW;?></option>
@@ -97,32 +100,32 @@ if(isset($_POST['save_edit_card'])){
 
    <div class="table-responsive">
   <!-- Table -->
-  <table width="100%" class="table table-striped table-bordered table-hover">
+  <table width="70%" class="table table-striped table-bordered table-hover">
   <thead>
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
-    <th width="74%" bgcolor="#5fb760">รายละเอียด shelf </th>
+    <th width="74%" bgcolor="#5fb760">รายละเอียด</th>
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
   <tbody>
   <?php
   $x=0;
-  $getcat = $getdata->my_sql_select(NULL,"shelf","shelf_status in ('1','2') ORDER BY shelf_id ");
+  $getcat = $getdata->my_sql_select(NULL,"RimWheel","status in ('0','1','2') ORDER BY id ");
   while($showcat = mysql_fetch_object($getcat)){
 	  $x++;
   ?>
-  <tr id="<?php echo @$showcat->ctype_key;?>">
+  <tr id="<?php echo @$showcat->id;?>">
     <td align="center"><?php echo @$x;?></td>
-    <td>&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showcat->shelf_color;?>"></i>&nbsp;<?php echo @$showcat->shelf_detail;?></td>
+    <td>&nbsp;<?php echo @$showcat->Description;?></td>
     <td align="center" valign="middle">
       <?php
-	  if($showcat->shelf_status == '1'){
-		  echo '<button type="button" class="btn btn-success btn-xs" id="btn-'.@$showcat->shelf_id.'" onClick="javascript:changecatStatus(\''.@$showcat->shelf_id.'\',\''.$_SESSION['lang'].'\');"><i class="fa fa-unlock-alt" id="icon-'.@$showcat->shelf_id.'"></i> <span id="text-'.@$showcat->shelf_id.'">'.@LA_BTN_ON.'</span></button>';
+	  if($showcat->status == '1'){
+		  echo '<button type="button" class="btn btn-success btn-xs" id="btn-'.@$showcat->id.'" onClick="javascript:changecatStatus(\''.@$showcat->id.'\',\''.$_SESSION['lang'].'\');"><i class="fa fa-unlock-alt" id="icon-'.@$showcat->id.'"></i> <span id="text-'.@$showcat->id.'">'.@LA_BTN_ON.'</span></button>';
 	  }else{
-		  echo '<button type="button" class="btn btn-danger btn-xs" id="btn-'.@$showcat->shelf_id.'" onClick="javascript:changecatStatus(\''.@$showcat->shelf_id.'\',\''.$_SESSION['lang'].'\');"><i class="fa fa-lock" id="icon-'.@$showcat->shelf_id.'"></i> <span id="text-'.@$showcat->shelf_id.'">'.@LA_BTN_OFF.'</span></button>';
+		  echo '<button type="button" class="btn btn-danger btn-xs" id="btn-'.@$showcat->id.'" onClick="javascript:changecatStatus(\''.@$showcat->id.'\',\''.$_SESSION['lang'].'\');"><i class="fa fa-lock" id="icon-'.@$showcat->id.'"></i> <span id="text-'.@$showcat->id.'">'.@LA_BTN_OFF.'</span></button>';
 	  }
-	  ?><a data-toggle="modal" data-target="#edit_card_type" data-whatever="<?php echo @$showcat->shelf_id;?>" class="btn btn-xs btn-info" style="color:#FFF;"><i class="fa fa-edit fa-fw"></i> <?php echo @LA_BTN_EDIT;?></a><button type="button" class="btn btn-danger btn-xs" onClick="javascript:deletecat('<?php echo @$showcat->shelf_id;?>');"><i class="glyphicon glyphicon-remove"></i> <?php echo @LA_BTN_DELETE;?></button></td>
+	  ?><a data-toggle="modal" data-target="#edit_card_type" data-whatever="<?php echo @$showcat->id;?>" class="btn btn-xs btn-info" style="color:#FFF;"><i class="fa fa-edit fa-fw"></i> <?php echo @LA_BTN_EDIT;?></a><button type="button" class="btn btn-danger btn-xs" onClick="javascript:deletecat('<?php echo @$showcat->id;?>');"><i class="glyphicon glyphicon-remove"></i> <?php echo @LA_BTN_DELETE;?></button></td>
   </tr>
   <?php
   }
@@ -174,23 +177,25 @@ function changecatStatus(catkey,lang){
 			}
   		}
 	}
-
-	xmlhttp.open("GET","function.php?type=change_shelf_status&key="+catkey+"&sts="+sts,true);
+  xmlhttp.open("GET","function.php?type=change_status_RimWheel&key="+catkey+"&sts="+sts,true);
 	xmlhttp.send();
 }
 	function deletecat(catkey){
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-	 	xmlhttp=new XMLHttpRequest();
-	}else{// code for IE6, IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function(){
-  		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		document.getElementById(catkey).innerHTML = '';
-  		}
-	}
-	xmlhttp.open("GET","function.php?type=delete_cardtype&key="+catkey,true);
-	xmlhttp.send();
+    console.log(catkey);
+    if(confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่ ?')){
+    if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+    }else{// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function(){
+        if (xmlhttp.readyState==4 && xmlhttp.status==200){
+      document.getElementById(catkey).innerHTML = '';
+        }
+    }
+    xmlhttp.open("GET","function.php?type=delete_RimWheel&key="+catkey,true);
+    xmlhttp.send();
+    }
 }
 </script>
 <script>
@@ -202,7 +207,7 @@ function changecatStatus(catkey,lang){
 
             $.ajax({
                 type: "GET",
-                url: "settings/edit_shelf.php",
+                url: "settings/edit_RimWheel.php",
                 data: dataString,
                 cache: false,
                 success: function (data) {

@@ -153,6 +153,41 @@ break;
 										}
 
 		break;
+		case "change_status_DiameterWhee" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("DiameterWhee","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("DiameterWhee","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+
+		break;
+		case "change_status_RimWheel" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("RimWheel","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("RimWheel","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+
+		break;
+		case "change_status_TypeFormatWheell" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("TypeFormatWheel","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("TypeFormatWheel","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+
+		break;
+		case "change_status_BrandWhee" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("BrandWhee","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("BrandWhee","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+
+		break;
+		case "change_status_HoleSizeWhee" : if(addslashes($_GET['sts']) == "1"){
+											$getdata->my_sql_update("HoleSizeWhee","status='0'","id='".addslashes($_GET['key'])."'");
+										}else{
+											$getdata->my_sql_update("HoleSizeWhee","status='1'","id='".addslashes($_GET['key'])."'");
+										}
+
+		break;
 
 		case "hide_card" : $getdata->my_sql_update("card_info","card_status='hidden'","card_key='".addslashes($_GET['key'])."'");
 		break;
@@ -214,12 +249,17 @@ break;
 		break;
 		case "delete_free_temp_item" : $getdata->my_sql_delete("products_export_free_temp","free_key='".addslashes($_GET['key'])."'");
 		break;
-		case "insert_saleinfo" :
-//$getpo = $getdata->my_sql_query(NULL,"stock_tb_receive_master_sub"," '".addslashes($_GET['key'])."' ");
-//$getdata->my_sql_update("product_N"," Quantity =  Quantity - '".addslashes($getpo->total)."' ","ProductID='".addslashes($_GET['id'])."' ");
-//$getdata->my_sql_delete(" stock_tb_receive_master_sub "," no='".addslashes($_GET['key'])."' ");
+		case "delete_DiameterWhee" : $getdata->my_sql_delete("DiameterWhee","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_RimWheel" : $getdata->my_sql_delete("RimWheel","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_TypeFormatWheel" : $getdata->my_sql_delete("TypeFormatWheel","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_BrandWhee" : $getdata->my_sql_delete("BrandWhee","id='".addslashes($_GET['key'])."'");
+		break;
+		case "delete_HoleSizeWhee" : $getdata->my_sql_delete("HoleSizeWhee","id='".addslashes($_GET['key'])."'");
+		break;
 
-break;
 		case "saveTable" :
 		$getproduct_info = $getdata->my_sql_select(" p.*,r.*,w.*,p.ProductID as setProductID "
 		," product_N p left join productDetailWheel w on p.ProductID = w.ProductID
