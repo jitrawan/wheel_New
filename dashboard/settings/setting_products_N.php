@@ -18,41 +18,78 @@
 if(isset($_POST['save_product'])){
 
 	if(addslashes($_POST['ProductID']) != NULL){
+    $getproductID = $getdata->my_sql_select(NULL,"product_N","ProductID ='".addslashes($_POST['ProductID'])."' ");
+    if(mysql_num_rows($getproductID) < 1){
+        if($_POST['type'] == '1'){
+            $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+          ,case
+            when p.TypeID = '2'
+            then (select b.Description from brandRubble b where r.brand = b.id)
+            when p.TypeID = '1'
+            then (select b.Description from BrandWhee b where b.id = w.brand)
+            end BrandName "
+            ,"product_N"
+            ,"productDetailWheel w on p.ProductID = w.ProductID
+            left join productdetailrubber r on p.ProductID = r.ProductID "
+            ,"Where p.TypeID = '1' And p.hand = '".addslashes($_POST['hand'])."'
+             And w.diameter = '".addslashes($_POST['diameterWheel'])."'
+             And w.rim = '".addslashes($_POST['rim'])."' And w.holeSize = ".addslashes($_POST['holeSize'])."'
+             And w.typeFormat = '".addslashes($_POST['typeFormat'])."' w.brand = '".addslashes($_POST['brandWheel'])."' ");
 
-$getfont = $getdata->my_sql_select(NULL,"product_N","ProductID='".addslashes($_POST['ProductID'])."' ");
+        }else{
+          $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+        ,case
+          when p.TypeID = '2'
+          then (select b.Description from brandRubble b where r.brand = b.id)
+          when p.TypeID = '1'
+          then (select b.Description from BrandWhee b where b.id = w.brand)
+          end BrandName "
+          ,"product_N"
+          ,"productDetailWheel w on p.ProductID = w.ProductID
+          left join productdetailrubber r on p.ProductID = r.ProductID "
+          ,"Where p.TypeID = '2' And p.hand = '".addslashes($_POST['hand'])."'
+          And r.diameter = '".addslashes($_POST['diameterRubber'])."'
+          And r.series = '".addslashes($_POST['series'])."'
+          And r.width = '".addslashes($_POST['width'])."'
+          And r.brand = '".addslashes($_POST['brand'])."' ");
+        }
+        if(mysql_num_rows($getfont) < 1){
+            $getdata->my_sql_insert_New("product_N","ProductID, dealer_code
+            , Quantity, PriceSale, PriceBuy, TypeID, ProductStatus, shelf_id, hand, discount "
+            ," '".addslashes($_POST['ProductID'])."'
+            ,'".addslashes($_POST['dealer_code'])."'
+            ,'".addslashes($_POST['Quantity'])."'
+            ,'".addslashes($_POST['PriceSale'])."'
+            ,'".addslashes($_POST['PriceBuy'])."'
+            ,'".addslashes($_POST['type'])."'
+            ,'".addslashes($_POST['pro_status'])."'
+            ,'".addslashes($_POST['shelf_id'])."'
+            , '".addslashes($_POST['hand'])."'
+            , '".addslashes($_POST['discount'])."' ");
 
-if(mysql_num_rows($getfont) < 1){
-    $getdata->my_sql_insert_New("product_N","ProductID, dealer_code
-    , Quantity, PriceSale, PriceBuy, TypeID, ProductStatus, shelf_id, hand, discount "
-    ," '".addslashes($_POST['ProductID'])."'
-    ,'".addslashes($_POST['dealer_code'])."'
-    ,'".addslashes($_POST['Quantity'])."'
-    ,'".addslashes($_POST['PriceSale'])."'
-    ,'".addslashes($_POST['PriceBuy'])."'
-    ,'".addslashes($_POST['type'])."'
-    ,'".addslashes($_POST['pro_status'])."'
-    ,'".addslashes($_POST['shelf_id'])."'
-    , '".addslashes($_POST['hand'])."'
-    , '".addslashes($_POST['discount'])."' ");
-
-    if($_POST['type'] == '1'){
-    $getdata->my_sql_insert_New("productDetailWheel","ProductID, diameter, rim, holeSize, typeFormat, brand"
-    ," '".addslashes($_POST['ProductID'])."'
-    , '".addslashes($_POST['diameterWheel'])."'
-    , '".addslashes($_POST['rim'])."'
-    , '".addslashes($_POST['holeSize'])."'
-    , '".addslashes($_POST['typeFormat'])."'
-    , '".addslashes($_POST['brandWheel'])."' ");
-  }else if ($_POST['type'] == '2'){
-      $getdata->my_sql_insert_New("productDetailRubber","ProductID, width, series, diameter, brand"
-      ,"  '".addslashes($_POST['ProductID'])."'
-      , '".addslashes($_POST['width'])."'
-      , '".addslashes($_POST['series'])."'
-      , '".addslashes($_POST['diameterRubber'])."'
-      , '".addslashes($_POST['brand'])."'");
-    }
-    $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
-  }
+            if($_POST['type'] == '1'){
+            $getdata->my_sql_insert_New("productDetailWheel","ProductID, diameter, rim, holeSize, typeFormat, brand"
+            ," '".addslashes($_POST['ProductID'])."'
+            , '".addslashes($_POST['diameterWheel'])."'
+            , '".addslashes($_POST['rim'])."'
+            , '".addslashes($_POST['holeSize'])."'
+            , '".addslashes($_POST['typeFormat'])."'
+            , '".addslashes($_POST['brandWheel'])."' ");
+          }else if ($_POST['type'] == '2'){
+              $getdata->my_sql_insert_New("productDetailRubber","ProductID, width, series, diameter, brand"
+              ,"  '".addslashes($_POST['ProductID'])."'
+              , '".addslashes($_POST['width'])."'
+              , '".addslashes($_POST['series'])."'
+              , '".addslashes($_POST['diameterRubber'])."'
+              , '".addslashes($_POST['brand'])."'");
+            }
+            $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+          }else{
+            $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+          }
+}else{
+  $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+}
   }else{
 		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 	}
@@ -60,25 +97,63 @@ if(mysql_num_rows($getfont) < 1){
 
 if(isset($_POST['save_edit_item'])){
   if(addslashes($_POST['edit_ProductID']) != NULL){
-    $table = "product_N p ";
-    $Strsql = " p.shelf_id = ".addslashes($_POST['edit_shelf_id']).", p.dealer_code = '".addslashes($_POST['edit_dealer_code'])."' ";
-    $Strsql .= " ,p.Quantity=".addslashes($_POST['edit_Quantity'])." , p.PriceSale= ".addslashes($_POST['edit_PriceSale'])." ";
-    $Strsql .= " ,p.PriceBuy=".addslashes($_POST['edit_PriceBuy'])." ";
-    $Strsql .= " ,p.hand = '".addslashes($_POST['edit_hand'])."',p.discount = '".addslashes($_POST['discount'])."' ";
     if($_POST['gettype'] == '1'){
-      $table .= " left join productDetailWheel w on p.ProductID = w.ProductID ";
-      $Strsql .= " ,w.diameter = '".addslashes($_POST['edit_diameterWheel'])."' ,w.rim = '".addslashes($_POST['edit_rim'])."' ";
-      $Strsql .= " ,w.holeSize = ".addslashes($_POST['edit_holeSize'])." ,w.typeFormat = '".addslashes($_POST['edit_typeFormat'])."', w.brand =  '".addslashes($_POST['edit_brandWheel'])."' ";
-    }else if($_POST['gettype'] == '2'){
-      $table .= " left join productDetailRubber r on p.ProductID = r.ProductID ";
-      $Strsql .= " ,r.width = '".addslashes($_POST['edit_width'])."' ,r.series = '".addslashes($_POST['edit_series'])."' ";
-      $Strsql .= " ,r.diameter = '".addslashes($_POST['edit_diameterRubber'])."' ,r.brand = '".addslashes($_POST['edit_brand'])."' ";
+        $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      ,case
+        when p.TypeID = '2'
+        then (select b.Description from brandRubble b where r.brand = b.id)
+        when p.TypeID = '1'
+        then (select b.Description from BrandWhee b where b.id = w.brand)
+        end BrandName "
+        ,"product_N"
+        ,"productDetailWheel w on p.ProductID = w.ProductID
+        left join productdetailrubber r on p.ProductID = r.ProductID "
+        ,"Where p.TypeID = '1' And p.hand = '".addslashes($_POST['edit_hand'])."'
+         And w.diameter = '".addslashes($_POST['edit_diameterWheel'])."'
+         And w.rim = '".addslashes($_POST['edit_rim'])."' And w.holeSize = ".addslashes($_POST['edit_holeSize'])."'
+         And w.typeFormat = '".addslashes($_POST['edit_typeFormat'])."' w.brand = '".addslashes($_POST['edit_brandWheel'])."' ");
+
+    }else{
+      $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+    ,case
+      when p.TypeID = '2'
+      then (select b.Description from brandRubble b where r.brand = b.id)
+      when p.TypeID = '1'
+      then (select b.Description from BrandWhee b where b.id = w.brand)
+      end BrandName "
+      ,"product_N"
+      ,"productDetailWheel w on p.ProductID = w.ProductID
+      left join productdetailrubber r on p.ProductID = r.ProductID "
+      ,"Where p.TypeID = '2' And p.hand = '".addslashes($_POST['edit_hand'])."'
+      And r.diameter = '".addslashes($_POST['edit_diameterRubber'])."'
+      And r.series = '".addslashes($_POST['edit_series'])."'
+      And r.width = '".addslashes($_POST['edit_width'])."'
+      And r.brand = '".addslashes($_POST['edit_brand'])."' ");
     }
+
+    if(mysql_num_rows($getfont) < 1){
+        $table = "product_N p ";
+        $Strsql = " p.shelf_id = ".addslashes($_POST['edit_shelf_id']).", p.dealer_code = '".addslashes($_POST['edit_dealer_code'])."' ";
+        $Strsql .= " ,p.Quantity=".addslashes($_POST['edit_Quantity'])." , p.PriceSale= ".addslashes($_POST['edit_PriceSale'])." ";
+        $Strsql .= " ,p.PriceBuy=".addslashes($_POST['edit_PriceBuy'])." ";
+        $Strsql .= " ,p.hand = '".addslashes($_POST['edit_hand'])."',p.discount = '".addslashes($_POST['discount'])."' ";
+        if($_POST['gettype'] == '1'){
+          $table .= " left join productDetailWheel w on p.ProductID = w.ProductID ";
+          $Strsql .= " ,w.diameter = '".addslashes($_POST['edit_diameterWheel'])."' ,w.rim = '".addslashes($_POST['edit_rim'])."' ";
+          $Strsql .= " ,w.holeSize = ".addslashes($_POST['edit_holeSize'])." ,w.typeFormat = '".addslashes($_POST['edit_typeFormat'])."', w.brand =  '".addslashes($_POST['edit_brandWheel'])."' ";
+        }else if($_POST['gettype'] == '2'){
+          $table .= " left join productDetailRubber r on p.ProductID = r.ProductID ";
+          $Strsql .= " ,r.width = '".addslashes($_POST['edit_width'])."' ,r.series = '".addslashes($_POST['edit_series'])."' ";
+          $Strsql .= " ,r.diameter = '".addslashes($_POST['edit_diameterRubber'])."' ,r.brand = '".addslashes($_POST['edit_brand'])."' ";
+        }
 
 
 	  $getdata->my_sql_updateJoin($table , $Strsql ," p.ProductID = '".addslashes($_POST['edit_ProductID'])."' ");
 
 	$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
+}else{
+  $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+}
 	}else{
 		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 	}
@@ -209,7 +284,7 @@ if(isset($_POST['save_edit_item'])){
                                                   <option value="" selected="selected">--เลือก--</option>
                                                   <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY id ");
                                                      while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
-                                                   <option value="<?= $showDiameterRubble->id?>" ><?= $showDiameterRubble->Description?></option>
+                                                   <option value="<?= $showDiameterRubble->Description?>" ><?= $showDiameterRubble->Description?></option>
                                                    <?}?>
                                                 </select>
                                                </div>
@@ -239,7 +314,7 @@ if(isset($_POST['save_edit_item'])){
                                                   <option value="" selected="selected">--เลือก--</option>
                                                   <? $getbrandRubble = $getdata->my_sql_select(NULL,"brandRubble","status = '1' ORDER BY id ");
                                                      while($showbrandRubble = mysql_fetch_object($getbrandRubble)){?>
-                                                   <option value="<?= $showbrandRubble->Description?>" ><?= $showbrandRubble->Description?></option>
+                                                   <option value="<?= $showbrandRubble->id?>" ><?= $showbrandRubble->Description?></option>
                                                    <?}?>
                                                 </select>
                                               </div>
@@ -554,7 +629,7 @@ if(isset($_POST['save_edit_item'])){
       if($showproduct->TypeID == '1'){
         $gettype = "ล้อแม๊ก ".$showproduct->BrandName." ขนาด:".$showproduct->diameterWheel." ขอบ:".$showproduct->whediameter." รู:".$showproduct->holeSize." ประเภท:".$showproduct->typeFormat;
       }else if($showproduct->TypeID == '2'){
-        $gettype = "ยาง ".$showproduct->BrandName." ขนาด:".$showproduct->diameterRubber." ขอบ:".$showproduct->rubdiameter." ซี่รี่:".$showproduct->series." ความกว้าง:".$showproduct->width;
+        $gettype = "ยาง ".$showproduct->BrandName." ขนาด:".$showproduct->diameterRubber." ซี่รี่:".$showproduct->series." ความกว้าง:".$showproduct->width;
       }else{
         $gettype = "";
       }

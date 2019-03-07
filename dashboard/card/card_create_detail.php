@@ -181,13 +181,28 @@ if($getreserve_key != ""){
 		    <tbody class="member">
 		      <?
 		      $gettotal = 0;
-		      $getproduct_info = $getdata->my_sql_select("i.* , p.* ","reserve_item i left join product_n p on i.ProductID = p.ProductID "," reserve_key='".$_GET['reserve_key']."' ");
+		      $getproduct_info = $getdata->my_sql_select("i.*, p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+          ,case
+            when p.TypeID = '2'
+            then (select b.Description from brandRubble b where r.brand = b.id)
+            when p.TypeID = '1'
+            then (select b.Description from BrandWhee b where b.id = w.brand)
+            end BrandName "
+            ,"reserve_item i
+              left join product_n p on i.ProductID = p.ProductID
+              left join productDetailWheel w on p.ProductID = w.ProductID
+              left join productDetailRubber r on p.ProductID = r.ProductID "
+            ," i.reserve_key='".$_GET['reserve_key']."' ");
 		      while($objShow = mysql_fetch_object($getproduct_info)){
-		        if($objShow->TypeID == '1'){
-		          $gettypeshow = "ล้อแม๊ก";
-		        }else{
-		          $gettypeshow = "ยาง";
-		        }
+
+            if($objShow->TypeID == '1'){
+              $gettypeshow = "ล้อแม๊ก ".$objShow->BrandName." ขนาด:".$objShow->diameterWheel." ขอบ:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat;
+            }else if($objShow->TypeID == '2'){
+              $gettypeshow = "ยาง ".$objShow->BrandName." ขนาด:".$objShow->diameterRubber." ซี่รี่:".$objShow->series." ความกว้าง:".$objShow->width;
+            }else{
+              $gettypeshow = "";
+            }
+
 		      ?>
 
 		      <tr onClick="window.location='../dashboard/?p=card_create_detail&key=<?php echo addslashes($_GET['key']);?>&reserve_key=<?php echo @$objShow->reserve_key;?>&paramKey=<?php echo @$objShow->ProductID;?>'" id="<?php echo @$objShow->item_key;?>">
@@ -226,13 +241,14 @@ if(isset($_GET['paramKey'])){
 	 left join productdetailrubber r on p.ProductID = r.ProductID
 	 left join productdetailwheel w on p.ProductID = w.ProductID "
 	," p.ProductID='".addslashes($_GET['paramKey'])."'");
-	if($product_detail->TypeID == '1'){
-		$gettype = "ล้อแม๊ก ".$product_detail->BrandName." มือ".$product_detail->hand." ขอบ".$product_detail->whediameter;
-	}else if($product_detail->TypeID == '2'){
-		$gettype = "ยาง ".$product_detail->BrandName." มือ".$product_detail->hand." ขอบ".$product_detail->rubdiameter;
-	}else{
-		$gettype = "";
-	}
+
+  if($product_detail->TypeID == '1'){
+    $gettype = "ล้อแม๊ก ".$product_detail->BrandName." ขนาด:".$product_detail->diameterWheel." ขอบ:".$product_detail->whediameter." รู:".$product_detail->holeSize." ประเภท:".$product_detail->typeFormat;
+  }else if($product_detail->TypeID == '2'){
+    $gettype = "ยาง ".$product_detail->BrandName." ขนาด:".$product_detail->diameterRubber." ซี่รี่:".$product_detail->series." ความกว้าง:".$product_detail->width;
+  }else{
+    $gettype = "";
+  }
 }
 		?>
 		<td ><label for="product_Id">รหัสสินค้า</label>
@@ -251,8 +267,8 @@ if(isset($_GET['paramKey'])){
     <td width="8%"><button type="submit" name="save_item" id="save_item" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> เพิ่มรายการ</button></td>
     </tr>
   <tr style="font-weight:bold; color:#FFF; text-align:center;">
-    <td width="10%" bgcolor="#888888">หมายเลข</td>
-    <td width="23%" bgcolor="#888888">ชื่อรายการ</td>
+    <!--td width="10%" bgcolor="#888888">หมายเลข</td-->
+    <td width="23%" colspan="2" bgcolor="#888888">ชื่อรายการ</td>
     <td bgcolor="#888888">สาเหตุที่ส่งซ่อม/เคลม</td>
     <td bgcolor="#888888">จำนวนเคลม</td>
     <td bgcolor="#888888">ราคาโดยประมาณ</td>
@@ -263,8 +279,8 @@ if(isset($_GET['paramKey'])){
 	while($showitem = mysql_fetch_object($getitem)){
 	?>
   <tr id="<?php echo @$showitem->item_key;?>">
-    <td align="center" bgcolor="#EFEFEF"><strong><?php echo @$showitem->item_number;?></strong></td>
-    <td><strong><?php echo @$showitem->reseve_item_key;?> <?php echo @$showitem->item_name;?></strong></td>
+    <!--td align="center" bgcolor="#EFEFEF"><strong><?php echo @$showitem->item_number;?></strong></td-->
+    <td  colspan="2"><strong><?php echo @$showitem->reseve_item_key;?> <?php echo @$showitem->item_name;?></strong></td>
     <td style="color:#970002;"><strong><?php echo @$showitem->item_note;?></strong></td>
     <td align="right"><strong><?php echo @$showitem->item_amt;?></strong></td>
     <td align="right"><strong><?php echo @($showitem->item_price_aprox == 0)?'ไม่ระบุ':convertPoint2($showitem->item_price_aprox,2);?></strong></td>
@@ -283,8 +299,9 @@ if(isset($_GET['paramKey'])){
 <script language="javascript">
 $( document ).ready(function() {
   $(".number").bind('keyup mouseup', function () {
-
-			var amt = $("#get_item_am").val();
+var getreserve_key = '<?= addslashes($_GET['reserve_key'])?>';
+    if(getreserve_key != ""){
+    	var amt = $("#get_item_am").val();
 			if($(this).attr('name') == 'item_amt'){
 				if($(this).val() < 0){
 					alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
@@ -299,6 +316,7 @@ $( document ).ready(function() {
 				$(this).val(0);
 			}
 		}
+  }
 
 
 						});

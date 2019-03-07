@@ -8,7 +8,7 @@ if(addslashes($_GET['key']) == NULL){
 <div class="row">
      <div class="col-lg-12">
              <h1 class="page-header"><i class="fa fa-history fa-fw"></i> ประวัติการบันทึกสถานะ [<?php echo @$card_detail->card_code;?>]</h1>
-     </div>        
+     </div>
 </div>
 <ol class="breadcrumb">
 <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
@@ -21,7 +21,7 @@ if(addslashes($_GET['key']) == NULL){
                                 </li>
                                 <li><a href="#all_status" data-toggle="tab">ประวัติการอัพเดทสถานะ</a>
                                 </li>
-                              
+
                             </ul>
 
                             <!-- Tab panes -->
@@ -36,14 +36,14 @@ if(addslashes($_GET['key']) == NULL){
                             <div class="col-md-3"><strong>รหัสการส่งซ่อม/เคลม</strong></div>
                             <div class="col-md-3"><?php echo @$card_detail->card_code;?></div>
                             <div class="col-md-3"><strong>วันที่</strong></div>
-                            <div class="col-md-3"><?php echo @dateTimeConvertor($card_detail->card_insert);?></div>
+                            <div class="col-md-3"><?php echo $card_detail->card_insert;?></div>
                             </div>
                             <div class="row form-group">
                             <div class="col-md-3"><strong>ชื่อผู้ส่งซ่อม</strong></div>
                             <div class="col-md-3"><?php echo @$card_detail->card_customer_name.'&nbsp;&nbsp;&nbsp;'.$card_detail->card_customer_lastname;?></div>
                              <div class="col-md-3"><strong>หมายเลขโทรศัพท์</strong></div>
                             <div class="col-md-3"><?php echo @$card_detail->card_customer_phone;?></div>
-                            
+
                             </div>
                              <div class="row form-group">
                               <div class="col-md-3"><strong>ที่อยู่</strong></div>
@@ -56,7 +56,7 @@ if(addslashes($_GET['key']) == NULL){
                              <div class="col-md-3" style="color:#00BB32"><strong><?php echo @($card_detail->card_done_aprox != '0000-00-00')?dateConvertor($card_detail->card_done_aprox):'ไม่ระบุ';?></strong></div>
                              <div class="col-md-3"><strong>หมายเหตุ</strong></div>
                              <div class="col-md-3"><?php echo @$card_detail->card_note;?></div>
-                              
+
                               </div>
                               <div class="row form-group">
                               <div class="col-md-3"><strong>เจ้าหน้าที่</strong></div>
@@ -73,7 +73,7 @@ if(addslashes($_GET['key']) == NULL){
     </tr>
     </thead>
     <tbody>
- <?php 
+ <?php
 	$getitem = $getdata->my_sql_select(NULL,"card_item","card_key='".$card_detail->card_key."' ORDER BY item_insert");
 	while($showitem = mysql_fetch_object($getitem)){
 	?>
@@ -82,7 +82,7 @@ if(addslashes($_GET['key']) == NULL){
     <td><?php echo @$showitem->item_name;?></td>
     <td style="color:#970002;"><?php echo @$showitem->item_note;?></td>
     <td align="right"><?php echo @($showitem->item_price_aprox == 0)?'ไม่ระบุ':convertPoint2($showitem->item_price_aprox,2);?></td>
-   
+
     </tr>
     <?php
 	}
@@ -91,7 +91,7 @@ if(addslashes($_GET['key']) == NULL){
 </table>
 </div>
                         </div>
-                       
+
                     </div>
 
                                 </div>
@@ -125,6 +125,5 @@ if(addslashes($_GET['key']) == NULL){
 
                                    </div>
                                 </div>
-                              
+
                             </div>
- 

@@ -130,7 +130,7 @@ echo @$alert;
   <div class="col-xs-6">
     <?
 $dteStart = new DateTime($showcard->create_date);
-$dteEnd   = new DateTime(Date("Y-m-d", strtotime($showcard->create_date." +15 Day")));
+$dteEnd   = Date("Y-m-d", strtotime($showcard->create_date." +15 Day"));
 $dteDiff  = $dteStart->diff($dteEnd)->days;
 if($dteDiff >= 1){
   $checkchange = "";

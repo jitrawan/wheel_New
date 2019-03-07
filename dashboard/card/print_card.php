@@ -89,8 +89,8 @@ body{
                           <table width="100%"  class="table table-bordered">
                           <thead>
   <tr style="font-weight:bold; color:#FFF; background:#888888; text-align:center;">
-    <td width="11%">หมายเลข</td>
-    <td width="26%">ชื่อรายการ</td>
+    <!--td width="11%">หมายเลข</td-->
+    <td width="37%">ชื่อรายการ</td>
     <td width="43%">สาเหตุที่ส่งซ่อม/เคลม</td>
     <td width="20%">ราคาโดยประมาณ</td>
     </tr>
@@ -101,7 +101,7 @@ body{
 	while($showitem = mysql_fetch_object($getitem)){
 	?>
   <tr id="<?php echo @$showitem->item_key;?>">
-    <td align="center" bgcolor="#EFEFEF"><?php echo @$showitem->item_number;?></td>
+    <!--td align="center" bgcolor="#EFEFEF"><?php echo @$showitem->item_number;?></td-->
     <td><?php echo @$showitem->item_name;?></td>
     <td style="color:#970002;"><?php echo @$showitem->item_note;?></td>
     <td align="right"><?php echo @($showitem->item_price_aprox == 0)?'ไม่ระบุ':convertPoint2($showitem->item_price_aprox,2);?></td>
