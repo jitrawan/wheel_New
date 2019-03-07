@@ -291,6 +291,8 @@ break;
 		break;
 		case "delete_brandRubble" : $getdata->my_sql_delete("brandRubble","id='".addslashes($_GET['key'])."'");
 		break;
+		case "delete_shelf" : $getdata->my_sql_delete("shelf","shelf_id='".addslashes($_GET['key'])."'");
+		break;
 
 		case "saveTable" :
 		$getproduct_info = $getdata->my_sql_select(" p.*,r.*,w.*,p.ProductID as setProductID "

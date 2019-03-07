@@ -107,11 +107,11 @@ if(isset($_POST['save_edit_card'])){
   <tbody>
   <?php
   $x=0;
-  $getcat = $getdata->my_sql_select(NULL,"shelf","shelf_status in ('1','2') ORDER BY shelf_id ");
+  $getcat = $getdata->my_sql_select(NULL,"shelf","shelf_status in ('1','0') ORDER BY shelf_id ");
   while($showcat = mysql_fetch_object($getcat)){
 	  $x++;
   ?>
-  <tr id="<?php echo @$showcat->ctype_key;?>">
+  <tr id="<?php echo @$showcat->shelf_id;?>">
     <td align="center"><?php echo @$x;?></td>
     <td>&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showcat->shelf_color;?>"></i>&nbsp;<?php echo @$showcat->shelf_detail;?></td>
     <td align="center" valign="middle">
@@ -188,7 +188,7 @@ function changecatStatus(catkey,lang){
 		document.getElementById(catkey).innerHTML = '';
   		}
 	}
-	xmlhttp.open("GET","function.php?type=delete_cardtype&key="+catkey,true);
+	xmlhttp.open("GET","function.php?type=delete_shelf&key="+catkey,true);
 	xmlhttp.send();
 }
 </script>
