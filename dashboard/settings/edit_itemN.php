@@ -27,7 +27,7 @@ $getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.*,p.ProductID as productMain,
 $getitem = mysql_fetch_object($getedit);
 
 
-                                                $getshelf = $getdata->my_sql_select(NULL,"shelf",NULL);
+                                                $getshelf = $getdata->my_sql_select(NULL,"shelf","shelf_status = '1'");
 																								$getdealer = $getdata->my_sql_select(NULL,"dealer",NULL);
 
 

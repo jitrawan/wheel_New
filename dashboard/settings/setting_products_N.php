@@ -31,10 +31,13 @@ if(isset($_POST['save_product'])){
             ,"product_N"
             ,"productDetailWheel w on p.ProductID = w.ProductID
             left join productdetailrubber r on p.ProductID = r.ProductID "
-            ,"Where p.TypeID = '1' And p.hand = '".addslashes($_POST['hand'])."'
+            ,"Where p.TypeID = '1'
+             And p.hand = '".addslashes($_POST['hand'])."'
              And w.diameter = '".addslashes($_POST['diameterWheel'])."'
-             And w.rim = '".addslashes($_POST['rim'])."' And w.holeSize = ".addslashes($_POST['holeSize'])."'
-             And w.typeFormat = '".addslashes($_POST['typeFormat'])."' w.brand = '".addslashes($_POST['brandWheel'])."' ");
+             And w.rim = '".addslashes($_POST['rim'])."'
+             And w.holeSize = ".addslashes($_POST['holeSize'])."'
+             And w.typeFormat = '".addslashes($_POST['typeFormat'])."'
+             And w.brand = '".addslashes($_POST['brandWheel'])."' ");
 
         }else{
           $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
@@ -97,6 +100,11 @@ if(isset($_POST['save_product'])){
 
 if(isset($_POST['save_edit_item'])){
   if(addslashes($_POST['edit_ProductID']) != NULL){
+    ?>
+<script>
+console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?>'+" :: "+'<?= addslashes($_POST['edit_diameterWheel'])?>'+" :: "+ <?= addslashes($_POST['edit_rim'])?> +" :: "+ '<?= addslashes($_POST['edit_holeSize'])?>' +" :: "+'<?= addslashes($_POST['edit_typeFormat'])?>'+" :: "+'<?= addslashes($_POST['edit_brandWheel'])?>');
+</script>
+    <?
     if($_POST['gettype'] == '1'){
         $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
       ,case
@@ -105,13 +113,15 @@ if(isset($_POST['save_edit_item'])){
         when p.TypeID = '1'
         then (select b.Description from BrandWhee b where b.id = w.brand)
         end BrandName "
-        ,"product_N"
+        ,"product_N "
         ,"productDetailWheel w on p.ProductID = w.ProductID
         left join productdetailrubber r on p.ProductID = r.ProductID "
         ,"Where p.TypeID = '1' And p.hand = '".addslashes($_POST['edit_hand'])."'
          And w.diameter = '".addslashes($_POST['edit_diameterWheel'])."'
-         And w.rim = '".addslashes($_POST['edit_rim'])."' And w.holeSize = ".addslashes($_POST['edit_holeSize'])."'
-         And w.typeFormat = '".addslashes($_POST['edit_typeFormat'])."' w.brand = '".addslashes($_POST['edit_brandWheel'])."' ");
+         And w.rim = '".addslashes($_POST['edit_rim'])."'
+         And w.holeSize = '".addslashes($_POST['edit_holeSize'])."'
+         And w.typeFormat = '".addslashes($_POST['edit_typeFormat'])."'
+         And w.brand = '".addslashes($_POST['edit_brandWheel'])."' ");
 
     }else{
       $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
@@ -121,7 +131,7 @@ if(isset($_POST['save_edit_item'])){
       when p.TypeID = '1'
       then (select b.Description from BrandWhee b where b.id = w.brand)
       end BrandName "
-      ,"product_N"
+      ,"product_N "
       ,"productDetailWheel w on p.ProductID = w.ProductID
       left join productdetailrubber r on p.ProductID = r.ProductID "
       ,"Where p.TypeID = '2' And p.hand = '".addslashes($_POST['edit_hand'])."'
@@ -129,8 +139,9 @@ if(isset($_POST['save_edit_item'])){
       And r.series = '".addslashes($_POST['edit_series'])."'
       And r.width = '".addslashes($_POST['edit_width'])."'
       And r.brand = '".addslashes($_POST['edit_brand'])."' ");
-    }
 
+
+    }
     if(mysql_num_rows($getfont) < 1){
         $table = "product_N p ";
         $Strsql = " p.shelf_id = ".addslashes($_POST['edit_shelf_id']).", p.dealer_code = '".addslashes($_POST['edit_dealer_code'])."' ";
@@ -186,7 +197,7 @@ if(isset($_POST['save_edit_item'])){
                                         </div>
                                         <?
                                                 @$getMaxid = $getdata->getMaxID("ProductID","product_N","P");
-                                                $getshelf = $getdata->my_sql_select(NULL,"shelf",NULL);
+                                                $getshelf = $getdata->my_sql_select(NULL,"shelf","shelf_status = '1'");
                                                 $getdealer = $getdata->my_sql_select(NULL,"dealer",NULL);
 
                                         ?>
