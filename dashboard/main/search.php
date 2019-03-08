@@ -1,7 +1,7 @@
 <div class="row">
      <div class="col-lg-12">
              <h1 class="page-header"><i class="fa fa-search fa-fw"></i> ค้นหา</h1>
-     </div>        
+     </div>
 </div>
 <ol class="breadcrumb">
 <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
@@ -19,7 +19,7 @@ if(isset($_POST['save_new_status'])){
 <!-- Modal Edit -->
 <div class="modal fade" id="edit_status" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
     <form method="post" enctype="multipart/form-data" name="form2" id="form2">
-     
+
      <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -27,7 +27,7 @@ if(isset($_POST['save_new_status'])){
                     <h4 class="modal-title" id="memberModalLabel">เปลี่ยนสถานะ</h4>
                 </div>
                 <div class="ct">
-              
+
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@ if(isset($_POST['save_new_status'])){
 
    <?php
    echo @$alert;?>
-     
+
  <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -53,7 +53,7 @@ if(isset($_POST['save_new_status'])){
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-     
+
       <form class="navbar-form navbar-left" role="search" method="get">
         <div class="form-group">
         <input type="hidden" name="p" id="p" value="search" >
@@ -61,7 +61,7 @@ if(isset($_POST['save_new_status'])){
         </div>
         <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> <?php echo @LA_BTN_SEARCH;?></button>
       </form>
-   
+
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
@@ -79,15 +79,15 @@ if(isset($_POST['save_new_status'])){
   </thead>
   <tbody>
   <?php
-  
+
 	   $getcard = $getdata->my_sql_select(NULL,"card_info"," (card_customer_name LIKE '%".htmlentities($_GET['q'])."%') OR (card_customer_lastname LIKE '%".htmlentities($_GET['q'])."%') OR (card_customer_phone LIKE '%".htmlentities($_GET['q'])."%') OR (card_customer_email LIKE '%".htmlentities($_GET['q'])."%') OR (card_code LIKE '%".htmlentities($_GET['q'])."%') ORDER BY card_insert");
- 
- 
+
+
   while($showcard = mysql_fetch_object($getcard)){
   ?>
   <tr style="font-weight:bold;" id="<?php echo @$showcard->card_key;?>">
     <td align="center"><?php echo @$showcard->card_code;?></td>
-    <td align="center"><?php echo @dateTimeConvertor($showcard->card_insert);?></td>
+    <td align="center"><?php echo $showcard->card_insert;?></td>
     <td>&nbsp;<?php echo @$showcard->card_customer_name.'&nbsp;&nbsp;&nbsp;'.$showcard->card_customer_lastname;?></td>
     <td align="center"><?php echo @$showcard->card_customer_phone;?></td>
     <td align="center"><?php echo @cardStatus($showcard->card_status);?></td>
@@ -97,7 +97,7 @@ if(isset($_POST['save_new_status'])){
   }
   ?>
   </tbody>
-  
+
 </table>
 
 </div>
@@ -120,7 +120,7 @@ $('#edit_status').on('show.bs.modal', function (event) {
                 error: function(err) {
                     console.log(err);
                 }
-            });  
+            });
     })
 
 function deleteCard(cardkey){

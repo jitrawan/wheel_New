@@ -129,20 +129,34 @@ echo @$alert;
 <div class="form-group row">
   <div class="col-xs-6">
     <?
-$dteStart = new DateTime($showcard->create_date);
-$dteEnd   = Date("Y-m-d", strtotime($showcard->create_date." +15 Day"));
-$dteDiff  = $dteStart->diff($dteEnd)->days;
-if($dteDiff >= 1){
-  $checkchange = "";
-  $textwarantry = 'ยังอยู่ในระหว่างการรับประกัน';
-  $csswarantry = 'warantryTrue';
-}else{
+/*$dteStart = new DateTime($showcard->create_date);
+$dteEnd   = Date("Y-m-d", strtotime($showcard->create_date," +15 Day"));
+$dteDiff  = $dteStart->diff($dteEnd)->days;*/
+
+/*$datetime1 = new DateTime("2019-01-18");
+$datetime2 = new DateTime("2019-02-02");
+$interval = $datetime1->diff($datetime2);
+$dteDiff = $interval->format('%R%a days');*/
+
+$date1=date_create(Date("Y-m-d", strtotime($showcard->create_date." +15 Day")));
+//$date1=date_create("2019-03-08");
+$date2=date_create();
+$diff=date_diff($date1,$date2);
+$dteDiff = $diff->format("%R%a days");
+
+if($dteDiff >= 0){
   $checkchange = "disabled";
   $textwarantry = 'ไม่อยู่ในการรับประกัน!';
   $csswarantry = 'warantryFalse';
+}else{
+  $checkchange = "";
+  $textwarantry = 'ยังอยู่ในระหว่างการรับประกัน';
+  $csswarantry = 'warantryTrue';
+
 }
+
     ?>
-  <label class="<? echo @$showcard->csswarantry?>">สิ้นสุดการรับประกันสินค้า : </label> <label class="<? echo @$csswarantry?>"> &nbsp;<?php echo Date("Y-m-d", strtotime($showcard->create_date." +15 Day"));?> <?= $textwarantry?></label>
+  <label class="<? echo @$showcard->csswarantry?>">สิ้นสุดการรับประกันสินค้า :</label> <label class="<? echo @$csswarantry?>"> &nbsp;<?php echo Date("Y-m-d", strtotime($showcard->create_date." +15 Day"));?> <?= $textwarantry?></label>
 
  </div>
 </div>
