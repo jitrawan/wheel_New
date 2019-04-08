@@ -162,7 +162,13 @@ if (mysql_num_rows($GroupType) > 0) {
 				      then (select b.Description from brandRubble b where r.brand = b.id)
 				      when p.TypeID = '1'
 				      then (select b.Description from BrandWhee b where b.id = w.brand)
-				      end BrandName "
+				      end BrandName
+							,case
+			          when p.TypeID = '2'
+			          then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+			          when p.TypeID = '1'
+			          then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+			          end code "
 						," product_N p
 
             left join productDetailWheel w on p.ProductID = w.ProductID
@@ -194,7 +200,7 @@ if (mysql_num_rows($GroupType) > 0) {
 
                 $content .='<tr>
 
-                  <td align="center"><strong>'.@$showDetailProduct->ProductID.'</strong></td>
+                  <td align="center"><strong>'.@$showDetailProduct->code.'</strong></td>
 
                   <td><strong>'.@$gettype.'</strong></td>
 

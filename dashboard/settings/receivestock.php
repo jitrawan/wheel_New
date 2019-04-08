@@ -56,9 +56,12 @@ $userdata = $getdata->my_sql_query(NULL,"user","user_key='".$_SESSION['ukey']."'
                            <div class="form-group row">
                              <div class="col-xs-2">
                                </div>
+                               <?php
+                               @$getcode = $getdata->getMaxID_N("po","stock_tb_receive_master","PO");
+                               ?>
                              <div class="col-xs-6">
                                             <label for="po">เลขที่ อ้างอิง :</label>
-                                            <input class="form-control" type="text" name="po" id="po" value="<?= @RandomString(4,'C',7);?>" readonly>
+                                            <input class="form-control" type="text" name="po" id="po" value="<?= @$getcode;?>" readonly>
                               </div>
                            </div>
 

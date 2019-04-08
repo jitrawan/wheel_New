@@ -21,8 +21,9 @@ if(@$_SESSION['lang']!=NULL){
 	$_SESSION['lang'] = 'th';
 
 }
-$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber
+$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.code as wcode ,r.code as rcode ,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber
 , r.width as WidthRubble , r.brand as brandRubble
+
 ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID "," where p.ProductID = '".addslashes($_GET['key'])."' ");
 $getitem = mysql_fetch_object($getedit);
 
@@ -33,18 +34,13 @@ $getitem = mysql_fetch_object($getedit);
 
                                         ?>
 																				<div class="modal-body">
-																					 <div class="form-group row">
+																					 <div class="form-group row" style="display: none;">
 	                                             <div class="col-md-6">
 	                                               <label for="edit_ProductID">รหัสสินค้า</label>
 	                                               <input type="text" name="edit_ProductID" id="edit_ProductID" value="<?php echo @$getitem->productMain;?>" class="form-control" readonly>
 	                                             </div>
 	                                             <div class="col-md-6">
-	                                             <label for="edit_hand">สืินค้ามือ</label>
-	                                            <select name="edit_hand" id="edit_hand" class="form-control">
-	                                                 <option value="1" selected="selected">1</option>
-	                                                 <option value="2">2</option>
 
-	                                               </select>
 	                                              </div>
 	                                          </div>
 
@@ -63,7 +59,15 @@ $getitem = mysql_fetch_object($getedit);
 
 	                                         <!--ล้อ-->
 	                                         <div id="edit_detailwheel" name="edit_detailwheel" style="padding: 5px; border: 0px solid #4CAF50;">
-	                                         <div class="form-group row">
+																						 <div class="form-group row">
+
+																					 		 <div class="col-md-6">
+																					 			 <label for="code">รหัส</label>
+																					 			 <input type="text" name="code" id="code" class="form-control" value="<?= $getitem->wcode?>" readonly>
+																					 		</div>
+
+																					 	</div>
+																					 <div class="form-group row">
 	                                               <div class="col-md-3">
 	                                               <label for="edit_diameterWheel">ขนาด</label>
 	                                                 <select name="edit_diameterWheel" id="edit_diameterWheel" class="form-control">
@@ -120,7 +124,15 @@ $getitem = mysql_fetch_object($getedit);
 	                                          </div>
 	                                          <!--ยาง-->
 	                                          <div id="edit_detailrubber" name="edit_detailrubber" style="padding: 5px; border: 0px solid #4CAF50;">
-	                                          <div class="form-group row">
+																							<div class="form-group row">
+
+																								 <div class="col-md-6">
+																									 <label for="code">รหัส</label>
+																									 <input type="text" name="code" id="code" class="form-control" value="<?= $getitem->rcode?>" readonly>
+																								</div>
+
+																							</div>
+																						<div class="form-group row">
 	                                               <div class="col-md-3">
 	                                               <label for="edit_diameterRubber">ขนาด</label>
 	                                                <select name="edit_diameterRubber" id="edit_diameterRubber" class="form-control">
@@ -181,7 +193,13 @@ $getitem = mysql_fetch_object($getedit);
 	                                             <div class="col-md-6">
 	                                              <!--label for="edit_Warranty">การรับประกัน</label>
 	                                             <input type="text" name="edit_Warranty" id="edit_Warranty" class="form-control" value="<?php echo @$getitem->Warranty;?>"-->
-	                                              </div>
+																							 <label for="edit_hand">สืินค้ามือ</label>
+	                                            <select name="edit_hand" id="edit_hand" class="form-control">
+	                                                 <option value="1" selected="selected">1</option>
+	                                                 <option value="2">2</option>
+
+	                                               </select>
+																							  </div>
 	                                           </div>
 
 	                                         <div class="form-group row">
@@ -223,7 +241,7 @@ $getitem = mysql_fetch_object($getedit);
                                         </div>
                                          <div class="modal-footer">
                                             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i><?php echo @LA_BTN_CLOSE;?></button>
-                                          <button type="submit" name="save_edit_item" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
+                                          <button type="submit" name="save_edit_item" id="save_edit_item" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
                                         </div>
 
           <script language="javascript">
@@ -235,6 +253,15 @@ $getitem = mysql_fetch_object($getedit);
 									$(this).val(0);
 								}
 						});
+
+						$('#save_edit_item').click(function(){
+		 					 var r = confirm("ต้องการแก้ไขข้อมูล ?");
+		 					 if (r == true) {
+		 						 return true;
+		 					 }else{
+		 						 return false;
+		 					 }
+		 				 });
 
 						if('<?echo @$getitem->TypeID;?>' == '1'){
 								$("#edit_detailwheel").show();

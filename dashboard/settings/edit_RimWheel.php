@@ -38,11 +38,17 @@ $getctype_detail =$getdata->my_sql_query(NULL,"RimWheel","id='".addslashes($_GET
                                             </div></div>
                                          <div class="modal-footer">
                                             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i><?php echo @LA_BTN_CLOSE;?></button>
-                                          <button type="submit" name="save_edit_card" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
+                                          <button type="submit" name="save_edit_card" id="save_edit_card" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
                                         </div>
    <script>
     $(function() {
-      console.log("555");
-        $('.cp1').colorpicker();
+			$('#save_edit_card').click(function(){
+					var r = confirm("ต้องการแก้ไขข้อมูล ?");
+					if (r == true) {
+						return true;
+					}else{
+						return false;
+					}
+				});
     });
 </script>

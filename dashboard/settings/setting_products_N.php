@@ -21,13 +21,19 @@ if(isset($_POST['save_product'])){
     $getproductID = $getdata->my_sql_select(NULL,"product_N","ProductID ='".addslashes($_POST['ProductID'])."' ");
     if(mysql_num_rows($getproductID) < 1){
         if($_POST['type'] == '1'){
-            $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+            $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
           ,case
             when p.TypeID = '2'
             then (select b.Description from brandRubble b where r.brand = b.id)
             when p.TypeID = '1'
             then (select b.Description from BrandWhee b where b.id = w.brand)
-            end BrandName "
+            end BrandName
+            ,case
+              when p.TypeID = '2'
+              then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+              when p.TypeID = '1'
+              then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+              end code "
             ,"product_N"
             ,"productDetailWheel w on p.ProductID = w.ProductID
             left join productdetailrubber r on p.ProductID = r.ProductID "
@@ -40,13 +46,19 @@ if(isset($_POST['save_product'])){
              And w.brand = '".addslashes($_POST['brandWheel'])."' ");
 
         }else{
-          $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+          $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode  ,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
         ,case
           when p.TypeID = '2'
           then (select b.Description from brandRubble b where r.brand = b.id)
           when p.TypeID = '1'
           then (select b.Description from BrandWhee b where b.id = w.brand)
-          end BrandName "
+          end BrandName
+          ,case
+            when p.TypeID = '2'
+            then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+            when p.TypeID = '1'
+            then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+            end code "
           ,"product_N"
           ,"productDetailWheel w on p.ProductID = w.ProductID
           left join productdetailrubber r on p.ProductID = r.ProductID "
@@ -71,16 +83,18 @@ if(isset($_POST['save_product'])){
             , '".addslashes($_POST['discount'])."' ");
 
             if($_POST['type'] == '1'){
-            $getdata->my_sql_insert_New("productDetailWheel","ProductID, diameter, rim, holeSize, typeFormat, brand"
-            ," '".addslashes($_POST['ProductID'])."'
+            $getdata->my_sql_insert_New("productDetailWheel","code, ProductID, diameter, rim, holeSize, typeFormat, brand"
+            ," '".addslashes($_POST['code'])."'
+            ,'".addslashes($_POST['ProductID'])."'
             , '".addslashes($_POST['diameterWheel'])."'
             , '".addslashes($_POST['rim'])."'
             , '".addslashes($_POST['holeSize'])."'
             , '".addslashes($_POST['typeFormat'])."'
             , '".addslashes($_POST['brandWheel'])."' ");
           }else if ($_POST['type'] == '2'){
-              $getdata->my_sql_insert_New("productDetailRubber","ProductID, width, series, diameter, brand"
-              ,"  '".addslashes($_POST['ProductID'])."'
+              $getdata->my_sql_insert_New("productDetailRubber","code ,ProductID, width, series, diameter, brand"
+              ,"  '".addslashes($_POST['code'])."'
+              ,'".addslashes($_POST['ProductID'])."'
               , '".addslashes($_POST['width'])."'
               , '".addslashes($_POST['series'])."'
               , '".addslashes($_POST['diameterRubber'])."'
@@ -106,13 +120,19 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
 </script>
     <?
     if($_POST['gettype'] == '1'){
-        $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+        $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
       ,case
         when p.TypeID = '2'
         then (select b.Description from brandRubble b where r.brand = b.id)
         when p.TypeID = '1'
         then (select b.Description from BrandWhee b where b.id = w.brand)
-        end BrandName "
+        end BrandName
+        ,case
+          when p.TypeID = '2'
+          then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+          when p.TypeID = '1'
+          then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+          end code "
         ,"product_N "
         ,"productDetailWheel w on p.ProductID = w.ProductID
         left join productdetailrubber r on p.ProductID = r.ProductID "
@@ -124,13 +144,19 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
          And w.brand = '".addslashes($_POST['edit_brandWheel'])."' ");
 
     }else{
-      $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      $getfont = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
     ,case
       when p.TypeID = '2'
       then (select b.Description from brandRubble b where r.brand = b.id)
       when p.TypeID = '1'
       then (select b.Description from BrandWhee b where b.id = w.brand)
-      end BrandName "
+      end BrandName
+      ,case
+        when p.TypeID = '2'
+        then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+        when p.TypeID = '1'
+        then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+        end code "
       ,"product_N "
       ,"productDetailWheel w on p.ProductID = w.ProductID
       left join productdetailrubber r on p.ProductID = r.ProductID "
@@ -197,24 +223,19 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
                                         </div>
                                         <?
                                                 @$getMaxid = $getdata->getMaxID("ProductID","product_N","P");
+                                                @$getMaxidR = $getdata->getMaxID("code","productdetailrubber","W");
+                                                @$getMaxidW = $getdata->getMaxID("code","productdetailwheel","T");
                                                 $getshelf = $getdata->my_sql_select(NULL,"shelf","shelf_status = '1'");
                                                 $getdealer = $getdata->my_sql_select(NULL,"dealer",NULL);
 
                                         ?>
                                          <div class="modal-body">
-                                        <div class="form-group row">
+                                        <div class="form-group row" style="display: none;">
                                             <div class="col-md-6">
                                               <label for="ProductID">รหัสสินค้า</label>
-                                              <input type="text" name="ProductID" id="ProductID" value="<?php echo @$getMaxid;?>" class="form-control" readonly>
+                                              <input type="text" name="ProductID" id="ProductID" value="<?php echo @$getMaxid;?>" class="form-control">
                                             </div>
-                                            <div class="col-md-6">
-                                            <label for="hand">สืินค้ามือ</label>
-                                           <select name="hand" id="hand" class="form-control">
-                                                <option value="1" selected="selected">1</option>
-                                                <option value="2">2</option>
 
-                                              </select>
-                                             </div>
                                          </div>
 
                                         <div class="form-group row">
@@ -231,6 +252,14 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
 
                                         <!--ล้อ-->
                                         <div id="detailwheel" name="detailwheel" style="padding: 5px; border: 0px solid #4CAF50;">
+                                          <div class="form-group row">
+
+                                             <div class="col-md-6">
+                                               <label for="code">รหัส</label>
+                                               <input type="text" name="code" id="code" class="form-control" value="<?= $getMaxidW?>" readonly>
+                                            </div>
+
+                                          </div>
                                         <div class="form-group row">
                                               <div class="col-md-3">
                                               <label for="diameterWheel">ขนาด</label>
@@ -288,6 +317,14 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
                                          </div>
                                          <!--ยาง-->
                                          <div id="detailrubber" name="detailrubber" style="padding: 5px; border: 0px solid #4CAF50;">
+                                           <div class="form-group row">
+
+                                              <div class="col-md-6">
+                                                <label for="code">รหัส</label>
+                                                <input type="text" name="code" id="code" class="form-control" value="<?= $getMaxidR?>" readonly>
+                                             </div>
+
+                                           </div>
                                          <div class="form-group row">
                                               <div class="col-md-3">
                                               <label for="diameterRubber">ขนาด</label>
@@ -347,9 +384,13 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
                                               </select>
                                             </div>
                                             <div class="col-md-6">
-                                             <!--label for="Warranty">การรับประกัน</label>
-                                            <input type="text" name="Warranty" id="Warranty" class="form-control" -->
-                                             </div>
+                                              <label for="hand">สืินค้ามือ</label>
+                                             <select name="hand" id="hand" class="form-control">
+                                                  <option value="1" selected="selected">1</option>
+                                                  <option value="2">2</option>
+
+                                                </select>
+                                            </div>
                                           </div>
 
                                         <div class="form-group row">
@@ -567,13 +608,19 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
       if(addslashes($_POST['search_brand_Wheel']) != ""){
         $str_sql  .= " And w.brand = '".addslashes($_POST['search_brand_Wheel'])."' ";
       }
-      $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
       ,case
         when p.TypeID = '2'
         then (select b.Description from brandRubble b where r.brand = b.id)
         when p.TypeID = '1'
         then (select b.Description from BrandWhee b where b.id = w.brand)
-        end BrandName "
+        end BrandName
+        ,case
+          when p.TypeID = '2'
+          then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+          when p.TypeID = '1'
+          then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+          end code "
         ,"product_N"
         ,"productDetailWheel w on p.ProductID = w.ProductID
         left join productdetailrubber r on p.ProductID = r.ProductID "
@@ -591,26 +638,38 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
         if(addslashes($_POST['search_brand']) != ""){
           $str_sql  .= " And r.brand = '".addslashes($_POST['search_brand'])."' ";
         }
-      $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel ,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
       ,case
         when p.TypeID = '2'
         then (select b.Description from brandRubble b where r.brand = b.id)
         when p.TypeID = '1'
         then (select b.Description from BrandWhee b where b.id = w.brand)
-        end BrandName "
+        end BrandName
+        ,case
+          when p.TypeID = '2'
+          then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+          when p.TypeID = '1'
+          then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+          end code "
         ,"product_N"
         ,"productDetailWheel w on p.ProductID = w.ProductID
         left join productdetailrubber r on p.ProductID = r.ProductID "
         ,"Where p.TypeID = '2' ".$str_sql);
     }
   }else{
-     $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+     $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.* ,w.code as wcode, r.code as rcode ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
      ,case
        when p.TypeID = '2'
        then (select b.Description from brandRubble b where r.brand = b.id)
        when p.TypeID = '1'
        then (select b.Description from BrandWhee b where b.id = w.brand)
-       end BrandName "
+       end BrandName
+       ,case
+         when p.TypeID = '2'
+         then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+         when p.TypeID = '1'
+         then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+         end code "
      ," product_N "
      ," productDetailWheel w on p.ProductID = w.ProductID
         left join productDetailRubber r on p.ProductID = r.ProductID "
@@ -648,7 +707,7 @@ console.log(<?= $_POST['gettype']?>+" :: "+'<?= addslashes($_POST['edit_hand'])?
     ?>
     <tr id="<?php echo @$showproduct->ProductID;?>">
       <td align="center" ><?php echo @$x;?></td>
-      <td align="center"><?php echo @$showproduct->ProductID;?></td>
+      <td align="center"><?php echo @$showproduct->code;?></td>
       <td>&nbsp;<?php echo @$gettype;?></td>
       <td align="left">&nbsp;มือ : <?php echo @$showproduct->hand;?></td>
       <td align="right" valign="middle"><strong><?php echo @convertPoint2($showproduct->Quantity,'0');?></strong>&nbsp;</td>

@@ -230,7 +230,7 @@ switch(addslashes($_GET['tab'])){
                                           
                                              <div class="row form-group">
                                           <div class="col-md-6"><label for="member_phone"><?php echo @LA_LB_MEMBER_PHONE_NUMBER;?></label>
-                                               <input type="text" name="member_phone" id="member_phone" class="form-control number" value="<?php echo @$member_detail->member_tel;?>"></div>
+                                               <input type="text" name="member_phone" id="member_phone" class="form-control number" size="10" maxlength="10" value="<?php echo @$member_detail->member_tel;?>"></div>
                                             <div class="col-md-6"><label for="member_email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="member_email" id="member_email" class="form-control" value="<?php echo @$member_detail->member_email;?>"></div>
                                             </div>

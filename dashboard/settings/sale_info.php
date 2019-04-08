@@ -89,7 +89,7 @@ td, th {
 <?
 
 if(isset($_POST['tSave'])){
-  $getdata->my_sql_update("reserve_info"," reserve_status='S' ,reserve_tax='".$_POST['reserve_tax']."' ,reserve_total='".$_POST['reserve_total']."' ,remark='".$_POST['comment']."' "," reserve_key='".$_POST['savereserve_key']."' ");
+  $getdata->my_sql_update("reserve_info","reserve_status='S',reserve_no='".$_POST['reserve_no']."' ,reserve_tax='".$_POST['reserve_tax']."' ,reserve_total='".$_POST['reserve_total']."' ,remark='".$_POST['comment']."' "," reserve_key='".$_POST['savereserve_key']."' ");
   $productInfo = $getdata->my_sql_select("  sum(item_amt) sumatm ,ProductID ","reserve_item "," reserve_key='".$_POST['savereserve_key']."' GROUP BY ProductID ");
   while($objpro = mysql_fetch_object($productInfo)){
       $getdata->my_sql_update(" product_n "," Quantity=Quantity - '".$objpro->sumatm."' "," ProductID='".$objpro->ProductID."' ");
@@ -176,12 +176,14 @@ while($objShow = mysql_fetch_object($getproduct_info)){
                                         }
   $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_code='".$getreserveCode."' ");
   $showcard = mysql_fetch_object($getcard);
+
+  $getreservNo = date("Ymd").'00'.$getreserve_info->reserve_code;
   ?>
 
 <div class="tab-pane fade in active" id="info_data">
 
 <div class="panel panel-primary">
-<div class="panel-heading"><i class="fa fa-shopping-cart fa-fw"></i> การขายสินค้า[<?= $getreserve_info->reserve_code?>]</div>
+<div class="panel-heading"><i class="fa fa-shopping-cart fa-fw"></i> การขายสินค้า</div>
 <div class="panel-body">
   <form method="post" enctype="multipart/form-data" name="form2" id="additem">
 <div class="form-group row">
@@ -199,9 +201,10 @@ while($objShow = mysql_fetch_object($getproduct_info)){
     <label>เลขที่ใบเสร็จ : </label>
     <div class="input-group">
       <span class="input-group-addon">123</span>
-     <input class="form-control" type="text" placeholder="เว้นว่างไว้เพื่อสร้างโดยอัตโนมัติ" name="" id="" readonly>
+
+     <input class="form-control" type="text" placeholder="เว้นว่างไว้เพื่อสร้างโดยอัตโนมัติ" name="" id="" value="<?= $getreservNo?>" readonly>
     </div>
-    <input class="form-control" type="hidden" name="reserve_no" id="reserve_no" value="<?php echo @$getMaxid;?>">
+
     <input class="form-control" type="hidden" name="checkpro" id="checkpro" value="<?php echo @mysql_num_rows($checkPro);?>">
     <input class="form-control" type="hidden" name="result" id="result" value="">
     <input class="form-control" type="hidden" name="reserve_key" id="reserve_key" value="<?= $getreserve_info->reserve_key?>">
@@ -216,15 +219,25 @@ while($objShow = mysql_fetch_object($getproduct_info)){
 
   </div>
 </div>
+
 <div class="form-group row">
-  <div class="col-xs-3">
+  <div class="col-xs-2" style="padding-right: 2px;">
+    <label>ยกชุด : </label>
+    <div class="input-group">
+      <span class="input-group-addon"><input type="checkbox" id="ispack" name="ispack" aria-label="Checkbox for following text input"></span>
+        <input type="number" class="form-control" id="ispacknum" onblur="issaleset(this)" readonly="true" name="ispacknum" aria-label="Text input with checkbox">
+      <span class="input-group-addon">ชุด</span>
+      </div>
+    </div>
+  <div class="col-xs-2" style="padding-left: 2px; padding-right: 2px;" >
     <label>จำนวน : </label>
     <div class="input-group">
-      <span class="input-group-addon">123</span>
-     <input class="form-control right number" type="number"  name="product_quantity" id="product_quantity" value="1">
+          <span class="input-group-addon">123</span>
+            <input class="form-control right number" type="number"  name="product_quantity" id="product_quantity" value="1">
+            <span class="input-group-addon">ชิ้น</span>
     </div>
     </div>
-  <div class="col-xs-9">
+  <div class="col-xs-8" style="padding-left: 2px;">
     <label>รหัสสินค้า/บาร์โค้ด : </label>
 
 <div class="input-group">
@@ -243,12 +256,12 @@ while($objShow = mysql_fetch_object($getproduct_info)){
 <!--itable_product-->
 <table id="" class="" cellspacing="0" style="width:100%">
   <tr style="font-weight:bold; color:#FFF; text-align:center;">
-    <td width="5%" bgcolor="#888888">จำนวน</td>
-    <td width="25%" bgcolor="#888888">รายละเอียด</td>
-    <td width="10%" bgcolor="#888888">หน่วยละ</td>
-    <td width="15%" bgcolor="#888888" colspan="2">ส่วนลด</td>
-    <td width="10%" bgcolor="#888888">จำนวนเงิน (บาท)</td>
-    <td width="10%" bgcolor="#888888"></td>
+    <td width="10%" bgcolor="#888888">จำนวน</td>
+    <td width="40%" bgcolor="#888888">รายละเอียด</td>
+    <td width="15%" bgcolor="#888888">หน่วยละ</td>
+    <!--td width="15%" bgcolor="#888888" colspan="2">ส่วนลด</td-->
+    <td width="15%" bgcolor="#888888">จำนวนเงิน (บาท)</td>
+    <td width="8%" bgcolor="#888888"></td>
     </tr>
     <tbody>
       <?
@@ -273,14 +286,14 @@ while($objShow = mysql_fetch_object($getproduct_info)){
           $gettype = "";
         }
 
-        
+
       ?>
       <tr id="<?php echo @$objShow->item_key;?>">
-        <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= @$objShow->item_amt?>" class="price"></div></label></td>
-        <td class=""><label class="g-input"><div><input type="text" class="form-control" size="5" value="<?= @$objShow->ProductID?> <?= $gettype?>" class="price"></div></label></td>
-        <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_price,2)?>" class="price"></div></label></td>
-        <td class="right"><label class="g-input"><span class="g-input"><div class="input-group"><input type="text" class="form-control right" value="<?= $objShow->discount?>"  size="5" class="price" ><span class="input-group-addon">%</span></div></span></label></td>
-        <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_discount,2)?>" class="price"></div></label></td>
+        <td class="right"><label class="g-input"><div><input type="text" class="form-control right" readonly="true" size="5" value="<?= @$objShow->item_amt?>" class="price"></div></label></td>
+        <td class=""><label class="g-input"><div><input type="text" class="form-control" size="5" readonly="true" value="<?= @$objShow->ProductID?> <?= $gettype?>" class="price"></div></label></td>
+        <td class="right"><label class="g-input"><div><input type="text" class="form-control right" readonly="true" size="5" value="<?= convertPoint2($objShow->item_price,2)?>" class="price"></div></label></td>
+        <!--td class="right"><label class="g-input"><span class="g-input"><div class="input-group"><input type="text" class="form-control right" value="<?= $objShow->discount?>"  size="5" class="price" ><span class="input-group-addon">%</span></div></span></label></td-->
+        <!--td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_discount,2)?>" class="price"></div></label></td-->
         <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_total,2)?>" class="price"></div></label></td>
         <td style="text-align: center;"><a onClick="javascript:deleteItem('<?php echo @$objShow->item_key;?>');" class="btn btn-xs btn-danger" style="color:#FFF;" title="ลบ"><i class="fa fa-times"></i> <?php echo @LA_BTN_DELETE;?></a></td>
       </tr>
@@ -323,6 +336,7 @@ while($objShow = mysql_fetch_object($getproduct_info)){
            <label class="g-input"--><input class="form-control right number" type="hidden" size="5"  value="<?= convertPoint2($gettotaltax,2)?>" readonly="">
          <!--/label-->
            <input class="form-control" type="hidden" id="reserve_tax" name="reserve_tax" value="<?= $gettotaltax?>">
+           <input class="form-control" type="hidden" name="reserve_no" id="reserve_no" value="<?= $getreservNo;?>">
          <!--/td>
          <td class="right">บาท</td>
       </tr-->
@@ -378,7 +392,34 @@ $(document).ready(function(){
               }
     });
 
+    $("#ispack").change(function() {
+    if(this.checked) {
+        $("#ispacknum").attr('readonly', false);
+        $("#product_quantity").attr('readonly', true);
+        $("#ProductID").attr('readonly', true);
+
+    }else{
+        $("#ispacknum").attr('readonly', true);
+        $("#product_quantity").attr('readonly', false);
+        $("#ProductID").attr('readonly', false);
+        $("#product_quantity").val(1);
+        $("#ispacknum").val("");
+    }
 });
+
+
+});
+function issaleset(isval){
+  if(isval.value != ""){
+    var totalnum = isval.value * 4;
+    $("#product_quantity").val(totalnum);
+    $("#ProductID").attr('readonly', false);
+  }else{
+    $("#product_quantity").val(1);
+    $("#ProductID").attr('readonly', true);
+  }
+}
+
 function deleteItem(item_key){
 if(confirm("คุณต้องการจะลบรายการนี้ใช่หรือไม่ ?")){
 if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari

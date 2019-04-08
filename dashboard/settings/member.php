@@ -98,7 +98,7 @@ echo @$alert;
                                              <div class="form-group">
                                              <div class="row">
                                           <div class="col-md-6"><label for="mobile"><?php echo @LA_LB_PHONE;?></label>
-                                               <input type="text" name="mobile" id="mobile" class="form-control number" value=""></div>
+                                               <input type="text" name="mobile" id="mobile" class="form-control number" size="10" maxlength="10" value=""></div>
                                             <div class="col-md-6"><label for="email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="email" id="email" class="form-control" value=""></div>
                                             </div>

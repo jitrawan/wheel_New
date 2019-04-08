@@ -202,6 +202,8 @@ function changecatStatus(catkey,lang){
 	xmlhttp.send();
 }
 	function deletecat(catkey){
+    var r = confirm("ต้องการลบข้อมูล ?");
+    if (r == true) {
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 	 	xmlhttp=new XMLHttpRequest();
 	}else{// code for IE6, IE5
@@ -215,6 +217,7 @@ function changecatStatus(catkey,lang){
 	xmlhttp.open("GET","function.php?type=delete_brand&key="+catkey,true);
 	xmlhttp.send();
 }
+  }
 </script>
 <script>
     $('#edit_card_type').on('show.bs.modal', function (event) {

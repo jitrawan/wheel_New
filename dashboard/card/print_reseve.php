@@ -31,7 +31,7 @@ $card_detail = $getdata->my_sql_query(NULL,"reserve_info","reserve_key='".addsla
 
 
 ?>
-<title><? echo $str ?>  <?php echo @$card_detail->reserve_code;?></title>
+<title><? echo $str ?>  <?php echo @$card_detail->reserve_no;?></title>
 <link href="../../css/bootstrap.min.css" rel="stylesheet">
  <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="../../css/iconset/ios7-set-filled-1/flaticon.css" rel="stylesheet" type="text/css">
@@ -130,7 +130,7 @@ body{
 			<td align="right"></td>
 		</tr>
     <tr>
-			<td>เลขที่ใบเสร็จรับเงิน : <?php echo $card_detail->reserve_code?></td>
+			<td>เลขที่ใบเสร็จรับเงิน : <?php echo $card_detail->reserve_no?></td>
 			<td align="right"></td>
 		</tr>
     <tr>
@@ -161,7 +161,13 @@ body{
 		then (select b.Description from brandRubble b where r.brand = b.id)
 		when p.TypeID = '1'
 		then (select b.Description from BrandWhee b where b.id = w.brand)
-		end BrandName "
+		end BrandName
+		,case
+			when p.TypeID = '2'
+			then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+			when p.TypeID = '1'
+			then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+			end code "
 	," reserve_item i
 		 left join product_N p on p.ProductID = i.ProductID
 		 left join productDetailWheel w on p.ProductID = w.ProductID
@@ -178,7 +184,7 @@ body{
 		}
 ?>
 		<tr>
-			<td><?php echo $objpro->ProductID?> <?   echo $gettype ?></td>
+			<td><?php echo $objpro->code?> <?   echo $gettype ?></td>
       <td align="center"><?php echo $objpro->item_amt?></td>
       <td align="right"><?php echo convertPoint2($objpro->item_price,2)?> </td>
       <td align="right"><?php echo convertPoint2($objpro->item_discount,2)?></td>

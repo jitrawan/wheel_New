@@ -28,8 +28,8 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
                                                 $getypemodel = $getdata->my_sql_select(NULL,"model",NULL);
                                                 $getdealer = $getdata->my_sql_select(NULL,"dealer",NULL);
                                                 $getshelf = $getdata->my_sql_select(NULL,"shelf",NULL);
-                                                
-                                                
+
+
                                         ?>
                                          <div class="modal-body">
                                          <div class="form-group row">
@@ -60,7 +60,7 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
                                             <label for="edit_ProductDetail">รายละเอียดสินค้า</label>
                                             <textarea name="edit_ProductDetail" id="edit_ProductDetail" class="form-control"><?php echo @$getitem->ProductDetail;?></textarea>
                                           </div>
-                                       
+
                                        <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="edit_TypeID">ประเภทสินค้า</label>
@@ -130,7 +130,7 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
                                               <input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control number" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
                                             </div>
                                            </div>
-                                           
+
                                            <div class="form-group">
                                               <label for="edit_shelf_id">shelf</label>
                                               <select name="edit_shelf_id" id="edit_shelf_id" class="form-control">
@@ -142,24 +142,33 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
                                                }
                                              ?>
                                               </select>
-     
+
                                           </div>
-                                          
-                                        
+
+
                                         </div>
                                          <div class="modal-footer">
                                             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i><?php echo @LA_BTN_CLOSE;?></button>
-                                          <button type="submit" name="save_edit_item" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
+                                          <button type="submit" name="save_edit_item" id="save_edit_item" class="btn btn-primary btn-sm"><i class="fa fa-save fa-fw"></i><?php echo @LA_BTN_SAVE;?></button>
                                         </div>
 
           <script language="javascript">
           $( document ).ready(function() {
             $(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
-									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! "); 
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
 									$(this).val(0);
-								}       
+								}
 						});
+
+						$('#save_edit_item').click(function(){
+		 					 var r = confirm("ต้องการแก้ไขข้อมูล ?");
+		 					 if (r == true) {
+		 						 return true;
+		 					 }else{
+		 						 return false;
+		 					 }
+		 				 });
 
            $('#edit_dealer_code').val('<?php echo @$getitem->dealer_code;?>');
            $('#edit_TypeID').val('<?php echo @$getitem->TypeID;?>');
@@ -177,6 +186,3 @@ $getitem = $getdata->my_sql_query(NULL,"product","ProductID='".addslashes($_GET[
             });
           });
           </script>
-
-
-                                    

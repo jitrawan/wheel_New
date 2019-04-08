@@ -44,7 +44,7 @@ $getmember_detail = $getdata->my_sql_query(NULL,"dealer","dealer_id='".addslashe
                                              <div class="form-group">
                                              <div class="row">
                                           <div class="col-md-6"><label for="edit_mobile"><?php echo @LA_LB_PHONE;?></label>
-                                               <input type="text" name="edit_mobile" id="edit_mobile" class="form-control number" value="<?php echo @$getmember_detail->mobile;?>"></div>
+                                               <input type="text" name="edit_mobile" id="edit_mobile" class="form-control number" size="10" maxlen value="<?php echo @$getmember_detail->mobile;?>"></div>
                                             <div class="col-md-6"><label for="edit_email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="edit_email" id="edit_email" class="form-control" value="<?php echo @$getmember_detail->email;?>"></div>
                                             </div>

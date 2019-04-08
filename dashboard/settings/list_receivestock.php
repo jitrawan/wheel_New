@@ -11,7 +11,22 @@
 
 <?php
 if($_POST['datedo_from'] != "" && $_POST['datedo_to'] != ""){
-  $getcat = $getdata->my_sql_select(" r.*, ( select COUNT(d.no) FROM stock_tb_receive_master_sub d WHERE r.po = d.po )as sum , r.po as No_po "," stock_tb_receive_master r "," r.datedo BETWEEN '".htmlentities($_POST['datedo_from'])."' and '".htmlentities($_POST['datedo_to'])."' order by r.po DESC ");
+  $getcat = $getdata->my_sql_select(" p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile
+  , ( select COUNT(d.no) FROM stock_tb_receive_master_sub d WHERE r.po = d.po )as sum
+  , r.po as No_po
+  ,case
+    when p.TypeID = '2'
+    then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+    when p.TypeID = '1'
+    then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+    end code "
+  ," stock_tb_receive_master r "
+  ," left join product_N p on r.No_po  = p.ProductID
+  left join productDetailWheel w on p.ProductID = w.ProductID
+  left join productDetailRubber r on p.ProductID = r.ProductID
+  left join shelf s ON p.shelf_id = s.shelf_id
+  left join dealer d ON p.dealer_code = d.dealer_code "
+  ," r.datedo BETWEEN '".htmlentities($_POST['datedo_from'])."' and '".htmlentities($_POST['datedo_to'])."' order by r.po DESC ");
 }else{
   $getcat = $getdata->my_sql_select(" r.*, ( select COUNT(d.no) FROM stock_tb_receive_master_sub d WHERE r.po = d.po )as sum , r.po as No_po "," stock_tb_receive_master r order by r.po DESC ",NULL);
 }
@@ -201,18 +216,21 @@ function changecatStatus(catkey,lang){
 	xmlhttp.send();
 }
 	function deletecat(catkey){
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-	 	xmlhttp=new XMLHttpRequest();
-	}else{// code for IE6, IE5
-  		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function(){
-  		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		document.getElementById(catkey).innerHTML = '';
-  		}
-	}
-	xmlhttp.open("GET","function.php?type=delete_cardtype&key="+catkey,true);
-	xmlhttp.send();
+    var r = confirm("ต้องการลบข้อมูล ?");
+    if (r == true) {
+      if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+      }else{// code for IE6, IE5
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      }
+      xmlhttp.onreadystatechange=function(){
+          if (xmlhttp.readyState==4 && xmlhttp.status==200){
+        document.getElementById(catkey).innerHTML = '';
+          }
+      }
+      xmlhttp.open("GET","function.php?type=delete_cardtype&key="+catkey,true);
+      xmlhttp.send();
+    }
 }
 </script>
 <script>

@@ -15,13 +15,13 @@ if(isset($_POST['save_card'])){
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"BrandWhee"," Description = '".addslashes($_POST['shelf_detail'])."' ");
     if(mysql_num_rows($chk_DiameterWhee) < 1){
-      $getdata->my_sql_insert_New(" BrandWhee "," Description, status "," '".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_status'])."' ");
+      $getdata->my_sql_insert_New(" BrandWhee "," code, Description, status "," '".addslashes($_POST['code'])."' ,'".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_status'])."' ");
   		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
     }else{
       $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
     }
   }else{
-		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
+		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณากรอกข้อมูลให้ครบ</div>';
 	}
 }
 if(isset($_POST['save_edit_card'])){
@@ -61,6 +61,17 @@ if(isset($_POST['save_edit_card'])){
                                             <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลยี่ห้อแม็ก</h4>
                                         </div>
                                         <div class="modal-body">
+                                          <?php
+                                          @$getcode = $getdata->getMaxID_N("code","BrandWhee","WB");
+                                          ?>
+                                          <div class="form-group row">
+
+                                             <div class="col-md-6">
+                                               <label for="code">รหัส</label>
+                                               <input type="text" name="code" id="code" class="form-control" value="<?= $getcode?>" readonly>
+                                            </div>
+
+                                          </div>
                                           <div class="form-group">
                                             <label for="shelf_detail">รายละเอียด</label>
                                             <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
@@ -103,7 +114,8 @@ if(isset($_POST['save_edit_card'])){
   <thead>
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
-    <th width="74%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="20%" bgcolor="#5fb760">รหัส</th>
+    <th width="54%" bgcolor="#5fb760">รายละเอียด</th>
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
@@ -116,6 +128,7 @@ if(isset($_POST['save_edit_card'])){
   ?>
   <tr id="<?php echo @$showcat->id;?>">
     <td align="center"><?php echo @$x;?></td>
+    <td>&nbsp;<?php echo @$showcat->code;?></td>
     <td>&nbsp;<?php echo @$showcat->Description;?></td>
     <td align="center" valign="middle">
       <?php
@@ -180,8 +193,8 @@ function changecatStatus(catkey,lang){
 	xmlhttp.send();
 }
 	function deletecat(catkey){
-    console.log(catkey);
-    if(confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่ ?')){
+    var r = confirm("ต้องการลบข้อมูล ?");
+    if (r == true) {
     if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
       xmlhttp=new XMLHttpRequest();
     }else{// code for IE6, IE5

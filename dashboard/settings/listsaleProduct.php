@@ -149,7 +149,7 @@ if(isset($_POST['save_cancelesd'])){
                                           <div class="form-group row">
                                           <div class="col-md-6">
                                             <label for="card_customer_phone">หมายเลขโทรศัพท์</label>
-                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control number">
+                                            <input type="text" name="card_customer_phone" id="card_customer_phone" size="10" maxlength="10" class="form-control number">
                                             </div>
                                             <div class="col-md-6"> <label for="card_customer_email">อีเมล</label>
                                             <input type="text" name="card_customer_email" id="card_customer_email" class="form-control"></div>
@@ -226,7 +226,7 @@ if(isset($_POST['save_cancelesd'])){
         $getstr .=" and create_date BETWEEN  '".htmlentities($_POST['datedo_from'])." 00:00:00' and  '".htmlentities($_POST['datedo_to'])." 23:59:59' ";
       }
       if($_POST['reserve_key'] != ""){
-        $getstr .=" and reserve_code = '".htmlentities($_POST['reserve_key'])."' ";
+        $getstr .=" and reserve_no = '".htmlentities($_POST['reserve_key'])."' ";
       }
       $getsaleinfo = $getdata->my_sql_select(NULL,"reserve_info","reserve_status = 's' ".$getstr);
   }else{
@@ -255,7 +255,7 @@ if(isset($_POST['save_cancelesd'])){
       $getsale_count = $getdata->my_sql_show_rows("reserve_item","reserve_key='".@$showsaleinfo->reserve_key."'");
     ?>
     <tr style="font-weight:bold;" id="<?php echo @$showsaleinfo->reserve_key;?>">
-      <td align="center"><?php echo @$showsaleinfo->reserve_code;?></td>
+      <td align="center"><?php echo @$showsaleinfo->reserve_no;?></td>
       <td align="center"><?php echo @dateTimeConvertor($showsaleinfo->create_date);?></td>
       <td align="left"><?php echo @$getmember_info->name;?> <?php echo @$getmember_info->lastname;?></td>
       <td  align="right"><?php echo @$getsale_count;?></td>

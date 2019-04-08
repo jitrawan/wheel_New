@@ -70,8 +70,8 @@ if(isset($_POST['save_new_status'])){
                                           </div>
                                           <div class="form-group row">
                                           <div class="col-md-6">
-                                            <label for="card_customer_phone">หมายเลขโทรศัพท์</label>
-                                            <input type="text" name="card_customer_phone" id="card_customer_phone" class="form-control number">
+                                            <label for="card_customer_phone">หมายเลขโทรศัพท์ddd</label>
+                                            <input type="text" name="card_customer_phone" id="card_customer_phone" size="10" maxlength="10" class="form-control number">
                                             </div>
                                             <div class="col-md-6"> <label for="card_customer_email">อีเมล</label>
                                             <input type="text" name="card_customer_email" id="card_customer_email" class="form-control"></div>

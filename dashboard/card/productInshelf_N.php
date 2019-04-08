@@ -187,7 +187,19 @@ if(isset($_POST['save_new_status'])){
   <?php
 
    if(htmlentities($_GET['q']) != ""){
-     $getproduct = $getdata->my_sql_selectJoin(" p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile ","product_N"," productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where (p.ProductID LIKE '%".htmlentities($_GET['q'])."%') ");
+     $getproduct = $getdata->my_sql_selectJoin(" p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile
+     ,case
+       when p.TypeID = '2'
+       then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+       when p.TypeID = '1'
+       then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+       end code "
+      ,"product_N"
+     ," productDetailWheel w on p.ProductID = w.ProductID
+     left join productDetailRubber r on p.ProductID = r.ProductID
+     left join shelf s ON p.shelf_id = s.shelf_id
+     left join dealer d ON p.dealer_code = d.dealer_code "
+     ,"Where (r.code LIKE '%".htmlentities($_GET['q'])."%' or w.code LIKE '%".htmlentities($_GET['q'])."%') ");
 ?>
 <script>
 console.log('<?= htmlentities($_GET['q'])?>');
@@ -219,6 +231,12 @@ console.log('<?= htmlentities($_GET['q'])?>');
          when p.TypeID = '1'
          then (select b.Description from BrandWhee b where b.id = w.brand)
          end BrandName
+         ,case
+           when p.TypeID = '2'
+           then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+           when p.TypeID = '1'
+           then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+           end code
        ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code "," Where p.TypeID = '1' ".$str_sql);
 
      }else{
@@ -241,6 +259,12 @@ console.log('<?= htmlentities($_GET['q'])?>');
          when p.TypeID = '1'
          then (select b.Description from BrandWhee b where b.id = w.brand)
          end BrandName
+         ,case
+           when p.TypeID = '2'
+           then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+           when p.TypeID = '1'
+           then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+           end code
        ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where p.TypeID = '2' ".$str_sql." ORDER BY p.ProductID ");
      }
    }else{
@@ -251,6 +275,12 @@ console.log('<?= htmlentities($_GET['q'])?>');
       when p.TypeID = '1'
       then (select b.Description from BrandWhee b where b.id = w.brand)
       end BrandName
+      ,case
+        when p.TypeID = '2'
+        then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+        when p.TypeID = '1'
+        then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+        end code
     ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID left join shelf s ON p.shelf_id = s.shelf_id left join dealer d ON p.dealer_code = d.dealer_code ","Where ProductStatus in ('1',2)  ORDER BY p.ProductID ");
     ?>
     <script>
@@ -289,7 +319,7 @@ console.log('<?= htmlentities($_GET['q'])?>');
 
        ?>
        <tr>
-         <td align="center"><?php echo @$showproduct->productMain;?></td>
+         <td align="center"><?php echo @$showproduct->code;?></td>
          <td >&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showproduct->shelf_color;?>"></i>&nbsp;<?php echo @$showproduct->shelf_detail;?></td>
          <td valign="middle"><strong><?php echo @$showproduct->dealer_code;?> | <?php echo @$showproduct->dealer_name;?> | <?php echo @$showproduct->mobile;?></strong></td>
          <td valign="middle"><strong><? echo $gettype?></strong></td>

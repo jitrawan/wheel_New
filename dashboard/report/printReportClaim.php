@@ -143,7 +143,13 @@ $getDetailC = $getdata->my_sql_select("c.*,p.*, r.*, w.* ,w.diameter as diameter
 	then (select b.Description from brandRubble b where r.brand = b.id)
 	when p.TypeID = '1'
 	then (select b.Description from BrandWhee b where b.id = w.brand)
-	end BrandName "
+	end BrandName
+	,case
+		when p.TypeID = '2'
+		then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+		when p.TypeID = '1'
+		then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+		end code "
 	,"changeproduct c
 	left join product_N p on p.ProductID = c.ProductID
 	left join productDetailWheel w on p.ProductID = w.ProductID
@@ -159,7 +165,7 @@ if(mysql_num_rows($getDetailC) > 0){
 				$gettype = "";
 			}
 			$content2 .='<tr>
-				<td align="center"><strong>'.@$rowC->ProductID.'</strong></td>
+				<td align="center"><strong>'.@$rowC->code.'</strong></td>
 				<td align="left"><strong>'.@$gettype.'</strong></td>
 				<td align="left"><strong></strong>'.@$rowC->remark.'</td>
 				<td valign="middle" style=" text-align: center;"><strong>'.@$rowC->change_Amt.'&nbsp;ชิ้น</strong></td>

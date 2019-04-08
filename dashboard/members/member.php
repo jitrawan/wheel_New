@@ -7,7 +7,7 @@
 <div class="row">
      <div class="col-lg-12">
              <h1 class="page-header"><i class="fa fa-users fa-fw"></i> <?php echo @LA_MN_SUPPLIER;?></h1>
-     </div>        
+     </div>
 </div>
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
@@ -17,7 +17,7 @@
 if(isset($_POST['save_member'])){
     //$alerttest = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Case Insert</div>';
 	if(addslashes($_POST['dealer_code']) != NULL && addslashes($_POST['dealer_name']) != NULL){
-	
+
 	//$member_key = md5(addslashes($_POST['dealer_name']).time("now"));
 	//$member_born = addslashes($_REQUEST['year']).'-'.addslashes($_REQUEST['month']).'-'.addslashes($_REQUEST['day']);
     //my_sql_insert_New($table,$field,$value)
@@ -26,23 +26,23 @@ if(isset($_POST['save_member'])){
 	//updateMember();
 		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_INSERT_MEMBER_DATA_DONE.'</div>';
 	}else{
-		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>'; 
+		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 	}
 }
 if(isset($_POST['save_edit_member'])){
        if(addslashes($_POST['edit_dealer_code']) != NULL && addslashes($_POST['edit_dealer_name']) != NULL){
 
 		$getdata->my_sql_update("dealer","dealer_name='".addslashes($_POST['edit_dealer_name'])."',address='".addslashes($_POST['edit_address'])."',mobile='".addslashes($_POST['edit_mobile'])."',email='".addslashes($_POST['edit_email'])."',idline='".addslashes($_POST['idline'])."'","dealer_code='".addslashes($_POST['edit_dealer_code'])."'");
-	
+
 		$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_EDIT_MEMBER_DATA_DONE.'</div>';
         }else{
-            $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>'; 
+            $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
         }
     }
 if(isset($_GET['t'])){
     $alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DELETE.'</div>';
 }
-    
+
 
 echo @$alert;
 ?>
@@ -60,7 +60,7 @@ echo @$alert;
                     <h4 class="modal-title" id="memberModalLabel"><?php echo @LA_LB_EDIT_MEMBER_DATA;?></h4>
                 </div>
                 <div class="ct">
-              
+
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@ echo @$alert;
                                             <div class="row">
                                           <?
                                           @$getMaxid = $getdata->getMaxID("dealer_code","dealer","D");
-                                          
+
                                           ?>
                                             <div class="col-md-6"> <label for="dealer_code"><?php echo @LA_LB_CODE_COMPANY;?></label>
                                               <input type="text" name="dealer_code" id="dealer_code" class="form-control" value="<?php echo @$getMaxid;?>" readonly>
@@ -89,20 +89,20 @@ echo @$alert;
                                                <input type="text" name="dealer_name" id="dealer_name" class="form-control" value=""> </div>
                                             </div>
                                             </div>
-                                             
+
                                              <div class="form-group">
                                                <label for="address"><?php echo @LA_LB_ADDRESS;?></label>
                                                <textarea name="address" id="address" class="form-control"></textarea>
                                             </div>
-                                            
+
                                              <div class="form-group">
                                              <div class="row">
                                           <div class="col-md-6"><label for="mobile"><?php echo @LA_LB_PHONE;?></label>
-                                               <input type="text" name="mobile" id="mobile" class="form-control number" value=""></div>
+                                               <input type="text" name="mobile" id="mobile" class="form-control number" size="10" maxlength="10" value=""></div>
                                             <div class="col-md-6"><label for="email"><?php echo @LA_LB_EMAIL;?></label>
                                                <input type="text" name="email" id="email" class="form-control" value=""></div>
                                             </div>
-                                               
+
                                             </div>
 
                                             <div class="form-group">
@@ -110,7 +110,7 @@ echo @$alert;
                                              <div class="col-md-6"><label for="idline"><?php echo @LA_LB_IDLINE;?></label>
                                                <input type="text" name="idline" id="idline" class="form-control" value=""></div>
                                            </div>
-                                               
+
                                             </div>
                                          </div>
                                         <div class="modal-footer">
@@ -133,23 +133,25 @@ echo @$alert;
   <thead>
   <tr style=" font-weight:bold;">
     <th width="8%" >#</th>
+    <th width="11%" >รหัส</th>
     <th width="11%" >ชื่อบริษัท</th>
-    <th width="21%" ><?php echo @LA_LB_PHONE;?></th>
-    <th width="29%" ><?php echo @LA_LB_MANAGE;?></th>
+    <th width="16%" ><?php echo @LA_LB_PHONE;?></th>
+    <th width="24%" ><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
   <tbody>
   <?php
   $x=0;
-  
+
 	    @$getmember = $getdata->my_sql_select(NULL,"dealer","status=1");
-   
+
 	 while(@$showmember = mysql_fetch_object($getmember)){
 	  $x++;
-	 
+
   ?>
   <tr id="<?php echo @$showmember->member_key;?>">
     <td align="center"><?php echo @$x;?></td>
+    <td>&nbsp;<?php echo $showmember->dealer_code;?></td>
     <td>&nbsp;<span data-toggle="tooltip" data-placement="right" title="<?php echo $showmember->dealer_name;?>"><?php echo $showmember->dealer_name;?></span></td>
     <td align="center" valign="middle"><?php echo @$showmember->mobile;?></td>
     <td align="center" valign="middle">
@@ -190,9 +192,20 @@ echo @$alert;
         $(".number").bind('keyup mouseup', function () {
           if (/\D/g.test(this.value)){
                 this.value = this.value.replace(/\D/g, '');
-              }      
+              }
+
                   });
           });
+function getValidNumber(value){
+  value = $.trim(value).replace(/\D/g,'');
+  if(value.substring(0,1) == '1'){
+    value = value.substring(1);
+    }
+  if(value.length == 10){
+    return value;
+  }
+  return false;
+}
 
 function changeMemberStatus(memberkey){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -208,7 +221,7 @@ function changeMemberStatus(memberkey){
 	}
 	xmlhttp.onreadystatechange=function(){
   		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			
+
 			if(es.className == 'btn btn-success btn-xs'){
 				document.getElementById('btn-'+memberkey).className = 'btn btn-danger btn-xs';
 				document.getElementById('icon-'+memberkey).className = 'fa fa-lock';
@@ -220,7 +233,7 @@ function changeMemberStatus(memberkey){
 			}
   		}
 	}
-	
+
 	xmlhttp.open("GET","function.php?type=change_member_status&key="+memberkey+"&sts="+sts,true);
 	xmlhttp.send();
 }
@@ -233,7 +246,7 @@ function changeMemberStatus(memberkey){
 	xmlhttp.onreadystatechange=function(){
   		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			document.getElementById(memberkey).innerHTML = '';
-			
+
   		}
 	}
 	xmlhttp.open("GET","function.php?type=delete_dealer&key="+memberkey,true);
@@ -246,7 +259,7 @@ function alert_Success(id,value){
     $("#valuealert").text(value);
     $("#Success").delay(3000).addClass("in").fadeOut(3000);
     }
-</script>  
+</script>
 <script>
     $('#edit_member').on('show.bs.modal', function (event) {
           var button = $(event.relatedTarget) // Button that triggered the modal
@@ -266,7 +279,7 @@ function alert_Success(id,value){
                 error: function(err) {
                     console.log(err);
                 }
-            });  
+            });
     })
     function copyAddress(){
 		var addr = document.getElementById('member_address').value;
@@ -287,7 +300,7 @@ function alert_Success(id,value){
 	 }else if(password_pattern == 6){
 		 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	 }else{
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; 
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	 }
 
     for( var i=0; i < password_length; i++ )
@@ -295,16 +308,16 @@ function alert_Success(id,value){
 
     document.getElementById(password_id).value = password_prefix+text;
 }
-    </script> 
+    </script>
                              <!-- DataTables JavaScript -->
-    
+
     <script src="../js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
                             <script>
     $(document).ready(function() {
         $('#dataTables-example').dataTable();
-        
-         
+
+
     });
-    
+
     </script>

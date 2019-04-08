@@ -30,7 +30,7 @@ class clear_db{
 		if($field == NULL && $event == NULL){
 			$objQuery=mysql_query("SELECT * FROM ".$table);
 		}else if($field == NULL){
-		
+
 			$objQuery=mysql_query("SELECT * FROM ".$table." WHERE ".$event);
 		}else if($event == NULL){
 			$objQuery=mysql_query("SELECT ".$field." FROM ".$table);
@@ -66,6 +66,27 @@ class clear_db{
 		$getCode = "";
 		if($objShow->maxcode != null){
 			$setCode = substr($objShow->maxcode,1,4);
+			$setCode = (int)$setCode + 1;
+			if($setCode < 10){
+				$getCode = $value."000".$setCode;
+			}else if($setCode < 100){
+				$getCode = $value."00".$setCode;
+			}else if($setCode < 1000){
+				$getCode = $value."0".$setCode;
+			}else if($setCode > 1000){
+				$getCode = $value.$setCode;
+			}
+		}else{
+			$getCode = $value."0001";
+		}
+		return $getCode;
+	}
+	function getMaxID_N($field,$table,$value){
+		$objQuery=mysql_query("SELECT max(".$field.") as maxcode FROM ".$table);
+		$objShow=mysql_fetch_object($objQuery);
+		$getCode = "";
+		if($objShow->maxcode != null){
+			$setCode = substr($objShow->maxcode,2,5);
 			$setCode = (int)$setCode + 1;
 			if($setCode < 10){
 				$getCode = $value."000".$setCode;

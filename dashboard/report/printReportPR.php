@@ -93,7 +93,13 @@ if (mysql_num_rows($Grouppo) > 0) {
 														      then (select b.Description from brandRubble b where r.brand = b.id)
 														      when p.TypeID = '1'
 														      then (select b.Description from BrandWhee b where b.id = w.brand)
-														      end BrandName "
+														      end BrandName
+																	,case
+													          when p.TypeID = '2'
+													          then (select r.code from productdetailrubber r where r.ProductID = p.ProductID)
+													          when p.TypeID = '1'
+													          then (select w.code from productdetailwheel w where w.ProductID = p.ProductID)
+													          end code "
 										            ," stock_tb_receive_master_sub s
 																left join product_N p on p.ProductID = s.ProductID
 										            left join productDetailWheel w on p.ProductID = w.ProductID
@@ -118,7 +124,7 @@ if (mysql_num_rows($Grouppo) > 0) {
 																				$sumAll = $sumAll + $sumprice;
 										                $content .='<tr>
 																			<td align="center"><strong>'.@$i.'</strong></td>
-										                  <td align="center"><strong>'.@$showDetailProduct->ProductID.'</strong></td>
+										                  <td align="center"><strong>'.@$showDetailProduct->code.'</strong></td>
 										                  <td><strong>'.@$gettype.'</strong></td>
 										                  <td valign="middle" style=" text-align: center;"><strong>'.@convertPoint2($showDetailProduct->total,'0').'&nbsp;ชิ้น</strong></td>
 										                  <td valign="middle" style=" text-align: right;"><strong>'.@convertPoint2($sumprice,'2').'&nbsp;</strong></td>

@@ -12,20 +12,29 @@
 
 <?php
 if(isset($_POST['save_card'])){
-	if(addslashes($_POST['shelf_detail']) != NULL){
-    //$ctype_key = md5(addslashes($_POST['cat_title']).time("now"));
-    $getdata->my_sql_insert_New("shelf","shelf_detail, shelf_color, shelf_status","'".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_color'])."' ,'".addslashes($_POST['shelf_status'])."'");
-		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+	if(addslashes($_POST['shelf_code']) && addslashes($_POST['shelf_detail']) != NULL){
+    $getShelf = $getdata->my_sql_select(NULL,"shelf","shelf_code = '".addslashes($_POST['shelf_code'])."' and shelf_detail ='".addslashes($_POST['shelf_detail'])."' and shelf_class = '".addslashes($_POST['shelf_class'])."' and shelf_color = '".addslashes($_POST['shelf_color'])."' ");
+    if(mysql_num_rows($getShelf) < 1){
+        $getdata->my_sql_insert_New("shelf","shelf_code, shelf_detail, shelf_class, shelf_color, shelf_status","'".addslashes($_POST['shelf_code'])."' ,'".addslashes($_POST['shelf_detail'])."' , '".addslashes($_POST['shelf_class'])."' ,'".addslashes($_POST['shelf_color'])."' ,'".addslashes($_POST['shelf_status'])."'");
+    		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
 	}else{
-		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
+		$alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณากรอกข้อมูล shelf สินค้า</div>';
 	}
 }
 if(isset($_POST['save_edit_card'])){
 		 if(addslashes($_POST['edit_shelf_detail'])!= NULL){
-			 $getdata->my_sql_update("shelf","shelf_detail='".addslashes($_POST['edit_shelf_detail'])."',shelf_color='".addslashes($_POST['edit_shelf_color'])."'","shelf_id='".addslashes($_POST['edit_shelf_id'])."'");
-			$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
-		 }else{
-			 $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
+       $getShelf = $getdata->my_sql_select(NULL,"shelf","shelf_detail ='".addslashes($_POST['edit_shelf_detail'])."' and shelf_class = '".addslashes($_POST['edit_shelf_class'])."' and shelf_color = '".addslashes($_POST['edit_shelf_color'])."' ");
+       if(mysql_num_rows($getShelf) < 1){
+    			 $getdata->my_sql_update("shelf","shelf_detail='".addslashes($_POST['edit_shelf_detail'])."', shelf_class = '".addslashes($_POST['edit_shelf_class'])."' ,shelf_color='".addslashes($_POST['edit_shelf_color'])."'","shelf_id='".addslashes($_POST['edit_shelf_id'])."'");
+    			$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
+        }else{
+          $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+        }
+     }else{
+			 $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณากรอกข้อมูล shelf สินค้า</div>';
 		 }
 	 }
 ?>
@@ -55,15 +64,33 @@ if(isset($_POST['save_edit_card'])){
                                             <h4 class="modal-title" id="myModalLabel">เพิ่มข้อมูลshelf สินค้า</h4>
                                         </div>
                                         <div class="modal-body">
-                                          <div class="form-group">
-                                            <label for="shelf_detail">รายละเอียดshelf สินค้า</label>
-                                            <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
+                                          <?php
+                                          @$getcode = $getdata->getMaxID("shelf_code","shelf","s");
+                                          ?>
+                                          <div class="form-group row">
+                                            <div class="col-md-6">
+                                              <label for="shelf_detail">รัหส shelf สินค้า</label>
+                                              <input type="text" name="shelf_code" id="shelf_code" value="<?= @$getcode?>" class="form-control" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                            </div>
+                                          </div>
+                                          <div class="form-group row">
+                                            <div class="col-md-6">
+                                              <label for="shelf_detail">shelf สินค้า</label>
+                                              <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
+                                            </div>
+                                            <div class="col-md-6">
+                                              <label for="shelf_detail">ชั้น สินค้า</label>
+                                              <input type="number" name="shelf_class" id="shelf_detail" class="form-control number">
+                                            </div>
                                           </div>
 
                                           <div class="form-group row">
                                             <div class="col-md-6">
                                               <label for="shelf_color">แทบสี</label>
-                                              <input type="text" name="shelf_color" id="shelf_color" class="form-control cp1">
+                                              <input type="text" name="shelf_color" id="shelf_color" class="form-control cp1" autocomplete="off">
                                             </div>
                                              <div class="col-md-6"><label for="shelf_status"><?php echo @LA_LB_STATUS;?></label>
                                               <select name="shelf_status" id="shelf_status" class="form-control">
@@ -100,20 +127,22 @@ if(isset($_POST['save_edit_card'])){
   <thead>
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
-    <th width="74%" bgcolor="#5fb760">รายละเอียด shelf </th>
+    <th width="10%" bgcolor="#5fb760">รหัส shelf </th>
+    <th width="64%" bgcolor="#5fb760">รายละเอียด shelf </th>
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
   <tbody>
   <?php
   $x=0;
-  $getcat = $getdata->my_sql_select(NULL,"shelf","shelf_status in ('1','0') ORDER BY shelf_id ");
+  $getcat = $getdata->my_sql_select(NULL,"shelf","shelf_status in ('1','0') ORDER BY shelf_code,shelf_detail, shelf_class ");
   while($showcat = mysql_fetch_object($getcat)){
 	  $x++;
   ?>
   <tr id="<?php echo @$showcat->shelf_id;?>">
     <td align="center"><?php echo @$x;?></td>
-    <td>&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showcat->shelf_color;?>"></i>&nbsp;<?php echo @$showcat->shelf_detail;?></td>
+    <td>&nbsp;<?php echo @$showcat->shelf_code;?> </td>
+    <td>&nbsp;<i class="fa fa-circle" style="color:<?php echo @$showcat->shelf_color;?>"></i>&nbsp;<?php echo @$showcat->shelf_detail;?> &nbsp; ชั้น &nbsp;<?php echo @$showcat->shelf_class;?></td>
     <td align="center" valign="middle">
       <?php
 	  if($showcat->shelf_status == '1'){
@@ -121,7 +150,7 @@ if(isset($_POST['save_edit_card'])){
 	  }else{
 		  echo '<button type="button" class="btn btn-danger btn-xs" id="btn-'.@$showcat->shelf_id.'" onClick="javascript:changecatStatus(\''.@$showcat->shelf_id.'\',\''.$_SESSION['lang'].'\');"><i class="fa fa-lock" id="icon-'.@$showcat->shelf_id.'"></i> <span id="text-'.@$showcat->shelf_id.'">'.@LA_BTN_OFF.'</span></button>';
 	  }
-	  ?><a data-toggle="modal" data-target="#edit_card_type" data-whatever="<?php echo @$showcat->shelf_id;?>" class="btn btn-xs btn-info" style="color:#FFF;"><i class="fa fa-edit fa-fw"></i> <?php echo @LA_BTN_EDIT;?></a><button type="button" class="btn btn-danger btn-xs" onClick="javascript:deletecat('<?php echo @$showcat->shelf_id;?>');"><i class="glyphicon glyphicon-remove"></i> <?php echo @LA_BTN_DELETE;?></button></td>
+	  ?><a data-toggle="modal" data-target="#edit_card_type" data-whatever="<?php echo @$showcat->shelf_id;?>" class="btn btn-xs btn-info" style="color:#FFF;"><i class="fa fa-edit fa-fw"></i> <?php echo @LA_BTN_EDIT;?></a><button type="button" class="btn btn-danger btn-xs delete" id="del_<?php echo @$showcat->shelf_id;?>"><i class="glyphicon glyphicon-remove"></i> <?php echo @LA_BTN_DELETE;?></button></td>
   </tr>
   <?php
   }
@@ -137,6 +166,38 @@ function MM_jumpMenu(targ,selObj,restore){ //v3.0
 }
 </script>
 <script language="javascript">
+$(document).ready(function(){
+
+  $(".number").bind('keyup mouseup', function () {
+								if($(this).val() < 0) {
+									alert("กรุณากรอกตัวเลขให้ถูกต้อง ! ");
+									$(this).val(0);
+								}
+						});
+
+  $('.delete').click(function(){
+    var id = this.id;
+    var splitid = id.split("_");
+    var deleteid = splitid[1];
+    var r = confirm("ต้องการลบข้อมูล ?");
+    if (r == true) {
+        $.ajax({
+           url: 'settings/deleteShelf.php',
+           type: 'POST',
+           data: { id:deleteid },
+           success: function(response){
+             if(response == 1){
+                deletecat(deleteid);
+                alert("ลบข้อมูลสำเร็จ ! ");
+              }else{
+                alert("ไม่สามารถลบได้  เนื่องจากมีสินค้าอยู่ใน Shelf นี้ ! ");
+              }
+            }
+         });
+    }
+
+  });
+  	});
 function changecatStatus(catkey,lang){
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 	 	xmlhttp=new XMLHttpRequest();
@@ -178,7 +239,7 @@ function changecatStatus(catkey,lang){
 	xmlhttp.send();
 }
 	function deletecat(catkey){
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+    if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
 	 	xmlhttp=new XMLHttpRequest();
 	}else{// code for IE6, IE5
   		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
@@ -186,7 +247,7 @@ function changecatStatus(catkey,lang){
 	xmlhttp.onreadystatechange=function(){
   		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		document.getElementById(catkey).innerHTML = '';
-  		}
+  }
 	}
 	xmlhttp.open("GET","function.php?type=delete_shelf&key="+catkey,true);
 	xmlhttp.send();
