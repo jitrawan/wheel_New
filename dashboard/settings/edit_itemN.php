@@ -21,9 +21,9 @@ if(@$_SESSION['lang']!=NULL){
 	$_SESSION['lang'] = 'th';
 
 }
-$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.code as wcode ,r.code as rcode ,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber
+$getedit = $getdata->my_sql_selectJoin(" p.*,r.*,w.code as wcode ,r.code as rcode
+,w.*,p.ProductID as productMain,w.diameter as diameterWheel , r.diameter as diameterRubber
 , r.width as WidthRubble , r.brand as brandRubble
-
 ","product_N","productDetailWheel w on p.ProductID = w.ProductID left join productDetailRubber r on p.ProductID = r.ProductID "," where p.ProductID = '".addslashes($_GET['key'])."' ");
 $getitem = mysql_fetch_object($getedit);
 
@@ -68,8 +68,8 @@ $getitem = mysql_fetch_object($getedit);
 
 																					 	</div>
 																					 <div class="form-group row">
-	                                               <div class="col-md-3">
-	                                               <label for="edit_diameterWheel">ขนาด</label>
+	                                               <div class="col-md-2 pr-2">
+	                                               <label for="edit_diameterWheel">ขอบ</label>
 	                                                 <select name="edit_diameterWheel" id="edit_diameterWheel" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
 																										 <? $getDiameterWhee = $getdata->my_sql_select(NULL,"DiameterWhee","status = '1' ORDER BY id ");
@@ -78,8 +78,8 @@ $getitem = mysql_fetch_object($getedit);
 	                                                   <?}?>
 	                                                 </select>
 	                                               </div>
-	                                               <div class="col-md-3">
-	                                               <label for="edit_rim">ขอบ</label>
+	                                               <div class="col-md-2 pr-2 pl-2">
+	                                               <label for="edit_rim">ขนาด</label>
 	                                               <select name="edit_rim" id="edit_rim" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
 																										 <? $getRimWheel = $getdata->my_sql_select(NULL,"RimWheel","status = '1' ORDER BY id ");
@@ -88,7 +88,7 @@ $getitem = mysql_fetch_object($getedit);
 	                                                   <?}?>
 	                                                 </select>
 	                                               </div>
-	                                               <div class="col-md-2">
+	                                               <div class="col-md-2 pr-2 pl-2">
 	                                               <label for="edit_holeSize">รู</label>
 	                                                <select name="edit_holeSize" id="edit_holeSize" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
@@ -98,7 +98,7 @@ $getitem = mysql_fetch_object($getedit);
 	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
-	                                               <div class="col-md-4">
+	                                               <div class="col-md-3 pr-2 pl-2">
 	                                               <label for="edit_typeFormat">ประเภท</label>
 	                                                <select name="edit_typeFormat" id="edit_typeFormat" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
@@ -108,9 +108,7 @@ $getitem = mysql_fetch_object($getedit);
 	                                                   <?}?>
 	                                                 </select>
 	                                               </div>
-	                                             </div>
-																							 <div class="form-group row">
-	                                               <div class="col-md-4">
+																								 <div class="col-md-3 pr-2 pl-2">
 	                                               <label for="edit_brandWheel">ยี่ห้อ</label>
 	                                                 <select name="edit_brandWheel" id="edit_brandWheel" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
@@ -121,6 +119,23 @@ $getitem = mysql_fetch_object($getedit);
 	                                                 </select>
 	                                               </div>
 	                                             </div>
+
+																							 <div class="form-group row">
+	                                                   <div class="col-md-2 pr-2">
+	                                                     <label for="edit_offset">offset</label>
+	                                                       <input type="text" name="edit_offset" id="edit_offset" class="form-control" value="<?php echo @$getitem->offset;?>" >
+	                                                   </div>
+	                                                   <div class="col-md-3 pr-2 pl-2">
+	                                                     <label for="edit_color">color</label>
+	                                                     <select name="edit_color" id="edit_color" class="form-control">
+	                                                         <option value="" selected="selected">--สีอื่น--</option>
+	                                                         <option value="black">black</option> <option value="bronze">bronze</option> <option value="chrome">chrome</option> <option value="silver">silver</option>
+	                                                         <option value="gray">gray</option> <option value="white">white</option> <option value="copper">copper</option> <option value="gold">gold</option>
+	                                                         <option value="Midnight">Midnight</option> <option value="Blue">Blue</option>
+	                                                       </select>
+	                                                   </div>
+	                                             </div>
+
 	                                          </div>
 	                                          <!--ยาง-->
 	                                          <div id="edit_detailrubber" name="edit_detailrubber" style="padding: 5px; border: 0px solid #4CAF50;">
@@ -133,17 +148,17 @@ $getitem = mysql_fetch_object($getedit);
 
 																							</div>
 																						<div class="form-group row">
-	                                               <div class="col-md-3">
-	                                               <label for="edit_diameterRubber">ขนาด</label>
-	                                                <select name="edit_diameterRubber" id="edit_diameterRubber" class="form-control">
-	                                                   <option value="" selected="selected">--เลือก--</option>
-																										 <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY id ");
-	                                                      while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
-	                                                    <option value="<?= $showDiameterRubble->Description?>" ><?= $showDiameterRubble->Description?></option>
-	                                                    <?}?>
-	                                                 </select>
-	                                                </div>
-	                                               <div class="col-md-3">
+																							<div class="col-md-2 pr-2">
+																							<label for="edit_width">ความกว้าง</label>
+																								<select name="edit_width" id="edit_width" class="form-control">
+																									<option value="" selected="selected">--เลือก--</option>
+																									<? $getWidthRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
+																										 while($showWidthRubble = mysql_fetch_object($getWidthRubble)){?>
+																									 <option value="<?= $showWidthRubble->Description?>" ><?= $showWidthRubble->Description?></option>
+																									 <?}?>
+																								</select>
+																							</div>
+	                                               <div class="col-md-3 pr-2 pl-2">
 	                                               <label for="edit_series">ซี่รี่</label>
 	                                               <select name="edit_series" id="edit_series" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
@@ -153,17 +168,18 @@ $getitem = mysql_fetch_object($getedit);
 	                                                    <?}?>
 	                                                 </select>
 	                                               </div>
-	                                               <div class="col-md-2">
-	                                               <label for="edit_width">ความกว้าง</label>
-	                                                 <select name="edit_width" id="edit_width" class="form-control">
+
+																								 <div class="col-md-3 pr-2  pl-2">
+	                                               <label for="edit_diameterRubber">ขนาด</label>
+	                                                <select name="edit_diameterRubber" id="edit_diameterRubber" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
-																										 <? $getWidthRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
-	                                                      while($showWidthRubble = mysql_fetch_object($getWidthRubble)){?>
-	                                                    <option value="<?= $showWidthRubble->Description?>" ><?= $showWidthRubble->Description?></option>
+																										 <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY id ");
+	                                                      while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
+	                                                    <option value="<?= $showDiameterRubble->Description?>" ><?= $showDiameterRubble->Description?></option>
 	                                                    <?}?>
 	                                                 </select>
-	                                               </div>
-	                                               <div class="col-md-4">
+	                                                </div>
+	                                               <div class="col-md-4 pr-2 pl-2">
 	                                               <label for="edit_brand">ยี่ห้อ</label>
 	                                                <select name="edit_brand" id="edit_brand" class="form-control">
 	                                                   <option value="" selected="selected">--เลือก--</option>
@@ -174,8 +190,53 @@ $getitem = mysql_fetch_object($getedit);
 	                                                 </select>
 	                                               </div>
 	                                             </div>
+																							 <div class="form-group row">
+	                                               <div class="col-md-4 pr-2">
+	                                                  <label for="code">กลุ่มยาง</label>
+	                                                  <input type="text" name="edit_groudRubber" id="edit_groudRubber" class="form-control" value="<?= $getitem->groudRubber?>" >
+	                                               </div>
+	                                               <div class="col-md-3 pr-2 pl-2">
+	                                                 <label for="code">สัปดาห์ที่ผลิต</label>
+	                                                 <input type="number" name="edit_productionWeek" id="edit_productionWeek" class="form-control" value="<?= $getitem->productionWeek?>" >
+	                                              </div>
+	                                              <div class="col-md-2 pr-2 pl-2">
+	                                                <label for="code">ปีที่ผลิต</label>
+	                                                <input type="number" name="edit_productionYear" id="edit_productionYear" class="form-control" value="<?= $getitem->productionYear?>" >
+	                                             </div>
+	                                             <div class="col-md-3 pr-2 pl-2">
+	                                               <label for="code">รุ่นยาง</label>
+	                                               <input type="text" name="edit_genRubber" id="edit_genRubber" class="form-control" value="<?= $getitem->genRubber?>" >
+	                                            </div>
+
+	                                             </div>
+	                                             <div class="form-group row">
+	                                               <div class="col-md-4 pr-2">
+	                                                  <label for="code">ดัชนีความเร็ว</label>
+	                                                  <input type="number" name="edit_speedIndex" id="edit_speedIndex" class="form-control" value="<?= $getitem->speedIndex?>" >
+	                                               </div>
+	                                               <div class="col-md-4 pr-2 pl-2">
+	                                                 <label for="code">ดัชนีรับน้ำหนัก</label>
+	                                                 <input type="number" name="edit_weightIndex" id="edit_weightIndex" class="form-control" value="<?= $getitem->weightIndex?>" >
+	                                              </div>
+	                                              </div>
 	                                          </div>
 
+																						<div class="form-group row">
+	                                            <div class="col-md-3">
+	                                              <label for="edit_hand">สืินค้ามือ</label>
+	                                             <select name="edit_hand" id="edit_hand" class="form-control" required>
+	                                                  <option value="1" selected="selected">1</option>
+	                                                  <option value="2">2</option>
+
+	                                                </select>
+	                                            </div>
+	                                            <div id="div_persentrubber">
+	                                              <div class="col-md-3">
+	                                                <label for="edit_persentrubber">เปอร์เซ็นยาง (%)</label>
+	                                                     <input type="number" name="edit_persentrubber" id="edit_persentrubber" class="form-control" value="">
+	                                              </div>
+	                                            </div>
+	                                          </div>
 
 	                                            <div class="form-group row">
 	                                             <div class="col-md-6">
@@ -190,54 +251,37 @@ $getitem = mysql_fetch_object($getedit);
 	                                              ?>
 	                                               </select>
 	                                             </div>
-	                                             <div class="col-md-6">
-	                                              <!--label for="edit_Warranty">การรับประกัน</label>
-	                                             <input type="text" name="edit_Warranty" id="edit_Warranty" class="form-control" value="<?php echo @$getitem->Warranty;?>"-->
-																							 <label for="edit_hand">สืินค้ามือ</label>
-	                                            <select name="edit_hand" id="edit_hand" class="form-control">
-	                                                 <option value="1" selected="selected">1</option>
-	                                                 <option value="2">2</option>
 
-	                                               </select>
-																							  </div>
+																								<div class="col-md-6">
+ 	                                               <label for="edit_dealer_code">ผู้จำหน่าย</label>
+ 	                                               <select name="edit_dealer_code" id="edit_dealer_code" class="form-control">
+ 	                                                 <option value="" selected="selected">--เลือกผู้จำหน่าย--</option>
+ 	                                                 <?
+ 	                                                 while($showdealer = mysql_fetch_object($getdealer)){?>
+ 	                                                 <option value="<?php echo @$showdealer->dealer_code;?>" ><?php echo @$showdealer->dealer_name;?></option>
+ 	                                                 <?
+ 	                                                 }
+ 	                                               ?>
+ 	                                                 </select>
+ 	                                             </div>
 	                                           </div>
 
 	                                         <div class="form-group row">
-	                                             <div class="col-md-6">
+	                                             <div class="col-md-4">
 	                                               <label for="edit_PriceSale">ราคาขาย (บาท)</label>
 	                                               <input type="number" name="edit_PriceSale" id="edit_PriceSale" class="form-control number" value="<?php echo @$getitem->PriceSale;?>" style="text-align: right;">
 	                                             </div>
-	                                              <div class="col-md-6">
+	                                              <div class="col-md-4">
 	                                              <label for="edit_PriceBuy">ราคาซื้อ (บาท)</label>
 	                                             <input type="number" name="edit_PriceBuy" id="edit_PriceBuy" class="form-control number" value="<?php echo @$getitem->PriceBuy;?>" style="text-align: right;">
 	                                              </div>
+																								<div class="col-md-3">
+																									<label for="edit_Quantity">คงเหลือ (ชิ้น)</label>
+																									<input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control number" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
+																								</div>
 	                                           </div>
 
-	                                           <div class="form-group row">
-	                                             <div class="col-md-6">
-	                                               <label for="edit_Quantity">คงเหลือ (ชิ้น)</label>
-	                                               <input type="number" name="edit_Quantity" id="edit_Quantity" class="form-control number" value="<?php echo @$getitem->Quantity;?>" style="text-align: right;">
-	                                             </div>
-	                                             <div class="col-md-6">
 
-	                                             </div>
-	                                            </div>
-
-	                                            <div class="form-group row">
-	                                             <div class="col-md-6">
-	                                               <label for="edit_dealer_code">ผู้จำหน่าย</label>
-	                                               <select name="edit_dealer_code" id="edit_dealer_code" class="form-control">
-	                                                 <option value="" selected="selected">--เลือกผู้จำหน่าย--</option>
-	                                                 <?
-	                                                 while($showdealer = mysql_fetch_object($getdealer)){?>
-	                                                 <option value="<?php echo @$showdealer->dealer_code;?>" ><?php echo @$showdealer->dealer_name;?></option>
-	                                                 <?
-	                                                 }
-	                                               ?>
-	                                                 </select>
-	                                             </div>
-
-	                                            </div>
                                         </div>
                                          <div class="modal-footer">
                                             <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times fa-fw"></i><?php echo @LA_BTN_CLOSE;?></button>
@@ -246,6 +290,102 @@ $getitem = mysql_fetch_object($getedit);
 
           <script language="javascript">
           $( document ).ready(function() {
+						$("#div_persentrubber").hide();
+						$("#edit_hand").change(function() {
+							if($(this).val() == '2'){
+								if('<?echo @$getitem->TypeID;?>' == '2'){
+									$("#div_persentrubber").show();
+								}else{
+									$("#div_persentrubber").hide();
+								}
+							}else{
+									$("#div_persentrubber").hide();
+							}
+						});
+
+						$("#edit_diameterWheel").change(function() {
+							$.ajax({
+									type: "GET",
+									url: "settings/json_rim.php",
+									data: 'key=' + this.value,
+									cache: false,
+									success: function (data) {
+											var JSONObject = JSON.parse(data);
+											var $edit_rim = $("#edit_rim");
+											$edit_rim.empty();
+											$edit_rim.append("<option value='' selected='selected'>--เลือก--</option>");
+											for(var i = 0; i < JSONObject.length; i++){
+											$edit_rim.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+										}
+									},
+									error: function(err) {
+											console.log(err);
+									}
+							});
+
+							$.ajax({
+									type: "GET",
+									url: "settings/json_hoteSize.php",
+									data: 'key=' + this.value,
+									cache: false,
+									success: function (data) {
+										var JSONObject = JSON.parse(data);
+											var $edit_holeSize = $("#edit_holeSize");
+											$edit_holeSize.empty();
+											$edit_holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
+											for(var i = 0; i < JSONObject.length; i++){
+											$edit_holeSize.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+											}
+
+									},
+									error: function(err) {
+											console.log(err);
+									}
+							});
+						});
+
+
+						$("#edit_width").change(function() {
+						    $.ajax({
+						        type: "GET",
+						        url: "settings/json_Series.php",
+						        data: 'key=' + this.value,
+						        cache: false,
+						        success: function (data) {
+						            var JSONObject = JSON.parse(data);
+						            var $edit_series = $("#edit_series");
+						            $edit_series.empty();
+						            $edit_series.append("<option value='' selected='selected'>--เลือก--</option>");
+						            for(var i = 0; i < JSONObject.length; i++){
+						            $edit_series.append("<option value=" +  JSONObject[i].id + ">" + JSONObject[i].Description + "</option>");
+						            }
+
+						        },
+						        error: function(err) {
+						            console.log(err);
+						        }
+						    });
+
+						    $.ajax({
+						        type: "GET",
+						        url: "settings/json_Diameter.php",
+						        data: 'key=' + this.value,
+						        cache: false,
+						        success: function (data) {
+						          var JSONObject = JSON.parse(data);
+						            var $edit_diameterRubber = $("#edit_diameterRubber");
+						            $edit_diameterRubber.empty();
+						            $edit_diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
+						            for(var i = 0; i < JSONObject.length; i++){
+						            $edit_diameterRubber.append("<option value=" +  JSONObject[i].id + ">" + JSONObject[i].Description + "</option>");
+						            }
+
+						        },
+						        error: function(err) {
+						            console.log(err);
+						        }
+						    });
+						  });
 
 						$(".number").bind('keyup mouseup', function () {
 								if($(this).val() < 0) {
@@ -267,18 +407,114 @@ $getitem = mysql_fetch_object($getedit);
 								$("#edit_detailwheel").show();
 								$("#edit_detailrubber").hide();
 								$('#edit_diameterWheel').val('<?php echo @$getitem->diameter;?>');
-								$('#edit_rim').val('<?php echo @$getitem->rim;?>');
-								$('#edit_holeSize').val('<?php echo @$getitem->holeSize;?>');
+								/*$('#edit_rim').val('<?php echo @$getitem->rim;?>');
+								$('#edit_holeSize').val('<?php echo @$getitem->holeSize;?>');*/
 								$('#edit_typeFormat').val('<?php echo @$getitem->typeFormat;?>');
 								$('#edit_brandWheel').val('<?php echo @$getitem->brand;?>');
+								$('#edit_color').val('<?php echo @$getitem->color;?>');
+								$('#edit_offset').val('<?php echo @$getitem->offset;?>');
+
+
+
+								if('<?php echo @$getitem->diameter;?>' != ""){
+									$.ajax({
+											type: "GET",
+											url: "settings/json_rim.php",
+											data: 'key=' + '<?php echo @$getitem->diameter;?>',
+											cache: false,
+											success: function (data) {
+													var JSONObject = JSON.parse(data);
+													var $edit_rim = $("#edit_rim");
+													$edit_rim.empty();
+													$edit_rim.append("<option value='' selected='selected'>--เลือก--</option>");
+													for(var i = 0; i < JSONObject.length; i++){
+													$edit_rim.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+													}
+													$('#edit_rim').val('<?php echo @$getitem->rim;?>');
+
+
+											},
+											error: function(err) {
+													console.log(err);
+											}
+									});
+
+									$.ajax({
+											type: "GET",
+											url: "settings/json_hoteSize.php",
+											data: 'key=' + '<?php echo @$getitem->diameter;?>',
+											cache: false,
+											success: function (data) {
+												var JSONObject = JSON.parse(data);
+													var $edit_holeSize = $("#edit_holeSize");
+													$edit_holeSize.empty();
+													$edit_holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
+													for(var i = 0; i < JSONObject.length; i++){
+													$edit_holeSize.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+													}
+												$('#edit_holeSize').val('<?php echo @$getitem->holeSize;?>');
+											},
+											error: function(err) {
+													console.log(err);
+											}
+									});
+								}
+
+
 							}else{
 								$("#edit_detailwheel").hide();
 								$("#edit_detailrubber").show();
-								console.log('<?echo @$getitem->series;?>');
-								$('#edit_diameterRubber').val('<?php echo @$getitem->diameterRubber;?>');
-								$('#edit_series').val('<?php echo @$getitem->series;?>');
 								$('#edit_width').val('<?php echo @$getitem->WidthRubble;?>');
-								$('#edit_brand').val('<?php echo @$getitem->brandRubble;?>');
+
+								if('<?php echo @$getitem->hand;?>' == "2"){
+									$("#div_persentrubber").show();
+								}
+
+								if('<?php echo @$getitem->WidthRubble;?>' != ""){
+									$.ajax({
+											type: "GET",
+											url: "settings/json_Series.php",
+											data: 'key=' + '<?php echo @$getitem->WidthRubble;?>',
+											cache: false,
+											success: function (data) {
+													var JSONObject = JSON.parse(data);
+													var $edit_series = $("#edit_series");
+													$edit_series.empty();
+													$edit_series.append("<option value='' selected='selected'>--เลือก--</option>");
+													for(var i = 0; i < JSONObject.length; i++){
+													$edit_series.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+													}
+													$('#edit_series').val('<?php echo @$getitem->series;?>');
+
+
+											},
+											error: function(err) {
+													console.log(err);
+											}
+									});
+
+									$.ajax({
+											type: "GET",
+											url: "settings/json_Diameter.php",
+											data: 'key=' + '<?php echo @$getitem->WidthRubble;?>',
+											cache: false,
+											success: function (data) {
+												var JSONObject = JSON.parse(data);
+													var $edit_diameterRubber = $("#edit_diameterRubber");
+													$edit_diameterRubber.empty();
+													$edit_diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
+													for(var i = 0; i < JSONObject.length; i++){
+													$edit_diameterRubber.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+													}
+													$('#edit_diameterRubber').val('<?php echo @$getitem->diameterRubber;?>');
+											},
+											error: function(err) {
+													console.log(err);
+											}
+									});
+								}
+
+							$('#edit_brand').val('<?php echo @$getitem->brandRubble;?>');
 							}
 
 							$("#gettype").val('<?echo @$getitem->TypeID;?>');
@@ -291,106 +527,7 @@ $getitem = mysql_fetch_object($getedit);
 					 $('#edit_shelf_id').val('<?php echo @$getitem->shelf_id;?>');
 					 $('#edit_hand').val('<?php echo @$getitem->hand;?>');
 
-				/*	 $.getJSON( "jsondata/brand.json", function( data ) {
-					   var $brand = $("#edit_brand");
-					   $brand.empty();
-					   $brand.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if('<?php echo @$getitem->brand;?>' == data[i].id){
-								 $brand.append("<option value=" +  data[i].id + " selected='selected'>" + data[i].name + "</option>");
-							 }else{
-								 $brand.append("<option value=" +  data[i].id + ">" + data[i].name + "</option>");
-							 }
 
-					   }
-					   });
-
-					   $.getJSON( "jsondata/diameter.json", function( data ) {
-					   var $diameterWheel = $("#edit_diameterWheel");
-					   var $diameterRubber = $("#edit_diameterRubber");
-					   $diameterWheel.empty();
-					   $diameterRubber.empty();
-					   $diameterWheel.append("<option value='' selected='selected'>--เลือก--</option>");
-					   $diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->diameterWheel;?>'){
-								 $diameterWheel.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							 }else{
-								 $diameterWheel.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							 }
-							  if(data[i] == '<?php echo @$getitem->diameterRubber;?>'){
-					     		$diameterRubber.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							 }else{
-								 $diameterRubber.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							 }
-					   }
-					 });
-
-					   $.getJSON( "jsondata/holeSize.json", function( data ) {
-					   var $holeSize = $("#edit_holeSize");
-					   $holeSize.empty();
-					   $holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->holeSize;?>'){
-								 $holeSize.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							 }else{
-								 $holeSize.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							 }
-
-					   }
-					  });
-
-					  $.getJSON( "jsondata/rim.json", function( data ) {
-					   var $rim = $("#edit_rim");
-					   $rim.empty();
-					   $rim.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->rim;?>'){
-					     	$rim.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							}else{
-								$rim.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							}
-					   }
-					  });
-
-					  $.getJSON( "jsondata/series.json", function( data ) {
-					   var $series = $("#edit_series");
-					   $series.empty();
-					   $series.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->series;?>'){
-					     		$series.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-								}else{
-									$series.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-								}
-					   }
-					  });
-
-					  $.getJSON( "jsondata/typeFormat.json", function( data ) {
-					   var $typeFormat = $("#edit_typeFormat");
-					   $typeFormat.empty();
-					   $typeFormat.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->typeFormat;?>'){
-					     		$typeFormat.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							 }else{
-								 	$typeFormat.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							 }
-					   }
-					  });
-
-					 $.getJSON( "jsondata/width.json", function( data ) {
-					   var $width = $("#edit_width");
-					   $width.empty();
-					   $width.append("<option value='' selected='selected'>--เลือก--</option>");
-					   for(var i = 0; i < data.length; i++){
-							 if(data[i] == '<?php echo @$getitem->width;?>'){
-					     		$width.append("<option value=" +  data[i] + " selected='selected'>" + data[i] + "</option>");
-							 }else{
-								  $width.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-							 }
-					   }
-					 });*/
 
 
           });

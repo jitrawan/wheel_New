@@ -8,7 +8,7 @@
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
    <li><a href="?p=MainSettingWheel">ตั้งค่าล้อแม็ก</a></li>
-  <li class="active">รู</li>
+  <li class="active">รูปแบบรูน๊อต Bolt pattern</li>
 </ol>
 <?php
 if(isset($_POST['save_card'])){

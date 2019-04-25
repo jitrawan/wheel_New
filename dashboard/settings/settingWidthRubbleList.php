@@ -8,14 +8,52 @@
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
    <li><a href="?p=MainSettingRubble">ตั้งค่ายาง</a></li>
-  <li class="active">ความกว้าง</li>
+  <li class="active">ความกว้าง (mm)</li>
 </ol>
 <?php
+if(isset($_POST['save_detailseries'])){
+  if(addslashes($_POST['detail_SeriesRubble']) != NULL){
+    $chk_Dup = $getdata->my_sql_select(NULL,"relationSeries"," SeriesRubble = '".addslashes($_POST['detail_SeriesRubble'])."' and SeriesId =  '".addslashes($_POST['id'])."' ");
+    if(mysql_num_rows($chk_Dup) < 1){
+      $getdata->my_sql_insert_New(" relationSeries "," SeriesId, SeriesRubble "
+      ," '".addslashes($_POST['id'])."'
+      ,'".addslashes($_POST['detail_SeriesRubble'])."' ");
+      $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
+  }else{
+    $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณาระบุช้อมูลให้ถูกต้อง</div>';
+  }
+}
+
+if(isset($_POST['save_detaildiameter'])){
+
+  if(addslashes($_POST['detail_DiameterRubble']) != NULL){
+    $chk_Dupdia = $getdata->my_sql_select(NULL,"relationDiameter"," DiameterRubble = '".addslashes($_POST['detail_DiameterRubble'])."' and DiameterId = '".addslashes($_POST['diaId'])."' ");
+    if(mysql_num_rows($chk_Dupdia) < 1){
+      $getdata->my_sql_insert_New(" relationDiameter "," DiameterId, DiameterRubble "
+      ," '".addslashes($_POST['diaId'])."'
+      ,'".addslashes($_POST['detail_DiameterRubble'])."' ");
+      $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
+  }else{
+    $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณาระบุช้อมูลให้ถูกต้อง</div>';
+  }
+}
+
 if(isset($_POST['save_card'])){
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"WidthRubble"," Description = '".addslashes($_POST['shelf_detail'])."' ");
     if(mysql_num_rows($chk_DiameterWhee) < 1){
-      $getdata->my_sql_insert_New(" WidthRubble "," code, Description, status "," '".addslashes($_POST['code'])."' ,'".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_status'])."' ");
+      $getdata->my_sql_insert_New(" WidthRubble "," code, Description, status, DiameterRubble, SeriesRubble "
+      ," '".addslashes($_POST['code'])."'
+      ,'".addslashes($_POST['shelf_detail'])."'
+      ,'".addslashes($_POST['shelf_status'])."'
+      ,'".addslashes($_POST['shelf_DiameterRubble'])."'
+      ,'".addslashes($_POST['shelf_SeriesRubble'])."' ");
   		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
     }else{
       $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
@@ -26,10 +64,12 @@ if(isset($_POST['save_card'])){
 }
 if(isset($_POST['save_edit_card'])){
 		 if(addslashes($_POST['edit_shelf_detail'])!= NULL){
-			 $getdata->my_sql_update("WidthRubble","Description='".addslashes($_POST['edit_shelf_detail'])."'","id='".addslashes($_POST['edit_shelf_id'])."'");
+			 $getdata->my_sql_update("WidthRubble","Description='".addslashes($_POST['edit_shelf_detail'])."'
+       ,DiameterRubble='".addslashes($_POST['edit_shelf_DiameterRubble'])."'
+       ,SeriesRubble='".addslashes($_POST['edit_shelf_SeriesRubble'])."'
+       ","id='".addslashes($_POST['edit_shelf_id'])."'");
 
-       //echo "<script>console.log('UPDATE DiameterWhee SET Desc = '".addslashes($_POST['edit_shelf_detail'])."' where id = '".addslashes($_POST['edit_shelf_id'])."'');</script>";
-			$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
+      $alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
 		 }else{
 			 $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_DATA_MISMATCH.'</div>';
 		 }
@@ -78,15 +118,40 @@ if(isset($_POST['save_edit_card'])){
                                             <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
                                           </div>
 
+
+                                        <!--div class="form-group row">
+                                          <div class="col-md-6">
+                                              <label for="shelf_DiameterRubble">ขนาด</label>
+                                              <select name="shelf_DiameterRubble" id="shelf_DiameterRubble" class="form-control">
+                                                <option value="" selected="selected">--เลือก--</option>
+                                                <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY Description ");
+                                                  while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
+                                                <option value="<?= $showDiameterRubble->id?>" ><?= $showDiameterRubble->Description?></option>
+                                                <?}?>
+                                             </select>
+                                            </div>
+                                          </div>
+
                                           <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label for="shelf_SeriesRubble">ซี่รี่</label>
+                                                <select name="shelf_SeriesRubble" id="shelf_SeriesRubble" class="form-control">
+                                                  <option value="" selected="selected">--เลือก--</option>
+                                                  <? $getSeriesRubbleRubble = $getdata->my_sql_select(NULL,"SeriesRubble","status = '1' ORDER BY Description ");
+                                                    while($showSeriesRubbleRubble = mysql_fetch_object($getSeriesRubbleRubble)){?>
+                                                  <option value="<?= $showSeriesRubbleRubble->id?>" ><?= $showSeriesRubbleRubble->Description?></option>
+                                                  <?}?>
+                                               </select>
+                                              </div>
+                                            </div-->
+                                            <div class="form-group row">
 
-                                             <div class="col-md-6"><label for="shelf_status"><?php echo @LA_LB_STATUS;?></label>
-                                              <select name="shelf_status" id="shelf_status" class="form-control">
-                                                <option value="1" selected="selected"><?php echo @LA_BTN_SHOW;?></option>
-                                                <option value="0"><?php echo @LA_BTN_HIDE;?></option>
+                                               <div class="col-md-6"><label for="shelf_status"><?php echo @LA_LB_STATUS;?></label>
+                                                <select name="shelf_status" id="shelf_status" class="form-control">
+                                                  <option value="1" selected="selected"><?php echo @LA_BTN_SHOW;?></option>
+                                                  <option value="0"><?php echo @LA_BTN_HIDE;?></option>
 
-                                              </select></div>
-
+                                                </select></div>
                                           </div>
                                         </div>
                                         <div class="modal-footer">
@@ -100,6 +165,39 @@ if(isset($_POST['save_edit_card'])){
                                 <!-- /.modal-dialog -->
 </div>
                             <!-- /.modal -->
+      <!-- Modal Edit -->
+      <div class="modal fade" id="Detial_Series" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+          <form id="form3" name="form3" method="post">
+           <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                          <h4 class="modal-title" id="memberModalLabel">ข้อมูลซี่รี่</h4>
+                      </div>
+                      <div class="ct">
+
+                      </div>
+                  </div>
+              </div>
+        </form>
+      </div>
+
+      <!-- Modal Edit -->
+      <div class="modal fade" id="Detial_Diameter" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+          <form id="form3" name="form3" method="post">
+           <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                          <h4 class="modal-title" id="memberModalLabel">ข้อมูลขนาด</h4>
+                      </div>
+                      <div class="ct">
+
+                      </div>
+                  </div>
+              </div>
+        </form>
+      </div>
   <?php
   echo @$alert;
   ?>
@@ -116,7 +214,9 @@ if(isset($_POST['save_edit_card'])){
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
     <th width="20%" bgcolor="#5fb760">รหัส</th>
-    <th width="54%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="34%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="10%" bgcolor="#5fb760">ซี่รี่</th>
+    <th width="10%" bgcolor="#5fb760">ขนาด</th>
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
@@ -131,6 +231,8 @@ if(isset($_POST['save_edit_card'])){
     <td align="center"><?php echo @$x;?></td>
     <td>&nbsp;<?php echo @$showcat->code;?></td>
     <td>&nbsp;<?php echo @$showcat->Description;?></td>
+    <td align="center"><a data-toggle="modal" data-target="#Detial_Series" data-whatever="<?php echo @$showcat->id;?>" class="pointer">ข้อมูลซี่รี่</a></td>
+    <td align="center"><a data-toggle="modal" data-target="#Detial_Diameter" data-whatever="<?php echo @$showcat->id;?>" class="pointer">ข้อมูลขนาด</a></td>
     <td align="center" valign="middle">
       <?php
 	  if($showcat->status == '1'){
@@ -232,4 +334,46 @@ function changecatStatus(catkey,lang){
                 }
             });
     })
+
+    $('#Detial_Series').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'key=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "settings/Detial_Series.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                   modal.find('.ct').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
+
+    $('#Detial_Diameter').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'key=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "settings/Detial_Diameter.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                   modal.find('.ct').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
+
+
     </script>

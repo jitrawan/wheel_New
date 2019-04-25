@@ -20,7 +20,8 @@
 <a href="?p=reportProduct" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานสินค้าทั้งหมด</a></br></br>
 <a href="?p=reportPR" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานรับสินค้าเข้า</a></br></br>
 <a href="?p=reportSale" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการขาย</a></br></br>
-<a href="?p=reportClaim" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการเคลม</a>
+<a href="?p=reportClaim" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการเคลม</a></br></br>
+<!--a href="?p=reportPopSale" class="btn btn-info btn-sm"><i class="fa fa-mail-forward fa-fw"></i>&nbsp;&nbsp;รายงานการสินค้าขายดี</a-->
 
 <script language="javascript">
 $( document ).ready(function() {

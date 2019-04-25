@@ -1,14 +1,14 @@
 
 <div class="row">
      <div class="col-lg-12">
-             <h1 class="page-header"><i class="fa fa-gear fa-fw"></i>ขอบ</h1>
+             <h1 class="page-header"><i class="fa fa-gear fa-fw"></i>ขนาดความกว้าง</h1>
      </div>
 </div>
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
    <li><a href="?p=MainSettingWheel">ตั้งค่าล้อแม็ก</a></li>
-  <li class="active">ขอบ</li>
+  <li class="active">ขนาดความกว้าง (Inch)</li>
 </ol>
 
 <?php

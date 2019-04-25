@@ -59,117 +59,211 @@ if(isset($_POST['save_new_status'])){
  <form method="post" enctype="multipart/form-data" name="frmSearch" id="frmSearch">
    <div style="margin: 10px;">
      <div class="form-group row">
-         <div class="col-md-3">
-           <label ><b>ค้นหาจาก ประเภทสินค้า :    </b></label>
-           <input type="radio" id="search_wheel" name="search_type" value="1" checked>
-           <label for="wheel">ล้อแม๊ก</label>
-         </div>
          <div class="col-md-6">
-           <input type="radio" id="search_rubber" name="search_type" value="2">
-           <label for="rubber">ยาง</label>
+           <div class="radio">
+             <label ><b>ค้นหาจาก ประเภทสินค้า :    </b></label>
+            <label style="font-size: 1em">
+               <input type="radio" id="search_wheel" name="search_type" value="1" checked>
+                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                ล้อแม๊ก
+            </label>
+            <label style="font-size: 1em">
+               <input type="radio" id="search_rubber" name="search_type" value="2">
+                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                ยาง
+            </label>
+          </div>
          </div>
      </div>
 
-         <!--ล้อ-->
-         <div id="search_detailwheel" name="search_detailwheel" style="padding: 5px; border: 0px solid #4CAF50;">
-             <div class="form-group row">
-                 <div class="col-md-2">
-                 <label for="search_diameterWheel">ขนาด</label>
-                   <select name="search_diameterWheel" id="search_diameterWheel" class="form-control">
-                     <option value="" selected="selected">--เลือก--</option>
-                     <? $getDiameterWhee = $getdata->my_sql_select(NULL,"DiameterWhee","status = '1' ORDER BY id ");
-                       while($showDiameterWhee = mysql_fetch_object($getDiameterWhee)){?>
-                     <option value="<?= $showDiameterWhee->Description?>" ><?= $showDiameterWhee->Description?></option>
-                     <?}?>
-                   </select>
-                 </div>
-                 <div class="col-md-2">
-                 <label for="search_rim">ขอบ</label>
-                 <select name="search_rim" id="search_rim" class="form-control">
-                     <option value="" selected="selected">--เลือก--</option>
-                     <? $getRimWheel = $getdata->my_sql_select(NULL,"RimWheel","status = '1' ORDER BY id ");
-                         while($showRimWheel = mysql_fetch_object($getRimWheel)){?>
-                       <option value="<?= $showRimWheel->Description?>" ><?= $showRimWheel->Description?></option>
-                       <?}?>
-                 </select>
-                 </div>
-                 <div class="col-md-2">
-                 <label for="search_holeSize">รู</label>
-                   <select name="search_holeSize" id="search_holeSize" class="form-control">
-                     <option value="" selected="selected">--เลือก--</option>
-                     <? $getHoleSizeWhee = $getdata->my_sql_select(NULL,"HoleSizeWhee","status = '1' ORDER BY id ");
-                         while($showHoleSizeWhee = mysql_fetch_object($getHoleSizeWhee)){?>
-                       <option value="<?= $showHoleSizeWhee->Description?>" ><?= $showHoleSizeWhee->Description?></option>
-                       <?}?>
-                   </select>
-                 </div>
-                 <div class="col-md-3">
-                 <label for="search_typeFormat">ประเภท</label>
-                   <select name="search_typeFormat" id="search_typeFormat" class="form-control">
-                     <option value="" selected="selected">--เลือก--</option>
-                     <? $getTypeFormatWheel = $getdata->my_sql_select(NULL,"TypeFormatWheel","status = '1' ORDER BY id ");
-                         while($showTypeFormatWheel = mysql_fetch_object($getTypeFormatWheel)){?>
-                       <option value="<?= $showTypeFormatWheel->Description?>" ><?= $showTypeFormatWheel->Description?></option>
-                       <?}?>
-                   </select>
-                 </div>
-                 <div class="col-md-3">
-                 <label for="search_holeSize">ยี่ห้อ</label>
-                   <select name="search_brand_Wheel" id="search_brand_Wheel" class="form-control">
-                       <option value="" selected="selected">--เลือก--</option>
-                         <? $getbranWheel = $getdata->my_sql_select(NULL,"BrandWhee","status = '1' ORDER BY id ");
-                           while($showbrandWheel = mysql_fetch_object($getbranWheel)){?>
-                         <option value="<?= $showbrandWheel->id?>" ><?= $showbrandWheel->Description?></option>
-                         <?}?>
-                   </select>
-                 </div>
-               </div>
+     <!--ล้อ-->
+<div id="search_detailwheel" name="search_detailwheel" style="padding: 5px; border: 0px solid #4CAF50;">
+   <div class="form-group row">
+     <div class="col-md-2">
+     <label for="search_rim">ขอบ(Inch)</label>
+     <select name="search_diameterWheel" id="search_diameterWheel" class="form-control">
+       <option value="" selected="selected">--เลือก--</option>
+       <? $getDiameterWhee = $getdata->my_sql_select(NULL,"DiameterWhee","status = '1' ORDER BY id ");
+         while($showDiameterWhee = mysql_fetch_object($getDiameterWhee)){?>
+       <option value="<?= $showDiameterWhee->Description?>" ><?= $showDiameterWhee->Description?></option>
+       <?}?>
+     </select>
+     </div>
+       <div class="col-md-2">
+       <label for="search_diameterWheel">ขนาด(Inch)</label>
+       <select name="search_rim" id="search_rim" class="form-control">
+           <option value="" selected="selected">--เลือก--</option>
+
+       </select>
+
+       </div>
+
+       <div class="col-md-2">
+       <label for="search_holeSize">รู</label>
+         <select name="search_holeSize" id="search_holeSize" class="form-control">
+           <option value="" selected="selected">--เลือก--</option>
+
+         </select>
+       </div>
+       <div class="col-md-3">
+       <label for="search_typeFormat">ประเภท</label>
+         <select name="search_typeFormat" id="search_typeFormat" class="form-control">
+           <option value="" selected="selected">--เลือก--</option>
+           <? $getTypeFormatWheel = $getdata->my_sql_select(NULL,"TypeFormatWheel","status = '1' ORDER BY id ");
+               while($showTypeFormatWheel = mysql_fetch_object($getTypeFormatWheel)){?>
+             <option value="<?= $showTypeFormatWheel->Description?>" ><?= $showTypeFormatWheel->Description?></option>
+             <?}?>
+         </select>
+       </div>
+       <div class="col-md-3">
+       <label for="search_holeSize">ยี่ห้อ</label>
+         <select name="search_brand_Wheel" id="search_brand_Wheel" class="form-control">
+             <option value="" selected="selected">--เลือก--</option>
+               <? $getbranWheel = $getdata->my_sql_select(NULL,"BrandWhee","status = '1' ORDER BY id ");
+                 while($showbrandWheel = mysql_fetch_object($getbranWheel)){?>
+               <option value="<?= $showbrandWheel->id?>" ><?= $showbrandWheel->Description?></option>
+               <?}?>
+         </select>
+       </div>
+     </div>
+
+     <div class="form-group row">
+         <div class="col-md-2">
+           <label for="search_offset">offset (mm.)</label>
+           <select name="search_offset" id="search_offset" class="form-control">
+             <option value="" selected="selected">--เลือก--</option>
+             <? $getoffset = $getdata->my_sql_select("offset","productdetailwheel","offset != '' Group by offset ORDER BY offset ");
+               while($showoffset = mysql_fetch_object($getoffset)){?>
+             <option value="<?= $showoffset->offset?>" ><?= $showoffset->offset?></option>
+             <?}?>
+           </select>
          </div>
-                <!--ยาง-->
-         <div id="search_detailrubber" name="search_detailrubber" style="padding: 5px; border: 0px solid #4CAF50;">
-             <div class="form-group row">
-               <div class="col-md-3">
-                       <label for="search_diameterRubber">ขนาด</label>
-                         <select name="search_diameterRubber" id="search_diameterRubber" class="form-control">
-                           <option value="" selected="selected">--เลือก--</option>
-                           <? $getDiameterRubble = $getdata->my_sql_select(NULL,"DiameterRubble","status = '1' ORDER BY id ");
-                             while($showDiameterRubble = mysql_fetch_object($getDiameterRubble)){?>
-                           <option value="<?= $showDiameterRubble->id?>" ><?= $showDiameterRubble->Description?></option>
-                           <?}?>
-                         </select>
-                         </div>
-                       <div class="col-md-3">
-                       <label for="search_series">ซี่รี่</label>
-                       <select name="search_series" id="search_series" class="form-control">
-                           <option value="" selected="selected">--เลือก--</option>
-                           <? $getSeriesRubble = $getdata->my_sql_select(NULL,"SeriesRubble","status = '1' ORDER BY id ");
-                               while($showSeriesRubble = mysql_fetch_object($getSeriesRubble)){?>
-                             <option value="<?= $showSeriesRubble->Description?>" ><?= $showSeriesRubble->Description?></option>
-                             <?}?>
-                         </select>
-                       </div>
-                       <div class="col-md-2">
-                       <label for="wisearch_widthdth">ความกว้าง</label>
-                         <select name="search_width" id="search_width" class="form-control">
-                           <option value="" selected="selected">--เลือก--</option>
-                           <? $getWidthRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
-                               while($showWidthRubble = mysql_fetch_object($getWidthRubble)){?>
-                             <option value="<?= $showWidthRubble->Description?>" ><?= $showWidthRubble->Description?></option>
-                             <?}?>
-                         </select>
-                       </div>
-                       <div class="col-md-4">
-                       <label for="search_brand">ยี่ห้อ</label>
-                         <select name="search_brand" id="search_brand" class="form-control">
-                           <option value="" selected="selected">--เลือก--</option>
-                           <? $getbrandRubble = $getdata->my_sql_select(NULL,"brandRubble","status = '1' ORDER BY id ");
-                               while($showbrandRubble = mysql_fetch_object($getbrandRubble)){?>
-                             <option value="<?= $showbrandRubble->Description?>" ><?= $showbrandRubble->Description?></option>
-                             <?}?>
-                         </select>
-                       </div>
+         <div class="col-md-9">
+           <label for="search_offset">color : </label><br>
+           <div class="checkbox">
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="black">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                Black
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="bronze">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                bronze
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="chrome">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                chrome
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="silver">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                silver
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="gray">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                gray
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="white">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                white
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="copper">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                copper
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="gold">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                gold
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" name="col[]" value="Blue">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                Blue
+            </label>
+            <label style="font-size: 1em">
+                <input type="checkbox" value="col[]" name="other" id="other">
+                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                other
+            </label>
+        </div>
+
+
+
+         </div>
+       </div>
+</div>
+      <!--ยาง-->
+<div id="search_detailrubber" name="search_detailrubber" style="padding: 5px; border: 0px solid #4CAF50;">
+   <div class="form-group row">
+     <div class="col-md-2">
+     <label for="wisearch_widthdth">ความกว้าง(mm)</label>
+       <select name="search_width" id="search_width" class="form-control">
+         <option value="" selected="selected">--เลือก--</option>
+         <? $getWidthRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
+             while($showWidthRubble = mysql_fetch_object($getWidthRubble)){?>
+           <option value="<?= $showWidthRubble->Description?>" ><?= $showWidthRubble->Description?></option>
+           <?}?>
+       </select>
+     </div>
+     <div class="col-md-3">
+     <label for="search_series">ซี่รี่/แก้มยาง(%)</label>
+     <select name="search_series" id="search_series" class="form-control">
+         <option value="" selected="selected">--เลือก--</option>
+
+       </select>
+     </div>
+     <div class="col-md-3">
+             <label for="search_diameterRubber">ขนาด(Inch)</label>
+               <select name="search_diameterRubber" id="search_diameterRubber" class="form-control">
+                 <option value="" selected="selected">--เลือก--</option>
+
+               </select>
                </div>
-          </div>
+         <div class="col-md-4">
+             <label for="search_brand">ยี่ห้อ</label>
+               <select name="search_brand" id="search_brand" class="form-control">
+                 <option value="" selected="selected">--เลือก--</option>
+                 <? $getbrandRubble = $getdata->my_sql_select(NULL,"brandRubble","status = '1' ORDER BY id ");
+                     while($showbrandRubble = mysql_fetch_object($getbrandRubble)){?>
+                   <option value="<?= $showbrandRubble->Description?>" ><?= $showbrandRubble->Description?></option>
+                   <?}?>
+               </select>
+             </div>
+     </div>
+
+     <div class="form-group row">
+       <div class="col-md-2 pr-2">
+         <label for="code">กลุ่มยาง</label>
+         <input type="text" name="search_groudRubber" id="search_groudRubber" class="form-control" value="" >
+      </div>
+      <div class="col-md-1 ">
+        <label for="code">สัปดาห์ที่ผลิต</label>
+        <input type="text" name="search_productionWeek" id="search_productionWeek" class="form-control" value="" >
+     </div>
+     <div class="col-md-1 pl-2">
+       <label for="code">ปีที่ผลิต</label>
+       <input type="text" name="search_productionYear" id="search_productionYear" class="form-control" value="" >
+    </div>
+    <div class="col-md-2 pl-2">
+      <label for="code">รุ่นยาง</label>
+      <input type="text" name="search_genRubber" id="search_genRubber" class="form-control" value="" >
+   </div>
+   <div class="col-md-2 pl-2">
+     <label for="code">ดัชนีความเร็ว</label>
+     <input type="text" name="search_speedIndex" id="search_speedIndex" class="form-control" value="" >
+  </div>
+  <div class="col-md-2 pl-2">
+    <label for="code">ดัชนีรับน้ำหนัก</label>
+    <input type="text" name="search_weightIndex" id="search_weightIndex" class="form-control" value="" >
+ </div>
+    </div>
+</div>
 
      </div>
      <div style="text-align: center;margin-bottom: 10px;">
@@ -200,11 +294,7 @@ if(isset($_POST['save_new_status'])){
      left join shelf s ON p.shelf_id = s.shelf_id
      left join dealer d ON p.dealer_code = d.dealer_code "
      ,"Where (r.code LIKE '%".htmlentities($_GET['q'])."%' or w.code LIKE '%".htmlentities($_GET['q'])."%') ");
-?>
-<script>
-console.log('<?= htmlentities($_GET['q'])?>');
-</script>
-<?
+
   }else{
     $str_sql = "";
    if(isset($_POST['search_product'])){
@@ -224,6 +314,24 @@ console.log('<?= htmlentities($_GET['q'])?>');
        if(addslashes($_POST['search_brand_Wheel']) != ""){
          $str_sql  .= " And w.brand = '".addslashes($_POST['search_brand_Wheel'])."' ";
        }
+       if(addslashes($_POST['search_offset']) != ""){
+         $str_sql  .= " And w.offset = '".addslashes($_POST['search_offset'])."' ";
+       }
+       $checkbox1 = $_POST['col'] ;
+      for ($i=0; $i<sizeof ($checkbox1);$i++) {
+        if($i == sizeof ($checkbox1) - 1){
+           $str = "";
+         }else{
+           $str = " , ";
+         }
+         $strcol = $strcol.sprintf("'%s'", $checkbox1[$i]).$str;
+       }
+
+        if($strcol != ""){
+         $str_sql  .= " And w.color in (".$strcol.") ";
+        }
+
+
        $getproduct = $getdata->my_sql_selectJoin("p.*, r.*, w.*, s.*,p.ProductID as productMain, d.dealer_name as dealer_name, d.mobile as mobile
        ,case
          when p.TypeID = '2'
@@ -348,8 +456,7 @@ $(document).ready(function(){
         $("#searchOther").toggle();
     });
 
-
-      $("#detailrubber").hide();
+$("#detailrubber").hide();
       $("#search_detailrubber").hide();
 
       $('input:radio[name="type"]').change(function() {
@@ -372,104 +479,88 @@ $(document).ready(function(){
         }
       });
 
-     $.getJSON( "jsondata/brand.json", function( data ) {
-      var $brand = $("#brand");
-      var $search_brand = $("#search_brand");
-      $brand.empty();
-      $search_brand.empty();
-      $brand.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_brand.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $brand.append("<option value=" +  data[i].id + ">" + data[i].name + "</option>");
-        $search_brand.append("<option value=" +  data[i].id + ">" + data[i].name + "</option>");
-      }
+      $("#search_width").change(function() {
+        $.ajax({
+            type: "GET",
+            url: "settings/json_Series.php",
+            data: 'key=' + this.value,
+            cache: false,
+            success: function (data) {
+                var JSONObject = JSON.parse(data);
+                var $search_series = $("#search_series");
+                $search_series.empty();
+                $search_series.append("<option value='' selected='selected'>--เลือก--</option>");
+                for(var i = 0; i < JSONObject.length; i++){
+                $search_series.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+                }
+
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "settings/json_Diameter.php",
+            data: 'key=' + this.value,
+            cache: false,
+            success: function (data) {
+              var JSONObject = JSON.parse(data);
+                var $search_diameterRubber = $("#search_diameterRubber");
+                $search_diameterRubber.empty();
+                $search_diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
+                for(var i = 0; i < JSONObject.length; i++){
+                $search_diameterRubber.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+                }
+
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
       });
 
-      $.getJSON( "jsondata/diameter.json", function( data ) {
-      var $diameterWheel = $("#diameterWheel");
-      var $diameterRubber = $("#diameterRubber");
-      var $search_diameterWheel = $("#search_diameterWheel");
-      var $search_diameterRubber = $("#search_diameterRubber");
-      $diameterWheel.empty();
-      $diameterRubber.empty();
-      $search_diameterWheel.empty();
-      $search_diameterRubber.empty();
-      $diameterWheel.append("<option value='' selected='selected'>--เลือก--</option>");
-      $diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_diameterWheel.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_diameterRubber.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $diameterWheel.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $diameterRubber.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_diameterWheel.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_diameterRubber.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-    });
+      $("#search_diameterWheel").change(function() {
+        $.ajax({
+            type: "GET",
+            url: "settings/json_rim.php",
+            data: 'key=' + this.value,
+            cache: false,
+            success: function (data) {
+                var JSONObject = JSON.parse(data);
+                var $search_rim = $("#search_rim");
+                $search_rim.empty();
+                $search_rim.append("<option value='' selected='selected'>--เลือก--</option>");
+                for(var i = 0; i < JSONObject.length; i++){
+                $search_rim.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+              }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
 
-      $.getJSON( "jsondata/holeSize.json", function( data ) {
-      var $holeSize = $("#holeSize");
-      var $search_holeSize = $("#search_holeSize");
-      $holeSize.empty();
-      $search_holeSize.empty();
-      $holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $holeSize.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_holeSize.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-     });
+        $.ajax({
+            type: "GET",
+            url: "settings/json_hoteSize.php",
+            data: 'key=' + this.value,
+            cache: false,
+            success: function (data) {
+              var JSONObject = JSON.parse(data);
+                var $search_holeSize = $("#search_holeSize");
+                $search_holeSize.empty();
+                $search_holeSize.append("<option value='' selected='selected'>--เลือก--</option>");
+                for(var i = 0; i < JSONObject.length; i++){
+                $search_holeSize.append("<option value=" +  JSONObject[i].Description + ">" + JSONObject[i].Description + "</option>");
+                }
 
-     $.getJSON( "jsondata/rim.json", function( data ) {
-      var $rim = $("#rim");
-      var $search_rim = $("#search_rim");
-      $rim.empty();
-      $search_rim.empty();
-      $rim.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_rim.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $rim.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_rim.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-     });
-
-     $.getJSON( "jsondata/series.json", function( data ) {
-      var $series = $("#series");
-      var $search_series = $("#search_series");
-      $series.empty();
-      $search_series.empty();
-      $series.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_series.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $series.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_series.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-     });
-
-     $.getJSON( "jsondata/typeFormat.json", function( data ) {
-      var $typeFormat = $("#typeFormat");
-      var $search_typeFormat = $("#search_typeFormat");
-      $typeFormat.empty();
-      $search_typeFormat.empty();
-      $typeFormat.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_typeFormat.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $typeFormat.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_typeFormat.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-     });
-
-    $.getJSON( "jsondata/width.json", function( data ) {
-      var $width = $("#width");
-      var $search_width = $("#search_width");
-      $width.empty();
-      $search_width.empty();
-      $width.append("<option value='' selected='selected'>--เลือก--</option>");
-      $search_width.append("<option value='' selected='selected'>--เลือก--</option>");
-      for(var i = 0; i < data.length; i++){
-        $width.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-        $search_width.append("<option value=" +  data[i] + ">" + data[i] + "</option>");
-      }
-     });
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+      });
 
 
 });

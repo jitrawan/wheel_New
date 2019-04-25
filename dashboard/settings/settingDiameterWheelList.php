@@ -1,17 +1,51 @@
 
 <div class="row">
      <div class="col-lg-12">
-             <h1 class="page-header"><i class="fa fa-gear fa-fw"></i>ขนาด</h1>
+             <h1 class="page-header"><i class="fa fa-gear fa-fw"></i>ขอบ</h1>
      </div>
 </div>
 <ol class="breadcrumb">
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
    <li><a href="?p=MainSettingWheel">ตั้งค่าล้อแม็ก</a></li>
-  <li class="active">ขนาด</li>
+  <li class="active">ขอบ (Inch)</li>
 </ol>
 
 <?php
+if(isset($_POST['save_Rim'])){
+  if(addslashes($_POST['detail_rim']) != NULL){
+    $chk_Dup = $getdata->my_sql_select(NULL,"relationRim"," RimWheel = '".addslashes($_POST['detail_rim'])."' and RimId =  '".addslashes($_POST['diaId'])."' ");
+    if(mysql_num_rows($chk_Dup) < 1){
+      $getdata->my_sql_insert_New(" relationRim "," RimId, RimWheel "
+      ," '".addslashes($_POST['diaId'])."'
+      ,'".addslashes($_POST['detail_rim'])."' ");
+      $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
+  }else{
+    $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณาระบุช้อมูลให้ถูกต้อง</div>';
+  }
+}
+
+if(isset($_POST['save_hoteSize'])){
+  if(addslashes($_POST['detail_holeSize']) != NULL){
+    $chk_Dupd = $getdata->my_sql_select(NULL,"relationHoleSize"," HoleSizeWhee = '".addslashes($_POST['detail_holeSize'])."' and HoleSizeId =  '".addslashes($_POST['id'])."' ");
+    if(mysql_num_rows($chk_Dupd) < 1){
+      $getdata->my_sql_insert_New(" relationHoleSize "," HoleSizeId, HoleSizeWhee "
+      ," '".addslashes($_POST['id'])."'
+      ,'".addslashes($_POST['detail_holeSize'])."' ");
+      $alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
+    }else{
+      $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
+    }
+  }else{
+    $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>กรุณาระบุช้อมูลให้ถูกต้อง</div>';
+  }
+}
+
+
+
 if(isset($_POST['save_card'])){
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"DiameterWhee"," Description = '".addslashes($_POST['shelf_detail'])."' ");
@@ -99,6 +133,39 @@ if(isset($_POST['save_edit_card'])){
                                 </form>
                                 <!-- /.modal-dialog -->
 </div>
+<!-- Modal Edit -->
+<div class="modal fade" id="Detial_rim" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <form id="form3" name="form3" method="post">
+     <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                    <h4 class="modal-title" id="memberModalLabel">ข้อมูลความกว้าง</h4>
+                </div>
+                <div class="ct">
+
+                </div>
+            </div>
+        </div>
+  </form>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="Detial_hoteSize" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <form id="form3" name="form3" method="post">
+     <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                    <h4 class="modal-title" id="memberModalLabel">ข้อมูลรูปแบบรูน็อต</h4>
+                </div>
+                <div class="ct">
+
+                </div>
+            </div>
+        </div>
+  </form>
+</div>
                             <!-- /.modal -->
   <?php
   echo @$alert;
@@ -116,7 +183,9 @@ if(isset($_POST['save_edit_card'])){
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
     <th width="20%" bgcolor="#5fb760">รหัส</th>
-    <th width="54%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="34%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="10%" bgcolor="#5fb760">ความกว้าง</th>
+    <th width="10%" bgcolor="#5fb760">รูน๊อต</th>
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
@@ -131,6 +200,8 @@ if(isset($_POST['save_edit_card'])){
     <td align="center"><?php echo @$x;?></td>
     <td>&nbsp;<?php echo @$showcat->code;?></td>
     <td>&nbsp;<?php echo @$showcat->Description;?></td>
+    <td align="center"><a data-toggle="modal" data-target="#Detial_rim" data-whatever="<?php echo @$showcat->id;?>" class="pointer">ข้อมูลความกว้าง</a></td>
+    <td align="center"><a data-toggle="modal" data-target="#Detial_hoteSize" data-whatever="<?php echo @$showcat->id;?>" class="pointer">ข้อมูลรูน็อต</a></td>
     <td align="center" valign="middle">
       <?php
 	  if($showcat->status == '1'){
@@ -225,6 +296,47 @@ function changecatStatus(catkey,lang){
                 cache: false,
                 success: function (data) {
                    // console.log(data);
+                    modal.find('.ct').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
+
+    $('#Detial_rim').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'key=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "settings/Detial_rim.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
+                   modal.find('.ct').html(data);
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+    })
+
+    $('#Detial_hoteSize').on('show.bs.modal', function (event) {
+      console.log("555");
+          var button = $(event.relatedTarget) // Button that triggered the modal
+          var recipient = button.data('whatever') // Extract info from data-* attributes
+          var modal = $(this);
+          var dataString = 'key=' + recipient;
+
+            $.ajax({
+                type: "GET",
+                url: "settings/Detial_hoteSize.php",
+                data: dataString,
+                cache: false,
+                success: function (data) {
                     modal.find('.ct').html(data);
                 },
                 error: function(err) {

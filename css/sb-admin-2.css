@@ -56,8 +56,8 @@ body {
 	font-family: 'thaisansliter1', Arial, Helvetica, sans-serif;
 	font-size:16px;
 	font-weight:bold;
-	
-	
+
+
 	}
 	.box_user_right:hover{
 		background:#eeeeee;
@@ -75,8 +75,8 @@ body {
 	font-family: 'thaisansliter1', Arial, Helvetica, sans-serif;
 	font-size:16px;
 	font-weight:bold;
-	
-	
+
+
 	}
 	.box_user_right2:hover{
 		background:#eeeeee;
@@ -188,7 +188,7 @@ body {
         width: 250px;
         margin-top: 51px;
     }
-	
+
 
     .navbar-top-links .dropdown-messages,
     .navbar-top-links .dropdown-tasks,
@@ -512,7 +512,7 @@ border-radius: 3px;
     margin: auto;
     min-height: 100%;
     min-width: 100%;
-	
+
 }
 .box_img_cycle3{
 	width: 40px;
@@ -558,7 +558,7 @@ border-radius: 3px;
     margin: auto;
     min-height: 100%;
     min-width: 100%;
-	
+
 }
 .btn_main_wd{
 	width:150px;
@@ -827,7 +827,7 @@ box-shadow:         0px 0px 3px 1px rgba(50, 50, 50, 0.62);
     position: relative;
 }
 #img_product_crop_img{
-	
+
     position:absolute;
     left: -100%;
     right: -100%;
@@ -844,7 +844,7 @@ box-shadow:         0px 0px 3px 1px rgba(50, 50, 50, 0.62);
 	text-align:center;
 }
 .badge{
-	
+
 	padding:0px 7px 3px 7px;
 	 border-radius: 100px;
 	 background:#FF1C1F;

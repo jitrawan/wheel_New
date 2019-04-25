@@ -99,8 +99,8 @@ if(isset($_POST['tSave'])){
   echo "<script>window.location=\"../dashboard/?p=saleProduct\"</script>";
 
 }else if(isset($_POST['save_item'])){
-
-  $reserve_key=md5($_POST['reserve_key'].addslashes($_POST['setProductID']));
+/*ขั้นตอนการ save product info*/
+  $reserve_key=md5($_POST['reserve_key'].addslashes($_POST['setProductID']).'/'.@RandomString(4,'C',7));
 
   $getdata->my_sql_update("reserve_info"," reserve_status='P' "," reserve_key='".$_POST['reserve_key']."' ");
 
@@ -109,6 +109,7 @@ if(isset($_POST['tSave'])){
      left join productDetailRubber r on p.ProductID = r.ProductID "
   ," p.ProductID='".addslashes($_POST['setProductID'])."' ");
 
+//ลดราคา
   $getdicountTotal = ($getproduct_info->PriceSale * $getproduct_info->discount) / 100;
   $getprice = $getproduct_info->PriceSale - $getdicountTotal;
   $gettotal = $getprice * $_POST['product_quantity'];
@@ -130,6 +131,60 @@ if(isset($_POST['tSave'])){
   }else{
     $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
   }
+
+}else if(isset($_POST['save_itemEvent'])){
+
+$getdata->my_sql_update("reserve_info"," reserve_status='P' "," reserve_key='".$_POST['setreserve_key']."' ");
+
+$getEvetnItem = $getdata->my_sql_select(NULL,"Event_Item","Event_Code = '".$_POST['setProductIDEvetn']."' ");
+$num = mysql_num_rows($getEvetnItem);
+
+$numAmt = 0;
+while($checkAmt = mysql_fetch_object($getEvetnItem)){
+  $getproduct_info = $getdata->my_sql_query(" p.*,r.*,w.*,p.ProductID as setProductID "
+  ," product_N p
+     left join productDetailWheel w on p.ProductID = w.ProductID
+     left join productDetailRubber r on p.ProductID = r.ProductID "
+  ," p.ProductID='".$checkAmt->ProductID."' ");
+  if($checkAmt->item_amt <= $getproduct_info->Quantity){
+      $numAmt = $numAmt + 1;
+  }
+
+}
+
+if($num == $numAmt){
+  while($showitem = mysql_fetch_object($getEvetnItem)){
+    $reserve_key=md5($_POST['setreserve_key'].$showitem->ProductID.'/'.@RandomString(4,'C',7));
+
+    $getproduct_info = $getdata->my_sql_query(" p.*,r.*,w.*,p.ProductID as setProductID "
+    ," product_N p
+       left join productDetailWheel w on p.ProductID = w.ProductID
+       left join productDetailRubber r on p.ProductID = r.ProductID "
+    ," p.ProductID='".$showitem->ProductID."' ");
+              $getdicountTotal = 0;
+              $getprice = $showitem->PriceSale - $getdicountTotal;
+              $gettotal = $showitem->PriceSale * $showitem->item_amt;
+
+              if($showitem->item_amt <= $getproduct_info->Quantity){
+                    $result = $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
+                    ,reserve_key='".$_POST['setreserve_key']."'
+                    ,ProductID='".$showitem->ProductID."'
+                    ,item_amt='".$showitem->item_amt."'
+                    ,item_discount='".$getdicountTotal."'
+                    ,item_price='".$showitem->PriceSale."'
+                    ,item_total='".$gettotal."'
+                    ,Event_Code='".$_POST['setProductIDEvetn']."'
+                    ,create_Date=NOW() ");
+
+                    $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['setreserve_key']."' ");
+                    $getreserveCode = $getreserve_info->reserve_code;
+          }else{
+            $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
+          }
+    }
+}else{
+  $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
+}
 
 }else{
 
@@ -180,6 +235,24 @@ while($objShow = mysql_fetch_object($getproduct_info)){
   $getreservNo = date("Ymd").'00'.$getreserve_info->reserve_code;
   ?>
 
+  <!-- Modal Edit -->
+  <div class="modal fade" id="show_event" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+      <form method="post" enctype="multipart/form-data" name="form2" id="form2">
+
+       <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo @LA_BTN_CLOSE;?></span></button>
+                      <h4 class="modal-title" id="memberModalLabel">โปรโมชั่น</h4>
+                  </div>
+                  <div class="ct">
+
+                  </div>
+              </div>
+          </div>
+    </form>
+  </div>
+
 <div class="tab-pane fade in active" id="info_data">
 
 <div class="panel panel-primary">
@@ -217,6 +290,13 @@ while($objShow = mysql_fetch_object($getproduct_info)){
       <input class="form-control form_datetime" type="text" name="reserve_date" id="reserve_date" title="วันที่ใบเสร็จ" value="<?= date("Y-m-d")?>">
     </div>
 
+  </div>
+</div>
+
+
+<div class="form-group row">
+<div class="col-xs-12" >
+    <a data-toggle="modal" data-target="#show_event" style="width: 100%; " name="event" id="event" class="btn btn-info"><i class="fa fa-bookmark-o"></i> Event</a>
   </div>
 </div>
 
@@ -266,7 +346,7 @@ while($objShow = mysql_fetch_object($getproduct_info)){
     <tbody>
       <?
       $gettotal = 0;
-      $getproduct_info = $getdata->my_sql_select("i.* ,p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+      $getproduct_info = $getdata->my_sql_select("i.* ,p.*,w.code as wheelCode ,r.code as rubbleCode, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID ,w.rim as whediameter
       ,case
         when p.TypeID = '2'
         then (select b.Description from brandRubble b where r.brand = b.id)
@@ -278,10 +358,13 @@ while($objShow = mysql_fetch_object($getproduct_info)){
       left join productDetailRubber r on p.ProductID = r.ProductID
       "," reserve_key='".$getreserve_info->reserve_key."' ");
       while($objShow = mysql_fetch_object($getproduct_info)){
+        if($objShow->Event_Code != ""){
+          $Isevent = "SetPromotion";
+        }
         if($objShow->TypeID == '1'){
-          $gettype = "ล้อแม๊ก ".$objShow->BrandName." ขนาด:".$objShow->diameterWheel." ขอบ:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat;
+          $gettype = $objShow->wheelCode." ล้อแม๊ก ".$objShow->BrandName." ขอบ:".$objShow->diameterWheel." ขนาด:".$objShow->whediameter." รู:".$objShow->holeSize." ประเภท:".$objShow->typeFormat." ".$Isevent;
         }else if($objShow->TypeID == '2'){
-          $gettype = "ยาง ".$objShow->BrandName." ขนาด:".$objShow->diameterRubber." ขอบ:".$objShow->rubdiameter." ซี่รี่:".$objShow->series." ความกว้าง:".$objShow->width;
+          $gettype = $objShow->rubbleCode." ยาง ".$objShow->BrandName." ขนาด:".$objShow->diameterRubber." ความกว้าง:".$objShow->width." ซี่รี่:".$objShow->series."  ".$Isevent;
         }else{
           $gettype = "";
         }
@@ -290,10 +373,10 @@ while($objShow = mysql_fetch_object($getproduct_info)){
       ?>
       <tr id="<?php echo @$objShow->item_key;?>">
         <td class="right"><label class="g-input"><div><input type="text" class="form-control right" readonly="true" size="5" value="<?= @$objShow->item_amt?>" class="price"></div></label></td>
-        <td class=""><label class="g-input"><div><input type="text" class="form-control" size="5" readonly="true" value="<?= @$objShow->ProductID?> <?= $gettype?>" class="price"></div></label></td>
+        <td class=""><label class="g-input"><div><input type="text" class="form-control" size="5" readonly="true" value="<?= $gettype?>" class="price"></div></label></td>
         <td class="right"><label class="g-input"><div><input type="text" class="form-control right" readonly="true" size="5" value="<?= convertPoint2($objShow->item_price,2)?>" class="price"></div></label></td>
         <!--td class="right"><label class="g-input"><span class="g-input"><div class="input-group"><input type="text" class="form-control right" value="<?= $objShow->discount?>"  size="5" class="price" ><span class="input-group-addon">%</span></div></span></label></td-->
-        <!--td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_discount,2)?>" class="price"></div></label></td-->
+        <!--td class="right"><label class="g-input"><div></div></label></td-->
         <td class="right"><label class="g-input"><div><input type="text" class="form-control right" size="5" value="<?= convertPoint2($objShow->item_total,2)?>" class="price"></div></label></td>
         <td style="text-align: center;"><a onClick="javascript:deleteItem('<?php echo @$objShow->item_key;?>');" class="btn btn-xs btn-danger" style="color:#FFF;" title="ลบ"><i class="fa fa-times"></i> <?php echo @LA_BTN_DELETE;?></a></td>
       </tr>
@@ -372,6 +455,10 @@ while($objShow = mysql_fetch_object($getproduct_info)){
 $(document).ready(function(){
   $("#alert-danger").fadeTo(2000, 500).slideUp(500, function(){
     $("#alert-danger").slideUp(500);
+
+
+
+
 });
 
   $(".number").bind('keyup mouseup', function () {
@@ -444,5 +531,27 @@ $(".form_datetime").datepicker({
 $(this).datepicker('hide');
 });
 
+
+$('#show_event').on('show.bs.modal', function (event) {
+  console.log($('#reserve_key').val());
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      var modal = $(this);
+      var dataString = 'key=' + $('#reserve_key').val();
+
+        $.ajax({
+            type: "GET",
+            url: "settings/show_event.php",
+            data: dataString,
+            cache: false,
+            success: function (data) {
+              //  console.log(data);
+                modal.find('.ct').html(data);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+})
 
 </script>

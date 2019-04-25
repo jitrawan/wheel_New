@@ -8,14 +8,18 @@
   <li><a href="index.php"><?php echo @LA_MN_HOME;?></a></li>
    <li><a href="?p=setting"><?php echo @LA_LB_SETTING;?></a></li>
    <li><a href="?p=MainSettingRubble">ตั้งค่ายาง</a></li>
-  <li class="active">ขนาด</li>
+  <li class="active">ขนาด (Inch)</li>
 </ol>
 <?php
 if(isset($_POST['save_card'])){
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"DiameterRubble"," Description = '".addslashes($_POST['shelf_detail'])."' ");
     if(mysql_num_rows($chk_DiameterWhee) < 1){
-      $getdata->my_sql_insert_New(" DiameterRubble "," code, Description, status "," '".addslashes($_POST['code'])."' ,'".addslashes($_POST['shelf_detail'])."' ,'".addslashes($_POST['shelf_status'])."' ");
+      $getdata->my_sql_insert_New(" DiameterRubble "," code, Description, status, SeriesRubble, WidthRubble "
+      ," '".addslashes($_POST['code'])."' ,'".addslashes($_POST['shelf_detail'])."'
+      ,'".addslashes($_POST['shelf_status'])."'
+      ,'".addslashes($_POST['shelf_SeriesRubble'])."'
+      ,'".addslashes($_POST['shelf_WidthRubble'])."' ");
   		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
     }else{
       $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
@@ -26,7 +30,10 @@ if(isset($_POST['save_card'])){
 }
 if(isset($_POST['save_edit_card'])){
 		 if(addslashes($_POST['edit_shelf_detail'])!= NULL){
-			 $getdata->my_sql_update("DiameterRubble","Description='".addslashes($_POST['edit_shelf_detail'])."'","id='".addslashes($_POST['edit_shelf_id'])."'");
+			 $getdata->my_sql_update("DiameterRubble","Description='".addslashes($_POST['edit_shelf_detail'])."'
+       ,SeriesRubble='".addslashes($_POST['edit_shelf_SeriesRubble'])."'
+       ,WidthRubble='".addslashes($_POST['edit_shelf_WidthRubble'])."' "
+       ,"id='".addslashes($_POST['edit_shelf_id'])."'");
 
        //echo "<script>console.log('UPDATE DiameterWhee SET Desc = '".addslashes($_POST['edit_shelf_detail'])."' where id = '".addslashes($_POST['edit_shelf_id'])."'');</script>";
 			$alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';
@@ -76,6 +83,30 @@ if(isset($_POST['save_edit_card'])){
                                             <label for="shelf_detail">รายละเอียด</label>
                                             <input type="text" name="shelf_detail" id="shelf_detail" class="form-control" autofocus>
                                           </div>
+                                          <!--div class="form-group row">
+                                            <div class="col-md-6">
+                                                <label for="shelf_WidthRubble">ความกว้าง</label>
+                                                <select name="shelf_WidthRubble" id="shelf_WidthRubble" class="form-control">
+                                                  <option value="" selected="selected">--เลือก--</option>
+                                                  <? $getWidtRubble = $getdata->my_sql_select(NULL,"WidthRubble","status = '1' ORDER BY id ");
+                                                    while($showWidtRubble = mysql_fetch_object($getWidtRubble)){?>
+                                                  <option value="<?= $showWidtRubble->id?>" ><?= $showWidtRubble->Description?></option>
+                                                  <?}?>
+                                               </select>
+                                            </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <div class="col-md-6">
+                                                  <label for="shelf_SeriesRubbleRubble">ซี่รี่</label>
+                                                  <select name="shelf_SeriesRubble" id="shelf_SeriesRubble" class="form-control">
+                                                    <option value="" selected="selected">--เลือก--</option>
+                                                    <? $getSeriesRubbleRubble = $getdata->my_sql_select(NULL,"SeriesRubble","status = '1' ORDER BY Description ");
+                                                      while($showSeriesRubbleRubble = mysql_fetch_object($getSeriesRubbleRubble)){?>
+                                                    <option value="<?= $showSeriesRubbleRubble->id?>" ><?= $showSeriesRubbleRubble->Description?></option>
+                                                    <?}?>
+                                                 </select>
+                                                </div>
+                                              </div-->
 
                                           <div class="form-group row">
 
@@ -115,7 +146,9 @@ if(isset($_POST['save_edit_card'])){
   <tr style="color:#FFF;">
     <th width="3%" bgcolor="#5fb760">#</th>
     <th width="20%" bgcolor="#5fb760">รหัส</th>
-    <th width="54%" bgcolor="#5fb760">รายละเอียด</th>
+    <th width="34%" bgcolor="#5fb760">รายละเอียด</th>
+    <!--th width="10%" bgcolor="#5fb760">ความกว้าง</th>
+    <th width="10%" bgcolor="#5fb760">ซี่รี่</th-->
     <th width="23%" bgcolor="#5fb760"><?php echo @LA_LB_MANAGE;?></th>
   </tr>
   </thead>
@@ -130,6 +163,8 @@ if(isset($_POST['save_edit_card'])){
     <td align="center"><?php echo @$x;?></td>
     <td>&nbsp;<?php echo @$showcat->code;?></td>
     <td>&nbsp;<?php echo @$showcat->Description;?></td>
+    <!--td>&nbsp;<?php $getWidth =$getdata->my_sql_query(NULL,"WidthRubble","id='".@$showcat->WidthRubble."'"); echo $getWidth->Description ?></td>
+    <td>&nbsp;<?php $getWidth =$getdata->my_sql_query(NULL,"SeriesRubble","id='".@$showcat->SeriesRubble."'"); echo $getWidth->Description ?></td-->
     <td align="center" valign="middle">
       <?php
 	  if($showcat->status == '1'){
