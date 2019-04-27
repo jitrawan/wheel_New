@@ -153,9 +153,9 @@ while($checkAmt = mysql_fetch_object($getEvetnItem)){
 }
 
 if($num == $numAmt){
-  while($showitem = mysql_fetch_object($getEvetnItem)){
+  $getEvetnItem2 = $getdata->my_sql_select(NULL,"Event_Item","Event_Code = '".$_POST['setProductIDEvetn']."' ");
+  while($showitem = mysql_fetch_object($getEvetnItem2)){
     $reserve_key=md5($_POST['setreserve_key'].$showitem->ProductID.'/'.@RandomString(4,'C',7));
-
     $getproduct_info = $getdata->my_sql_query(" p.*,r.*,w.*,p.ProductID as setProductID "
     ," product_N p
        left join productDetailWheel w on p.ProductID = w.ProductID
@@ -165,8 +165,7 @@ if($num == $numAmt){
               $getprice = $showitem->PriceSale - $getdicountTotal;
               $gettotal = $showitem->PriceSale * $showitem->item_amt;
 
-              if($showitem->item_amt <= $getproduct_info->Quantity){
-                    $result = $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
+              $result = $getdata->my_sql_insert("reserve_item"," item_key='".$reserve_key."'
                     ,reserve_key='".$_POST['setreserve_key']."'
                     ,ProductID='".$showitem->ProductID."'
                     ,item_amt='".$showitem->item_amt."'
@@ -176,11 +175,9 @@ if($num == $numAmt){
                     ,Event_Code='".$_POST['setProductIDEvetn']."'
                     ,create_Date=NOW() ");
 
-                    $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['setreserve_key']."' ");
-                    $getreserveCode = $getreserve_info->reserve_code;
-          }else{
-            $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
-          }
+          $getreserve_info = $getdata->my_sql_query(NULL,"reserve_info"," reserve_key='".$_POST['setreserve_key']."' ");
+          $getreserveCode = $getreserve_info->reserve_code;
+
     }
 }else{
   $alert = '<div class="alert alert-danger alert-dismissable" id="alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>จำนวนสินค้าไม่พอจำหน่าย กรุณาระบุใหม่อีกครั้ง !</div>';
@@ -533,12 +530,11 @@ $(this).datepicker('hide');
 
 
 $('#show_event').on('show.bs.modal', function (event) {
-  console.log($('#reserve_key').val());
       var button = $(event.relatedTarget) // Button that triggered the modal
       var recipient = button.data('whatever') // Extract info from data-* attributes
       var modal = $(this);
       var dataString = 'key=' + $('#reserve_key').val();
-
+console.log("dataString ::"+dataString);
         $.ajax({
             type: "GET",
             url: "settings/show_event.php",

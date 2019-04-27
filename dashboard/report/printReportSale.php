@@ -102,7 +102,7 @@ $head .= '<table>
 	$content = "";
 	$i = 1;
 	while($row = mysql_fetch_object($GroupType)) {
-		$showDetailProduct = $getdata->my_sql_query(" p.*, r.*, w.* ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
+		$showDetailProduct = $getdata->my_sql_query(" p.*, r.*, w.* ,r.code as rcode , w.code as wcode ,w.diameter as diameterWheel,r.diameter as diameterRubber,p.ProductID as ProductID,r.diameter as rubdiameter ,w.diameter as whediameter
 		,case
 			when p.TypeID = '2'
 			then (select b.Description from brandRubble b where r.brand = b.id)
@@ -122,8 +122,10 @@ $head .= '<table>
 
 
 				if($showDetailProduct->TypeID == '1'){
+				 $getcode = $showDetailProduct->wcode;
 				 $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterWheel." ขอบ:".$showDetailProduct->whediameter." รู:".$showDetailProduct->holeSize." ประเภท:".$showDetailProduct->typeFormat;
 				}else if($showDetailProduct->TypeID == '2'){
+				 $getcode = $showDetailProduct->rcode;
 				 $gettype = $showDetailProduct->BrandName." ขนาด:".$showDetailProduct->diameterRubber." ขอบ:".$showDetailProduct->rubdiameter." ซี่รี่:".$showDetailProduct->series." ความกว้าง:".$showDetailProduct->width;
 				}else{
 				 $gettype = "";
@@ -131,7 +133,7 @@ $head .= '<table>
 
 		$content .='<tr>
 		<td align="center"><strong>'.@$i.'</strong></td>
-		<td align="center"><strong>'.@$row->ProductID.'</strong></td>
+		<td align="center"><strong>'.@$getcode.'</strong></td>
 		<td><strong>'.$gettype.'</strong></td>
 		<td valign="middle" style=" text-align: right;"><strong>'.@convertPoint2($row->sumamt,'0').'&nbsp;ชิ้น</strong></td>
 		</tr>';
