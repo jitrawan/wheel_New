@@ -12,9 +12,11 @@
 </ol>
 <?php
 if(isset($_POST['save_detailseries'])){
+
   if(addslashes($_POST['detail_SeriesRubble']) != NULL){
     $chk_Dup = $getdata->my_sql_select(NULL,"relationSeries"," SeriesRubble = '".addslashes($_POST['detail_SeriesRubble'])."' and SeriesId =  '".addslashes($_POST['id'])."' ");
     if(mysql_num_rows($chk_Dup) < 1){
+
       $getdata->my_sql_insert_New(" relationSeries "," SeriesId, SeriesRubble "
       ," '".addslashes($_POST['id'])."'
       ,'".addslashes($_POST['detail_SeriesRubble'])."' ");
@@ -28,7 +30,6 @@ if(isset($_POST['save_detailseries'])){
 }
 
 if(isset($_POST['save_detaildiameter'])){
-
   if(addslashes($_POST['detail_DiameterRubble']) != NULL){
     $chk_Dupdia = $getdata->my_sql_select(NULL,"relationDiameter"," DiameterRubble = '".addslashes($_POST['detail_DiameterRubble'])."' and DiameterId = '".addslashes($_POST['diaId'])."' ");
     if(mysql_num_rows($chk_Dupdia) < 1){
@@ -45,15 +46,21 @@ if(isset($_POST['save_detaildiameter'])){
 }
 
 if(isset($_POST['save_card'])){
+
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"WidthRubble"," Description = '".addslashes($_POST['shelf_detail'])."' ");
     if(mysql_num_rows($chk_DiameterWhee) < 1){
-      $getdata->my_sql_insert_New(" WidthRubble "," code, Description, status, DiameterRubble, SeriesRubble "
+
+    /*  $getdata->my_sql_insert_New(" WidthRubble "," code, Description, status, DiameterRubble, SeriesRubble "
       ," '".addslashes($_POST['code'])."'
       ,'".addslashes($_POST['shelf_detail'])."'
       ,'".addslashes($_POST['shelf_status'])."'
       ,'".addslashes($_POST['shelf_DiameterRubble'])."'
-      ,'".addslashes($_POST['shelf_SeriesRubble'])."' ");
+      ,'".addslashes($_POST['shelf_SeriesRubble'])."' ");*/
+      $getdata->my_sql_insert_New(" WidthRubble "," code, Description, status "
+      ," '".addslashes($_POST['code'])."'
+      ,'".addslashes($_POST['shelf_detail'])."'
+      ,'".addslashes($_POST['shelf_status'])."' ");
   		$alert = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_ADD_NEW_TYPE_OF_IS_DONE.'</div>';
     }else{
       $alert = '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>ข้อมูลซ้ำ</div>';
@@ -65,8 +72,6 @@ if(isset($_POST['save_card'])){
 if(isset($_POST['save_edit_card'])){
 		 if(addslashes($_POST['edit_shelf_detail'])!= NULL){
 			 $getdata->my_sql_update("WidthRubble","Description='".addslashes($_POST['edit_shelf_detail'])."'
-       ,DiameterRubble='".addslashes($_POST['edit_shelf_DiameterRubble'])."'
-       ,SeriesRubble='".addslashes($_POST['edit_shelf_SeriesRubble'])."'
        ","id='".addslashes($_POST['edit_shelf_id'])."'");
 
       $alert = '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.LA_ALERT_UPDATE_DATA_DONE.'</div>';

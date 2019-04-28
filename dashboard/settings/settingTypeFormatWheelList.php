@@ -12,6 +12,7 @@
 </ol>
 <?php
 if(isset($_POST['save_card'])){
+
 	if(addslashes($_POST['shelf_detail']) != NULL){
     $chk_DiameterWhee = $getdata->my_sql_select(NULL,"TypeFormatWheel"," Description = '".addslashes($_POST['shelf_detail'])."' ");
     if(mysql_num_rows($chk_DiameterWhee) < 1){
